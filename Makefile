@@ -48,7 +48,7 @@ test-backend:
 
 # Run frontend tests (excludes config files and proto)
 test-frontend:
-	cd web && npm test
+	cd web && npm install && npm run test
 
 # Run tests with coverage reports
 test-coverage:
@@ -57,7 +57,7 @@ test-coverage:
 	go tool cover -func=coverage.out | grep total
 	go tool cover -html=coverage.out -o coverage.html
 	@echo "\n=== Frontend Coverage ==="
-	cd web && npm run test:coverage
+	cd web && npm install && npm run test:coverage
 
 # Run all linters
 lint: lint-backend lint-frontend
@@ -69,4 +69,4 @@ lint-backend:
 
 # Run frontend linters
 lint-frontend:
-	cd web && npm run lint
+	cd web && npm install && npm run lint

@@ -118,3 +118,7 @@ The following prompts were used to generate the code for the project. The prompt
 
 - |
   github action for test fail with: go: no such tool "covdata"
+- |
+  lint github failed with: sh: 1: eslint: not found
+- |
+  test github failed with: sh: 1: vitest: not found
