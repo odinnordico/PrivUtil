@@ -69,3 +69,52 @@ The following prompts were used to generate the code for the project. The prompt
   ```
 - |
   Use the make targets in the github files, update makefile if required
+- |
+  GitHub build is failing with:
+
+  ```
+  rm -f privutil privutil.exe
+  rm -rf web/dist
+  rm -rf internal/server/dist
+  rm -rf web/node_modules
+  cd web && npm install && npm run build
+  npm warn EBADENGINE Unsupported engine {
+  npm warn EBADENGINE   package: '@vitejs/plugin-react@5.1.2',
+  npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+  npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+  npm warn EBADENGINE }
+  npm warn EBADENGINE Unsupported engine {
+  npm warn EBADENGINE   package: 'react-router@7.13.0',
+  npm warn EBADENGINE   required: { node: '>=20.0.0' },
+  npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+  npm warn EBADENGINE }
+  npm warn EBADENGINE Unsupported engine {
+  npm warn EBADENGINE   package: 'react-router-dom@7.13.0',
+  npm warn EBADENGINE   required: { node: '>=20.0.0' },
+  npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+  npm warn EBADENGINE }
+  npm warn EBADENGINE Unsupported engine {
+  npm warn EBADENGINE   package: 'vite@7.3.1',
+  npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+  npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+  npm warn EBADENGINE }
+  npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+
+  added 393 packages, and audited 394 packages in 6s
+
+  95 packages are looking for funding
+    run `npm fund` for details
+
+  found 0 vulnerabilities
+
+  > web@0.0.0 build
+  > tsc -b && vite build
+
+  Error: src/test/GeneratorTool.test.tsx(5,24): error TS2724: '"../proto/proto/privutil"' has no exported member named 'LoremIpsumResponse'. Did you mean 'LoremResponse'?
+  Error: src/test/GeneratorTool.test.tsx(5,24): error TS6133: 'LoremIpsumResponse' is declared but its value is never read.
+  make: *** [Makefile:19: build-web] Error 2
+  Error: Process completed with exit code 2.
+  ```
+
+- |
+  github action for test fail with: go: no such tool "covdata"
