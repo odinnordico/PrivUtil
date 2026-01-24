@@ -40,18 +40,18 @@ clean:
 	rm -rf web/node_modules
 
 # Run all tests
-test: test-backend test-frontend
+test: build test-backend test-frontend
 
 # Run backend tests
-test-backend:
+test-backend: build
 	go test -v -cover ./...
 
 # Run frontend tests (excludes config files and proto)
-test-frontend:
+test-frontend: build
 	cd web && npm install && npm run test
 
 # Run tests with coverage reports
-test-coverage:
+test-coverage: test
 	@echo "=== Backend Coverage ==="
 	go test -coverprofile=coverage.out ./internal/api/...
 	go tool cover -func=coverage.out | grep total

@@ -1,6 +1,8 @@
 # Agent rules/workflows downloaded by agent-cli (do not commit)
 .agent/
 
+!.gitkeep
+
 # Binaries
 /privutil
 /bin/
@@ -27,8 +29,8 @@ yarn-error.log
 .DS_Store
 
 # React Build
-web/dist/
+web/dist/**
 web/build/
 web/node_modules/
 
-internal/server/dist
+internal/server/dist/**
