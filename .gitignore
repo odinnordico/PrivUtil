@@ -30,3 +30,5 @@ yarn-error.log
 web/dist/
 web/build/
 web/node_modules/
+
+internal/server/dist
