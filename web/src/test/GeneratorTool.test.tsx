@@ -2,13 +2,13 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { GeneratorTool } from '../components/GeneratorTool';
 import { client } from '../lib/client';
-import { UuidResponse, LoremIpsumResponse, HashResponse } from '../proto/proto/privutil';
+import { UuidResponse, LoremResponse, HashResponse } from '../proto/proto/privutil';
 
 // Mock the grpc client
 vi.mock('../lib/client', () => ({
   client: {
     generateUuid: vi.fn(),
-    generateLoremIpsum: vi.fn(),
+    generateLorem: vi.fn(),
     calculateHash: vi.fn(),
   },
 }));
@@ -34,6 +34,24 @@ describe('GeneratorTool', () => {
     await waitFor(() => {
       expect(client.generateUuid).toHaveBeenCalled();
       expect(screen.getByText('mock-uuid')).toBeInTheDocument();
+    });
+  });
+
+  it('handles Lorem Ipsum generation', async () => {
+    const mockResponse = LoremResponse.create({ text: 'mock-lorem' });
+    (client.generateLorem as any).mockResolvedValue(mockResponse);
+
+    render(<GeneratorTool />);
+    // Switch to Lorem tab
+    const loremTab = screen.getByText('Lorem Ipsum');
+    fireEvent.click(loremTab);
+    
+    const generateButton = screen.getByRole('button', { name: /Generate/i });
+    fireEvent.click(generateButton);
+
+    await waitFor(() => {
+      expect(client.generateLorem).toHaveBeenCalled();
+      expect(screen.getByDisplayValue('mock-lorem')).toBeInTheDocument();
     });
   });
 
