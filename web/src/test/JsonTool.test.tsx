@@ -20,7 +20,7 @@ describe('JsonTool', () => {
   it('handles JSON formatting', async () => {
     const formattedJson = '{\n  "key": "value"\n}';
     const mockResponse = JsonFormatResponse.create({ text: formattedJson });
-    (client.jsonFormat as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.jsonFormat).mockResolvedValue(mockResponse);
 
     render(<JsonTool />);
     // Just find any textarea with the key value pair in placeholder

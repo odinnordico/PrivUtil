@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"google.golang.org/grpc"
@@ -35,7 +36,8 @@ func (s *Server) Start() error {
 	fileServer := http.FileServer(http.FS(distFS))
 
 	httpServer := &http.Server{
-		Addr: s.addr,
+		Addr:              s.addr,
+		ReadHeaderTimeout: 3 * time.Second, // G112: Potential Slowloris Attack
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if wrappedGrpc.IsGrpcWebRequest(r) {
 				wrappedGrpc.ServeHTTP(w, r)
@@ -57,7 +59,9 @@ func (s *Server) Start() error {
 				fileServer.ServeHTTP(w, r)
 				return
 			}
-			f.Close()
+			if f != nil {
+				_ = f.Close() // #nosec G104: Errors unhandled
+			}
 
 			fileServer.ServeHTTP(w, r)
 		}),

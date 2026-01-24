@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { TextRequest } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { Link, Code } from 'lucide-react';
 
@@ -38,16 +37,16 @@ function EncoderProcessor({ type }: { type: 'url' | 'html' }) {
 
   const handleAction = async (action: 'encode' | 'decode') => {
     try {
-      const req = TextRequest.create({ text: input });
+      const req = { text: input } as Parameters<typeof client.urlEncode>[0];
       let resp;
       if (type === 'url') {
         resp = action === 'encode' 
-          ? await client.urlEncode(req as any) 
-          : await client.urlDecode(req as any);
+          ? await client.urlEncode(req) 
+          : await client.urlDecode(req);
       } else {
         resp = action === 'encode'
-          ? await client.htmlEncode(req as any)
-          : await client.htmlDecode(req as any);
+          ? await client.htmlEncode(req)
+          : await client.htmlDecode(req);
       }
       setOutput(resp.text);
     } catch (e) { console.error(e); }

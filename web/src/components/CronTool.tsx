@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { CronRequest } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { Clock } from 'lucide-react';
 
@@ -11,7 +10,7 @@ export function CronTool() {
     const timer = setTimeout(async () => {
       if (!expr) return;
       try {
-        const resp = await client.cronExplain(CronRequest.create({ expression: expr }) as any);
+        const resp = await client.cronExplain({ expression: expr } as Parameters<typeof client.cronExplain>[0]);
         setRes({ 
           desc: resp.description, 
           next: resp.nextRuns.split('\n').filter(Boolean), 

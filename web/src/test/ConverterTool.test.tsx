@@ -21,7 +21,7 @@ describe('ConverterTool', () => {
 
   it('handles conversion', async () => {
     const mockResponse = ConvertResponse.create({ data: 'key: value' });
-    (client.convert as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.convert).mockResolvedValue(mockResponse);
 
     render(<ConverterTool />);
     const input = screen.getByPlaceholderText(/Paste.*here.../);

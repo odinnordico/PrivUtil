@@ -21,7 +21,7 @@ describe('ColorTool', () => {
 
   it('handles color conversion', async () => {
     const mockResponse = ColorResponse.create({ hex: '#FF0000', rgb: 'rgb(255, 0, 0)', hsl: 'hsl(0, 100%, 50%)' });
-    (client.colorConvert as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.colorConvert).mockResolvedValue(mockResponse);
 
     const { container } = render(<ColorTool />);
     fireEvent.change(screen.getByPlaceholderText('#RRGGBB or rgb(r,g,b)'), { target: { value: '#ff0000' } });

@@ -21,7 +21,7 @@ describe('DiffTool', () => {
 
   it('handles diff generation', async () => {
     const mockResponse = DiffResponse.create({ diffHtml: '<ins>added</ins>' });
-    (client.diff as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.diff).mockResolvedValue(mockResponse);
 
     render(<DiffTool />);
     fireEvent.change(screen.getByPlaceholderText(/Paste original text/i), { target: { value: 'old' } });

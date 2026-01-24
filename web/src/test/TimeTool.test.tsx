@@ -24,11 +24,11 @@ describe('TimeTool', () => {
   it('handles time conversion', async () => {
     const mockResponse = TimeResponse.create({ 
       iso: '2023-01-01T00:00:00Z',
-      unix: 1672531200 as any,
+      unix: 1672531200 as number,
       utc: '2023-01-01 00:00:00 UTC',
       local: '2023-01-01 00:00:00'
     });
-    (client.timeConvert as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.timeConvert).mockResolvedValue(mockResponse);
 
     const { container } = render(<TimeTool />);
     const input = screen.getByPlaceholderText(/Unix timestamp/i);

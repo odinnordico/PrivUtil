@@ -21,7 +21,7 @@ describe('GeneratorTool', () => {
 
   it('handles UUID generation', async () => {
     const mockResponse = UuidResponse.create({ uuids: ['mock-uuid'] });
-    (client.generateUuid as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.generateUuid).mockResolvedValue(mockResponse);
 
     render(<GeneratorTool />);
     // Select UUIDs tab if not active, but from DOM it seems active by default or has label
@@ -39,7 +39,7 @@ describe('GeneratorTool', () => {
 
   it('handles Lorem Ipsum generation', async () => {
     const mockResponse = LoremResponse.create({ text: 'mock-lorem' });
-    (client.generateLorem as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.generateLorem).mockResolvedValue(mockResponse);
 
     render(<GeneratorTool />);
     // Switch to Lorem tab
@@ -57,7 +57,7 @@ describe('GeneratorTool', () => {
 
   it('handles Hash calculation', async () => {
     const mockResponse = HashResponse.create({ hash: 'mock-hash' });
-    (client.calculateHash as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.calculateHash).mockResolvedValue(mockResponse);
 
     const { container } = render(<GeneratorTool />);
     // Switch to Hash tab

@@ -24,7 +24,7 @@ describe('TextTool', () => {
       wordCount: 2, 
       lineCount: 1 
     });
-    (client.textInspect as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.textInspect).mockResolvedValue(mockResponse);
 
     const { container } = render(<TextTool />);
     const input = screen.getByPlaceholderText(/Paste text here/i);
@@ -40,7 +40,7 @@ describe('TextTool', () => {
 
   it('handles text manipulation', async () => {
     const mockResponse = TextManipulateResponse.create({ text: 'WORLD\nHELLO' });
-    (client.textManipulate as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.textManipulate).mockResolvedValue(mockResponse);
 
     render(<TextTool />);
     const input = screen.getByPlaceholderText(/Paste text here/i);

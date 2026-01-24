@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { IpRequest } from '../proto/proto/privutil';
+import { IpResponse } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { Network } from 'lucide-react';
 
 export function IpTool() {
   const [cidr, setCidr] = useState('');
-  const [res, setRes] = useState<any>(null);
+  const [res, setRes] = useState<IpResponse | null>(null);
   const [error, setError] = useState('');
 
   const calc = async () => {
     try {
-      const resp = await client.ipCalc(IpRequest.create({ cidr }) as any);
+      const resp = await client.ipCalc({ cidr } as Parameters<typeof client.ipCalc>[0]);
       if (resp.error) {
         setError(resp.error);
         setRes(null);

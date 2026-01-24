@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { SimilarityRequest } from '../proto/proto/privutil';
+import { SimilarityResponse } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { GitCompareArrows } from 'lucide-react';
 
 export function SimilarityTool() {
   const [text1, setText1] = useState('');
   const [text2, setText2] = useState('');
-  const [res, setRes] = useState<any>(null);
+  const [res, setRes] = useState<SimilarityResponse | null>(null);
 
   const compare = async () => {
     try {
-      const resp = await client.textSimilarity(SimilarityRequest.create({ text1, text2 }) as any);
+      const resp = await client.textSimilarity({ text1, text2 } as Parameters<typeof client.textSimilarity>[0]);
       setRes(resp);
     } catch (e) { console.error(e); }
   };

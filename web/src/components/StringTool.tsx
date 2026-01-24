@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CaseRequest, EscapeRequest } from '../proto/proto/privutil';
+import { CaseResponse } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { CaseSensitive, Code2, Copy } from 'lucide-react';
 
@@ -32,12 +32,12 @@ export function StringTool() {
 
 function CaseConverter() {
   const [text, setText] = useState('');
-  const [res, setRes] = useState<any>(null);
+  const [res, setRes] = useState<CaseResponse | null>(null);
 
   const convert = async (val: string) => {
     setText(val);
     try {
-      const resp = await client.caseConvert(CaseRequest.create({ text: val }) as any);
+      const resp = await client.caseConvert({ text: val } as Parameters<typeof client.caseConvert>[0]);
       setRes(resp);
     } catch (e) { console.error(e); }
   };
@@ -93,7 +93,7 @@ function StringEscaper() {
 
   const process = async (action: 'escape' | 'unescape') => {
     try {
-      const resp = await client.stringEscape(EscapeRequest.create({ text: input, mode, action }) as any);
+      const resp = await client.stringEscape({ text: input, mode, action } as Parameters<typeof client.stringEscape>[0]);
       if (resp.error) setResult(`Error: ${resp.error}`);
       else setResult(resp.result);
     } catch (e) { console.error(e); }

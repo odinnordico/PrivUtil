@@ -20,7 +20,7 @@ describe('SimilarityTool', () => {
 
   it('handles similarity calculation', async () => {
     const mockResponse = SimilarityResponse.create({ distance: 2, similarity: 0.8 });
-    (client.textSimilarity as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.textSimilarity).mockResolvedValue(mockResponse);
 
     const { container } = render(<SimilarityTool />);
     fireEvent.change(screen.getByPlaceholderText(/First text/i), { target: { value: 'apple' } });

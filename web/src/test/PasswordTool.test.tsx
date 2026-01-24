@@ -20,7 +20,7 @@ describe('PasswordTool', () => {
 
   it('handles password generation', async () => {
     const mockResponse = PasswordResponse.create({ passwords: ['safe-password-123'] });
-    (client.generatePassword as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.generatePassword).mockResolvedValue(mockResponse);
 
     render(<PasswordTool />);
     

@@ -20,7 +20,7 @@ describe('SqlTool', () => {
   it('handles SQL formatting', async () => {
     const formattedSql = 'SELECT *\nFROM users';
     const mockResponse = SqlResponse.create({ formatted: formattedSql });
-    (client.sqlFormat as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.sqlFormat).mockResolvedValue(mockResponse);
 
     render(<SqlTool />);
     const input = screen.getByPlaceholderText(/SELECT.*FROM/i);

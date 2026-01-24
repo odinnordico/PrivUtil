@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TimeRequest, TimeResponse } from '../proto/proto/privutil';
+import { TimeResponse } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { Clock } from 'lucide-react';
 
@@ -9,13 +9,16 @@ export function TimeTool() {
 
   const convert = async (val: string) => {
     try {
-      const resp = await client.timeConvert(TimeRequest.create({ input: val }) as any);
+      const resp = await client.timeConvert({ input: val } as Parameters<typeof client.timeConvert>[0]);
       setResult(resp);
     } catch (e) { console.error(e); }
   };
 
   useEffect(() => {
-    convert('now');
+    const timer = setTimeout(() => {
+      void convert('now');
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -40,7 +43,7 @@ export function TimeTool() {
           Convert
         </button>
         <button 
-          onClick={() => { setInput('now'); convert('now'); }}
+          onClick={() => { setInput('now'); void convert('now'); }}
           className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium"
         >
           Now

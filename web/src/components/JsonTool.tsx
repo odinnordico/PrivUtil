@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { JsonFormatRequest } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { AlignLeft, Minimize2, Check } from 'lucide-react';
 
@@ -12,12 +11,11 @@ export function JsonTool() {
   const handleFormat = async () => {
     setError(null);
     try {
-      const request = JsonFormatRequest.create({ 
+      const response = await client.jsonFormat({ 
         text: input, 
         indent: indent, 
         sortKeys: true 
-      });
-      const response = await client.jsonFormat(request as any);
+      } as Parameters<typeof client.jsonFormat>[0]);
       if (response.error) {
         setError(response.error);
       } else {

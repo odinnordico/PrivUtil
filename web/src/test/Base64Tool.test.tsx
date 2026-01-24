@@ -21,7 +21,7 @@ describe('Base64Tool', () => {
 
   it('handles encoding', async () => {
     const mockResponse = Base64Response.create({ text: 'aGVsbG8=' });
-    (client.base64Encode as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.base64Encode).mockResolvedValue(mockResponse);
 
     render(<Base64Tool />);
     const input = screen.getByPlaceholderText('Enter text to encode or decode...');
@@ -38,7 +38,7 @@ describe('Base64Tool', () => {
 
   it('handles decoding', async () => {
     const mockResponse = Base64Response.create({ text: 'hello' });
-    (client.base64Decode as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.base64Decode).mockResolvedValue(mockResponse);
 
     render(<Base64Tool />);
     const input = screen.getByPlaceholderText('Enter text to encode or decode...');

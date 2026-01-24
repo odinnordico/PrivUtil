@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { CertRequest } from '../proto/proto/privutil';
+import { CertResponse } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { FileBadge, ShieldCheck, Calendar, Globe } from 'lucide-react';
 
 export function CertTool() {
   const [pem, setPem] = useState('');
-  const [cert, setCert] = useState<any>(null);
+  const [cert, setCert] = useState<CertResponse | null>(null);
   const [error, setError] = useState('');
 
   const parse = async (data: string) => {
@@ -15,7 +15,7 @@ export function CertTool() {
       return;
     }
     try {
-      const resp = await client.certParse(CertRequest.create({ data }) as any);
+      const resp = await client.certParse({ data } as Parameters<typeof client.certParse>[0]);
       if (resp.error) {
         setError(resp.error);
         setCert(null);

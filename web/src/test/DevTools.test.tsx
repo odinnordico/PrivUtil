@@ -21,7 +21,7 @@ describe('DevTools', () => {
 
   it('handles JWT decoding', async () => {
     const mockResponse = JwtResponse.create({ header: '{"alg":"HS256"}', payload: '{"sub":"123"}' });
-    (client.jwtDecode as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.jwtDecode).mockResolvedValue(mockResponse);
 
     render(<DevTools />);
     // Tab switching if needed, but JWT is default. Select input by exact placeholder.
@@ -38,7 +38,7 @@ describe('DevTools', () => {
 
   it('handles Regex testing', async () => {
     const mockResponse = RegexResponse.create({ match: true, matches: ['hello'] });
-    (client.regexTest as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.regexTest).mockResolvedValue(mockResponse);
 
     render(<DevTools />);
     // Switch to Regex Tester tab

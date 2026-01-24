@@ -22,7 +22,7 @@ describe('CronTool', () => {
       description: 'Every minute',
       nextRuns: '2023-01-01 00:00:00\n2023-01-01 00:01:00'
     });
-    (client.cronExplain as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.cronExplain).mockResolvedValue(mockResponse);
 
     render(<CronTool />);
     // Placeholder from output

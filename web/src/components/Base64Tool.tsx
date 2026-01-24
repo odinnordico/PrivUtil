@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Base64Request } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { cn } from '../lib/utils';
 import { ArrowDownUp } from 'lucide-react';
@@ -14,10 +13,9 @@ export function Base64Tool() {
     setLoading(true);
     setError(null);
     try {
-      const request = Base64Request.create({ text: input });
       const response = action === 'encode' 
-        ? await client.base64Encode(request as any)
-        : await client.base64Decode(request as any);
+        ? await client.base64Encode({ text: input } as Parameters<typeof client.base64Encode>[0])
+        : await client.base64Decode({ text: input } as Parameters<typeof client.base64Decode>[0]);
       
       if (response.error) {
         setError(response.error);

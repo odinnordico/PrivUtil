@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { SqlRequest } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { Database } from 'lucide-react';
 
@@ -9,7 +8,7 @@ export function SqlTool() {
 
   const format = async () => {
     try {
-      const resp = await client.sqlFormat(SqlRequest.create({ query }) as any);
+      const resp = await client.sqlFormat({ query } as Parameters<typeof client.sqlFormat>[0]);
       setFormatted(resp.formatted);
     } catch (e) { console.error(e); }
   };

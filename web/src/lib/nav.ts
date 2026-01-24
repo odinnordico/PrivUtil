@@ -15,13 +15,14 @@ import {
   GitCompareArrows,
   Database,
   Network,
-  Key
+  Key,
+  type LucideIcon
 } from 'lucide-react';
 
 export interface ToolItem {
   name: string;
   path: string;
-  icon: any;
+  icon: LucideIcon;
   description: string;
 }
 

@@ -20,7 +20,7 @@ describe('StringTool', () => {
 
   it('handles case conversion', async () => {
     const mockResponse = CaseResponse.create({ camel: 'helloWorld', snake: 'hello_world' });
-    (client.caseConvert as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.caseConvert).mockResolvedValue(mockResponse);
 
     render(<StringTool />);
     const input = screen.getByPlaceholderText(/Type variable name/i);
@@ -34,7 +34,7 @@ describe('StringTool', () => {
 
   it('handles string escaping', async () => {
     const mockResponse = EscapeResponse.create({ result: 'escaped-text' });
-    (client.stringEscape as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.stringEscape).mockResolvedValue(mockResponse);
 
     render(<StringTool />);
     // Switch tab by name

@@ -7,7 +7,8 @@ describe('cn utility', () => {
   });
 
   it('handles conditional classes', () => {
-    expect(cn('foo', false && 'bar', 'baz')).toBe('foo baz');
+    const isFalse = false;
+    expect(cn('foo', isFalse && 'bar', 'baz')).toBe('foo baz');
   });
 
   it('handles undefined and null', () => {

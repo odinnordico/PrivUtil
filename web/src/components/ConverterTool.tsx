@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ConvertRequest, DataFormat } from '../proto/proto/privutil';
+import { DataFormat } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { ArrowLeftRight } from 'lucide-react';
 
@@ -13,12 +13,11 @@ export function ConverterTool() {
   const handleConvert = async () => {
     setError(null);
     try {
-      const request = ConvertRequest.create({ 
+      const response = await client.convert({ 
         data, 
         sourceFormat, 
         targetFormat 
-      });
-      const response = await client.convert(request as any);
+      } as Parameters<typeof client.convert>[0]);
       if (response.error) {
         setError(response.error);
       } else {

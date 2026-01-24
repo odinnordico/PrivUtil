@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { DiffRequest } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { cn } from '../lib/utils';
 import { ArrowRightLeft } from 'lucide-react';
@@ -13,8 +12,7 @@ export function DiffTool() {
   const handleDiff = async () => {
     setLoading(true);
     try {
-      const request = DiffRequest.create({ text1, text2 });
-      const response = await client.diff(request as any);
+      const response = await client.diff({ text1, text2 } as Parameters<typeof client.diff>[0]);
       setDiffHtml(response.diffHtml);
     } catch (error) {
       console.error('Error fetching diff:', error);

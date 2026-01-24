@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { ColorRequest } from '../proto/proto/privutil';
+import { ColorResponse } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { Palette, Copy } from 'lucide-react';
 
 export function ColorTool() {
   const [input, setInput] = useState('#3b82f6');
-  const [res, setRes] = useState<any>(null);
+  const [res, setRes] = useState<ColorResponse | null>(null);
 
   const convert = async (val: string) => {
     setInput(val);
@@ -19,7 +19,7 @@ export function ColorTool() {
 
   const doConvert = async (val: string) => {
     try {
-      const resp = await client.colorConvert(ColorRequest.create({ input: val }) as any);
+      const resp = await client.colorConvert({ input: val } as Parameters<typeof client.colorConvert>[0]);
       if (!resp.error) setRes(resp);
     } catch (e) { console.error(e); }
   };

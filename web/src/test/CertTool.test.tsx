@@ -19,7 +19,7 @@ describe('CertTool', () => {
 
   it('handles certificate parsing on change', async () => {
     const mockResponse = CertResponse.create({ subject: 'CN=example.com', issuer: 'CN=Root CA' });
-    (client.certParse as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.certParse).mockResolvedValue(mockResponse);
 
     const { container } = render(<CertTool />);
     const input = screen.getByPlaceholderText(/BEGIN CERTIFICATE/);

@@ -22,7 +22,7 @@ describe('EncoderTool', () => {
 
   it('handles URL encoding', async () => {
     const mockResponse = TextResponse.create({ text: 'hello%20world' });
-    (client.urlEncode as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.urlEncode).mockResolvedValue(mockResponse);
 
     render(<EncoderTool />);
     // Select input textarea mapping
@@ -40,7 +40,7 @@ describe('EncoderTool', () => {
 
   it('handles HTML decoding', async () => {
     const mockResponse = TextResponse.create({ text: '<script>' });
-    (client.htmlDecode as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.htmlDecode).mockResolvedValue(mockResponse);
 
     render(<EncoderTool />);
     // Switch to HTML mode

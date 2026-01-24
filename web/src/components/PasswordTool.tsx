@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Key, Copy, RefreshCw, Check } from 'lucide-react';
-import { PasswordRequest } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 
 export function PasswordTool() {
@@ -19,7 +18,7 @@ export function PasswordTool() {
     setLoading(true);
     try {
       const resp = await client.generatePassword(
-        PasswordRequest.create({
+        ({
           length,
           count,
           uppercase,
@@ -27,7 +26,7 @@ export function PasswordTool() {
           numbers,
           symbols,
           customChars,
-        }) as any
+        } as Parameters<typeof client.generatePassword>[0])
       );
       setPasswords(resp.passwords);
     } catch {

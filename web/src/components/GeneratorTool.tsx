@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { UuidRequest, LoremRequest, HashRequest } from '../proto/proto/privutil';
 import { client } from '../lib/client';
 import { RefreshCw, Copy, Hash, FileText } from 'lucide-react';
 
@@ -49,7 +48,7 @@ function UuidGenerator() {
 
   const generate = async () => {
     try {
-      const resp = await client.generateUuid(UuidRequest.create({ count, hyphen, uppercase, version }) as any);
+      const resp = await client.generateUuid({ count, hyphen, uppercase, version } as Parameters<typeof client.generateUuid>[0]);
       setUuids(resp.uuids);
     } catch (e) {
       console.error(e);
@@ -110,7 +109,7 @@ function LoremGenerator() {
 
   const generate = async () => {
     try {
-      const resp = await client.generateLorem(LoremRequest.create({ type, count }) as any);
+      const resp = await client.generateLorem({ type, count } as Parameters<typeof client.generateLorem>[0]);
       setText(resp.text);
     } catch (e) { console.error(e); }
   };
@@ -146,7 +145,7 @@ function HashGenerator() {
 
   const calculate = async () => {
     try {
-      const resp = await client.calculateHash(HashRequest.create({ text: input, algo }) as any);
+      const resp = await client.calculateHash({ text: input, algo } as Parameters<typeof client.calculateHash>[0]);
       setHash(resp.hash);
     } catch (e) { console.error(e); }
   };

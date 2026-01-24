@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { TextInspectRequest, TextManipulateRequest, TextAction } from '../proto/proto/privutil';
+import { TextAction } from '../proto/proto/privutil';
 import { client } from '../lib/client';
-import { 
+import { type LucideIcon, 
   ArrowDownAZ, 
   ArrowUpAZ, 
   ArrowDownUp, 
@@ -18,7 +18,7 @@ export function TextTool() {
     // Debounce stats calculation
     const timer = setTimeout(async () => {
       try {
-        const resp = await client.textInspect(TextInspectRequest.create({ text: input }) as any);
+        const resp = await client.textInspect({ text: input } as Parameters<typeof client.textInspect>[0]);
         setStats({
           chars: resp.charCount,
           words: resp.wordCount,
@@ -32,7 +32,7 @@ export function TextTool() {
 
   const manipulate = async (action: TextAction) => {
     try {
-      const resp = await client.textManipulate(TextManipulateRequest.create({ text: input, action }) as any);
+      const resp = await client.textManipulate({ text: input, action } as Parameters<typeof client.textManipulate>[0]);
       setInput(resp.text);
     } catch (e) {
       console.error(e);
@@ -71,7 +71,7 @@ export function TextTool() {
   );
 }
 
-function ActionButton({ onClick, icon: Icon, label }: { onClick: () => void, icon: any, label: string }) {
+function ActionButton({ onClick, icon: Icon, label }: { onClick: () => void, icon: LucideIcon, label: string }) {
   return (
     <button 
       onClick={onClick}

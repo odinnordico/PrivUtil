@@ -23,7 +23,7 @@ describe('IpTool', () => {
       broadcast: '192.168.1.255',
       netmask: '255.255.255.0'
     });
-    (client.ipCalc as any).mockResolvedValue(mockResponse);
+    vi.mocked(client.ipCalc).mockResolvedValue(mockResponse);
 
     const { container } = render(<IpTool />);
     // Exact placeholder from DOM output
