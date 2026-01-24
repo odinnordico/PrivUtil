@@ -42,9 +42,9 @@ clean:
 # Run all tests
 test: test-backend test-frontend
 
-# Run backend tests (excludes generated proto and startup code)
+# Run backend tests
 test-backend:
-	go test -cover ./internal/api/...
+	go test -v -cover ./...
 
 # Run frontend tests (excludes config files and proto)
 test-frontend:
