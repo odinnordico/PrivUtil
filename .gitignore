@@ -14,6 +14,8 @@
 
 # Go
 /vendor/
+**/coverage.out
+**/coverage.html
 
 # IDEs
 .idea/

@@ -35,8 +35,8 @@ run: build
 # Clean build artifacts
 clean:
 	rm -f privutil privutil.exe
-	rm -rf web/dist
-	rm -rf internal/server/dist
+	rm -rf web/dist/*
+	rm -rf internal/server/dist/*
 	rm -rf web/node_modules
 
 # Run all tests
@@ -63,10 +63,10 @@ test-coverage: test
 lint: lint-backend lint-frontend
 
 # Run Go linters
-lint-backend:
+lint-backend: build
 	go vet ./...
 	go fmt ./...
 
 # Run frontend linters
-lint-frontend:
+lint-frontend: build
 	cd web && npm install && npm run lint
