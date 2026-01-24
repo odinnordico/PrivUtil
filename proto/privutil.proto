@@ -1,0 +1,298 @@
+syntax = "proto3";
+
+package privutil;
+
+option go_package = "github.com/odinnordico/privutil/proto";
+
+service PrivUtilService {
+  rpc Diff(DiffRequest) returns (DiffResponse) {}
+  rpc Base64Encode(Base64Request) returns (Base64Response) {}
+  rpc Base64Decode(Base64Request) returns (Base64Response) {}
+  rpc JsonFormat(JsonFormatRequest) returns (JsonFormatResponse) {}
+  rpc Convert(ConvertRequest) returns (ConvertResponse) {}
+  rpc GenerateUuid(UuidRequest) returns (UuidResponse) {}
+  rpc GenerateLorem(LoremRequest) returns (LoremResponse) {}
+  rpc CalculateHash(HashRequest) returns (HashResponse) {}
+  rpc TextInspect(TextInspectRequest) returns (TextInspectResponse) {}
+  rpc TextManipulate(TextManipulateRequest) returns (TextManipulateResponse) {}
+  rpc UrlEncode(TextRequest) returns (TextResponse) {}
+  rpc UrlDecode(TextRequest) returns (TextResponse) {}
+  rpc HtmlEncode(TextRequest) returns (TextResponse) {}
+  rpc HtmlDecode(TextRequest) returns (TextResponse) {}
+  rpc TimeConvert(TimeRequest) returns (TimeResponse) {}
+  rpc JwtDecode(JwtRequest) returns (JwtResponse) {}
+  rpc RegexTest(RegexRequest) returns (RegexResponse) {}
+  rpc JsonToGo(JsonToGoRequest) returns (JsonToGoResponse) {}
+  rpc CronExplain(CronRequest) returns (CronResponse) {}
+  rpc CertParse(CertRequest) returns (CertResponse) {}
+  rpc ColorConvert(ColorRequest) returns (ColorResponse) {}
+  rpc CaseConvert(CaseRequest) returns (CaseResponse) {}
+  rpc StringEscape(EscapeRequest) returns (EscapeResponse) {}
+  rpc TextSimilarity(SimilarityRequest) returns (SimilarityResponse) {}
+  rpc SqlFormat(SqlRequest) returns (SqlResponse) {}
+  rpc IpCalc(IpRequest) returns (IpResponse) {}
+  rpc GeneratePassword(PasswordRequest) returns (PasswordResponse) {}
+}
+
+message DiffRequest {
+  string text1 = 1;
+  string text2 = 2;
+}
+
+message DiffResponse {
+  string diff_html = 1;
+}
+
+message Base64Request {
+  string text = 1;
+}
+
+message Base64Response {
+  string text = 1;
+  string error = 2;
+}
+
+message JsonFormatRequest {
+  string text = 1;
+  string indent = 2; // "2", "4", "tab", or "min" (minify)
+  bool sort_keys = 3;
+}
+
+message JsonFormatResponse {
+  string text = 1;
+  string error = 2;
+}
+
+enum DataFormat {
+  JSON = 0;
+  YAML = 1;
+  XML = 2;
+}
+
+message ConvertRequest {
+  string data = 1;
+  DataFormat source_format = 2;
+  DataFormat target_format = 3;
+}
+
+message ConvertResponse {
+  string data = 1;
+  string error = 2;
+}
+
+message UuidRequest {
+  bool hyphen = 1;
+  bool uppercase = 2;
+  int32 count = 3;
+  string version = 4; // "v1", "v4"
+}
+
+message UuidResponse {
+  repeated string uuids = 1;
+}
+
+message LoremRequest {
+  string type = 1; // "word", "sentence", "paragraph"
+  int32 count = 2;
+}
+
+message LoremResponse {
+  string text = 1;
+}
+
+message HashRequest {
+  string text = 1;
+  string algo = 2; // "md5", "sha1", "sha256", "sha512"
+}
+
+message HashResponse {
+  string hash = 1;
+}
+
+message TextRequest {
+  string text = 1;
+}
+
+message TextResponse {
+  string text = 1;
+}
+
+message TimeRequest {
+  string input = 1; // Can be timestamp (int string) or ISO date
+}
+
+message TimeResponse {
+  int64 unix = 1;
+  string utc = 2;
+  string local = 3;
+  string iso = 4;
+}
+
+message JwtRequest {
+  string token = 1;
+}
+
+message JwtResponse {
+  string header = 1;
+  string payload = 2;
+  string error = 3;
+}
+
+message RegexRequest {
+  string pattern = 1;
+  string text = 2;
+}
+
+message RegexResponse {
+  bool match = 1;
+  repeated string matches = 2;
+  string error = 3;
+}
+
+message JsonToGoRequest {
+  string json = 1;
+  string struct_name = 2;
+}
+
+message JsonToGoResponse {
+  string go_code = 1;
+  string error = 2;
+}
+
+message CronRequest {
+  string expression = 1;
+}
+
+message CronResponse {
+  string description = 1;
+  string next_runs = 2;
+  string error = 3;
+}
+
+message CertRequest {
+  string data = 1; // PEM
+}
+
+message CertResponse {
+  string subject = 1;
+  string issuer = 2;
+  string not_before = 3;
+  string not_after = 4;
+  repeated string sans = 5;
+  string error = 6;
+}
+
+message ColorRequest {
+  string input = 1; // Any format
+}
+
+message ColorResponse {
+  string hex = 1;
+  string rgb = 2;
+  string hsl = 3;
+  string error = 4;
+}
+
+message CaseRequest {
+  string text = 1;
+}
+
+message CaseResponse {
+  string camel = 1;
+  string snake = 2;
+  string pascal = 3;
+  string kebab = 4;
+  string constant = 5; // UPPER_SNAKE_CASE
+  string title = 6;
+  string error = 7;
+}
+
+message EscapeRequest {
+  string text = 1;
+  string mode = 2; // "json", "java", "sql", "html_entity"
+  string action = 3; // "escape", "unescape"
+}
+
+message EscapeResponse {
+  string result = 1;
+  string error = 2;
+}
+
+message SimilarityRequest {
+  string text1 = 1;
+  string text2 = 2;
+}
+
+message SimilarityResponse {
+  int32 distance = 1;
+  float similarity = 2; // 0.0 to 1.0
+  string error = 3;
+}
+
+message SqlRequest {
+  string query = 1;
+}
+
+message SqlResponse {
+  string formatted = 1;
+  string error = 2;
+}
+
+message IpRequest {
+  string cidr = 1;
+}
+
+message IpResponse {
+  string network = 1;
+  string broadcast = 2;
+  string netmask = 3;
+  string first_ip = 4;
+  string last_ip = 5;
+  int64 num_hosts = 6;
+  string error = 7;
+}
+
+message TextInspectRequest {
+  string text = 1;
+}
+
+message TextInspectResponse {
+  int32 char_count = 1;
+  int32 word_count = 2;
+  int32 line_count = 3;
+  int32 byte_count = 4;
+}
+
+enum TextAction {
+  SORT_AZ = 0;
+  SORT_ZA = 1;
+  SORT_NUMERIC = 2;
+  REVERSE = 3;
+  DEDUPE = 4;
+  REMOVE_EMPTY = 5;
+  TRIM = 6;
+}
+
+message TextManipulateRequest {
+  string text = 1;
+  TextAction action = 2;
+}
+
+message TextManipulateResponse {
+  string text = 1;
+}
+
+message PasswordRequest {
+  int32 length = 1;
+  bool uppercase = 2;
+  bool lowercase = 3;
+  bool numbers = 4;
+  bool symbols = 5;
+  string custom_chars = 6;  // Custom character set to use
+  int32 count = 7;          // Number of passwords to generate
+}
+
+message PasswordResponse {
+  repeated string passwords = 1;
+  string error = 2;
+}

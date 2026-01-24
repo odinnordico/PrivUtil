@@ -1,0 +1,32 @@
+# Agent rules/workflows downloaded by agent-cli (do not commit)
+.agent/
+
+# Binaries
+privutil
+/bin/
+/dist/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go
+/vendor/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+.DS_Store
+
+# React Build
+web/dist/
+web/build/
+web/node_modules/
