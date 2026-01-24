@@ -126,3 +126,5 @@ The following prompts were used to generate the code for the project. The prompt
   fix lint errors from `eslint .`
 - |
   fix security errors from `gosec ./...`
+- |
+  The password generator shows `Error generating password` and the console says: `POST http://localhost:8080/privutil.PrivUtilService/GeneratePassword net::ERR_CONNECTION_REFUSED`
