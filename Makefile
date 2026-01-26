@@ -1,3 +1,13 @@
+BUILD_SHA_SHORT := $(shell git rev-parse --short HEAD)
+BUILD_VERSION := dev-$(BUILD_SHA_SHORT)
+BUILD_DATE ?= $$(date -u +"%Y-%m-%d")
+GOHOSTOS ?= $(shell go env GOHOSTOS)
+GOHOSTARCH ?= $(shell go env GOHOSTARCH)
+
+LD_FLAGS = -X 'main.BuildTime=$(BUILD_DATE)' \
+           -X 'main.Version=$(BUILD_VERSION)'
+
+
 .PHONY: all build build-web build-go run clean proto test test-backend test-frontend test-coverage lint lint-backend lint-frontend
 
 # Default target
@@ -23,7 +33,7 @@ build-go: build-web
 	# Ensure the embedded directory exists and is populated
 	mkdir -p internal/server/dist
 	cp -r web/dist/* internal/server/dist/
-	go build -v -tags=manual -o privutil ./cmd/privutil/main.go
+	go build -ldflags "$(LD_FLAGS)" -v -tags=manual -o privutil ./cmd/privutil/main.go
 
 # Build everything
 build: clean build-go
