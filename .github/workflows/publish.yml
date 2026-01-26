@@ -24,17 +24,24 @@ jobs:
             goos: windows
     steps:
     - uses: actions/checkout@v3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: web/package-lock.json
+
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: '1.25'
-    - name: Build with Makefile
-      run: make build
+        check-latest: true
     - uses: wangyoucao577/go-release-action@v1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
-        project_path: "./cmd/privutil"
         binary_name: "privutil"
         extra_files: LICENSE README.md
+        build_command: make build
