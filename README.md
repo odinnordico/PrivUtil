@@ -61,8 +61,18 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 
 Download the latest binary for your platform from the [Releases](https://github.com/odinnordico/privutil/releases) page.
 
-1. Extract the archive.
-2. Run the `privutil` binary.
+#### Linux / macOS
+
+```bash
+# Example for Linux AMD64
+tar -xzf privutil-linux-amd64.tar.gz
+./privutil
+```
+
+#### Windows
+
+1. Right-click the `.zip` file and select **Extract All...**
+2. Run `privutil.exe`
 
 ### Build from Source
 
