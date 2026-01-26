@@ -9,6 +9,8 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 
 **PrivUtil** is a privacy-first, offline-capable developer utility suite. Built with **Go** and **React**, it provides 20+ tools for data manipulation, formatting, conversion, and generation — all running locally with zero server tracking.
 
+![PrivUtil Screenshot](screenshot.png)
+
 ---
 
 ## ✨ Features
