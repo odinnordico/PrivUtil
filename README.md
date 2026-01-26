@@ -59,6 +59,13 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 > **PrivUtil should NOT be installed via `go install`.**
 > This project uses an embedded web component that must be built separately. Standard `go install` fails to bundle these assets correctly, resulting in an incomplete application. Please use the pre-compiled binaries from the [Releases](https://github.com/odinnordico/privutil/releases) page or build from source using the provided `Makefile`.
 
+### Docker 
+
+```bash
+docker pull ghcr.io/lordvault/privutil:latest
+docker run -p 8090:8090 privutil
+```
+
 ### Download from Releases
 
 Download the latest binary for your platform from the [Releases](https://github.com/odinnordico/privutil/releases) page.
