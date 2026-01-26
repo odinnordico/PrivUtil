@@ -23,7 +23,7 @@ var (
 
 func main() {
 	// Define CLI flags
-	port := flag.String("port", getEnvOrDefault("PORT", "8080"), "Port to listen on")
+	port := flag.String("port", getEnvOrDefault("PORT", "8090"), "Port to listen on")
 	host := flag.String("host", getEnvOrDefault("HOST", ""), "Host to bind to (default: all interfaces)")
 	logLevel := flag.String("log-level", getEnvOrDefault("LOG_LEVEL", "info"), "Log level: debug, info, warn, error")
 	version := flag.Bool("version", false, "Print version and exit")
@@ -35,7 +35,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Options:\n")
 		flag.PrintDefaults()
 		fmt.Fprintf(os.Stderr, "\nEnvironment Variables:\n")
-		fmt.Fprintf(os.Stderr, "  PORT       Port to listen on (default: 8080)\n")
+		fmt.Fprintf(os.Stderr, "  PORT       Port to listen on (default: 8090)\n")
 		fmt.Fprintf(os.Stderr, "  HOST       Host to bind to (default: all interfaces)\n")
 		fmt.Fprintf(os.Stderr, "  LOG_LEVEL  Log level (default: info)\n")
 	}

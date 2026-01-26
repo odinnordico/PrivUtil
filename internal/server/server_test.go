@@ -8,13 +8,13 @@ import (
 
 func TestNew(t *testing.T) {
 	grpcServer := grpc.NewServer()
-	srv := New(":8080", grpcServer)
+	srv := New(":8090", grpcServer)
 
 	if srv == nil {
 		t.Fatal("New() returned nil")
 	}
-	if srv.addr != ":8080" {
-		t.Errorf("New() addr = %v, want :8080", srv.addr)
+	if srv.addr != ":8090" {
+		t.Errorf("New() addr = %v, want :8090", srv.addr)
 	}
 	if srv.grpcServer != grpcServer {
 		t.Error("New() grpcServer not set correctly")

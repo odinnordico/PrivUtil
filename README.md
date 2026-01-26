@@ -88,7 +88,7 @@ make build
 ./privutil
 ```
 
-Access at **http://localhost:8080**
+Access at **http://localhost:8090**
 
 ### CLI Options
 
@@ -96,7 +96,7 @@ Access at **http://localhost:8080**
 ./privutil --help
 
 Options:
-  -port string      Port to listen on (default "8080")
+  -port string      Port to listen on (default "8090")
   -host string      Host to bind to (default: all interfaces)
   -log-level string Log level: debug, info, warn, error (default "info")
   -version          Print version and exit
