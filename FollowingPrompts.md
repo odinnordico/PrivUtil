@@ -128,3 +128,11 @@ The following prompts were used to generate the code for the project. The prompt
   fix security errors from `gosec ./...`
 - |
   The password generator shows `Error generating password` and the console says: `POST http://localhost:8080/privutil.PrivUtilService/GeneratePassword net::ERR_CONNECTION_REFUSED`
+- |
+  Disable the option of in stalling via `go install` and update all the documentatino to either use the binaries from the release or build from source code
+- |
+  Go thro the wiki to verify.
+- |
+  Add a note in the wiki, readme, contribution and any other relevant file that the project is not to be installed via `go install` and should be run using the binaries from the release or built from source code, explaining why.
+- |
+  Expand the documentations, wherever it is relevant, on how to extract and use the binaries from the release or built from source code, do it for linux, windows and macos

@@ -53,11 +53,16 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 
 ## 🚀 Quick Start
 
-### Go Install
+> [!IMPORTANT]
+> **PrivUtil should NOT be installed via `go install`.**
+> This project uses an embedded web component that must be built separately. Standard `go install` fails to bundle these assets correctly, resulting in an incomplete application. Please use the pre-compiled binaries from the [Releases](https://github.com/odinnordico/privutil/releases) page or build from source using the provided `Makefile`.
 
-```bash
-go install github.com/odinnordico/privutil/cmd/privutil@latest
-```
+### Download from Releases
+
+Download the latest binary for your platform from the [Releases](https://github.com/odinnordico/privutil/releases) page.
+
+1. Extract the archive.
+2. Run the `privutil` binary.
 
 ### Build from Source
 
@@ -148,7 +153,7 @@ PrivUtil features a **Kawasaki Lime** theme with dark/light mode toggle:
 - Tests for all 20+ gRPC methods
 
 ```bash
-go test -cover ./...
+go test -tags=manual -cover ./...
 ```
 
 ### Frontend (React/Vitest)

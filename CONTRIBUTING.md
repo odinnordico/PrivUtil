@@ -88,6 +88,9 @@ Documentation improvements are always welcome.
 
 ### Building
 
+> [!NOTE]
+> Standard `go install` is explicitly disabled for this project because it cannot correctly bundle the required web assets. Always use `make` for local development builds.
+
 ```bash
 make build      # Build everything
 make run        # Build and run locally

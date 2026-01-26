@@ -23,7 +23,7 @@ build-go: build-web
 	# Ensure the embedded directory exists and is populated
 	mkdir -p internal/server/dist
 	cp -r web/dist/* internal/server/dist/
-	go build -v -o privutil ./cmd/privutil/main.go
+	go build -v -tags=manual -o privutil ./cmd/privutil/main.go
 
 # Build everything
 build: clean build-go
@@ -44,7 +44,7 @@ test: build test-backend test-frontend
 
 # Run backend tests
 test-backend: build
-	go test -v -cover ./...
+	go test -v -tags=manual -cover ./...
 
 # Run frontend tests (excludes config files and proto)
 test-frontend: build
@@ -53,7 +53,7 @@ test-frontend: build
 # Run tests with coverage reports
 test-coverage: test
 	@echo "=== Backend Coverage ==="
-	go test -coverprofile=coverage.out ./internal/api/...
+	go test -tags=manual -coverprofile=coverage.out ./internal/api/...
 	go tool cover -func=coverage.out | grep total
 	go tool cover -html=coverage.out -o coverage.html
 	@echo "\n=== Frontend Coverage ==="
