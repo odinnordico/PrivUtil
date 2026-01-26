@@ -138,3 +138,7 @@ The following prompts were used to generate the code for the project. The prompt
   Expand the documentations, wherever it is relevant, on how to extract and use the binaries from the release or built from source code, do it for linux, windows and macos
 - |
   Add in the wiki a page on how to configure privutil as a service in different platforms, linux, windows and macos
+- |
+  Remove `wangyoucao577/go-release-action` from publish.yml, instead use latest of `actions/upload-artifact` keeping the matrix for multiple platforms
+- |
+  Update the publish.yml file so the artifacts keep the original name (ensure for windows is .exe), compress in to privutil-{goos}-{goarch}.tar.gz for linux and mac, and privutil-{goos}-{goarch}.zip for windows. Ensure the files are upload to the release
