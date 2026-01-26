@@ -136,3 +136,5 @@ The following prompts were used to generate the code for the project. The prompt
   Add a note in the wiki, readme, contribution and any other relevant file that the project is not to be installed via `go install` and should be run using the binaries from the release or built from source code, explaining why.
 - |
   Expand the documentations, wherever it is relevant, on how to extract and use the binaries from the release or built from source code, do it for linux, windows and macos
+- |
+  Add in the wiki a page on how to configure privutil as a service in different platforms, linux, windows and macos
