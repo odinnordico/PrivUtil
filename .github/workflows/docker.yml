@@ -1,7 +1,8 @@
 name: Build and publish a Docker image to ghcr.io
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v*"
 
 jobs:
   build:
