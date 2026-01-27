@@ -62,7 +62,7 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 ### Docker 
 
 ```bash
-docker pull ghcr.io/lordvault/privutil:latest
+docker pull ghcr.io/odinnordico/privutil:latest
 docker run -p 8090:8090 privutil
 ```
 
