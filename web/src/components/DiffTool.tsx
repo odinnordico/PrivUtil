@@ -24,13 +24,13 @@ export function DiffTool() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-white">Diff Viewer</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Diff Viewer</h2>
         <button
           onClick={handleDiff}
           disabled={loading}
           className={cn(
             "flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-colors",
-            "bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white"
+            "bg-kawa-500 hover:bg-kawa-600 disabled:opacity-50 disabled:cursor-not-allowed text-slate-900"
           )}
         >
           <ArrowRightLeft className="w-4 h-4" />
@@ -40,18 +40,18 @@ export function DiffTool() {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-400">Original Text</label>
+          <label className="text-sm font-bold text-slate-600 dark:text-slate-400">Original Text</label>
           <textarea
-            className="w-full h-64 bg-gray-800 p-4 rounded-lg border border-gray-700 text-gray-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            className="w-full h-64 bg-white dark:bg-neutral-800 p-4 rounded-lg border border-gray-200 dark:border-neutral-700 text-slate-900 dark:text-neutral-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-kawa-500/50"
             value={text1}
             onChange={(e) => setText1(e.target.value)}
             placeholder="Paste original text here..."
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-400">Modified Text</label>
+          <label className="text-sm font-bold text-slate-600 dark:text-slate-400">Modified Text</label>
           <textarea
-             className="w-full h-64 bg-gray-800 p-4 rounded-lg border border-gray-700 text-gray-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+             className="w-full h-64 bg-white dark:bg-neutral-800 p-4 rounded-lg border border-slate-300 dark:border-neutral-700 text-slate-900 dark:text-neutral-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-kawa-500/50 shadow-sm"
             value={text2}
             onChange={(e) => setText2(e.target.value)}
             placeholder="Paste modified text here..."
@@ -61,8 +61,8 @@ export function DiffTool() {
 
       {diffHtml && (
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-400">Result</label>
-          <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+          <label className="text-sm font-bold text-slate-600 dark:text-slate-400">Result</label>
+          <div className="bg-white dark:bg-neutral-800 rounded-lg border border-slate-300 dark:border-neutral-700 overflow-hidden text-slate-900 dark:text-neutral-100 shadow-sm">
             <div 
               data-testid="diff-output"
               className="p-6 font-mono text-sm overflow-auto"

@@ -48,14 +48,14 @@ export function PasswordTool() {
         Password Generator
       </h2>
       
-      <p className="text-slate-500 dark:text-slate-400">
+      <p className="text-slate-600 dark:text-slate-400 font-medium">
         Generate secure random passwords with customizable character sets.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
               Length: {length}
             </label>
             <input
@@ -69,7 +69,7 @@ export function PasswordTool() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
               Count: {count}
             </label>
             <input
@@ -83,7 +83,7 @@ export function PasswordTool() {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300">
               Character Sets
             </label>
             <div className="flex flex-wrap gap-4">
@@ -94,7 +94,7 @@ export function PasswordTool() {
                   onChange={e => setUppercase(e.target.checked)}
                   className="accent-kawa-500"
                 />
-                <span className="text-sm text-slate-600 dark:text-slate-400">A-Z</span>
+                <span className="text-sm text-slate-700 dark:text-slate-400 font-medium">A-Z</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -103,7 +103,7 @@ export function PasswordTool() {
                   onChange={e => setLowercase(e.target.checked)}
                   className="accent-kawa-500"
                 />
-                <span className="text-sm text-slate-600 dark:text-slate-400">a-z</span>
+                <span className="text-sm text-slate-700 dark:text-slate-400 font-medium">a-z</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -112,7 +112,7 @@ export function PasswordTool() {
                   onChange={e => setNumbers(e.target.checked)}
                   className="accent-kawa-500"
                 />
-                <span className="text-sm text-slate-600 dark:text-slate-400">0-9</span>
+                <span className="text-sm text-slate-700 dark:text-slate-400 font-medium">0-9</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -121,13 +121,13 @@ export function PasswordTool() {
                   onChange={e => setSymbols(e.target.checked)}
                   className="accent-kawa-500"
                 />
-                <span className="text-sm text-slate-600 dark:text-slate-400">!@#$%</span>
+                <span className="text-sm text-slate-700 dark:text-slate-400 font-medium">!@#$%</span>
               </label>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
               Custom Characters (optional)
             </label>
             <input
@@ -135,7 +135,7 @@ export function PasswordTool() {
               value={customChars}
               onChange={e => setCustomChars(e.target.value)}
               placeholder="Leave empty to use selected sets"
-              className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-2 text-slate-900 dark:text-white"
+              className="w-full bg-white dark:bg-slate-800 border border-slate-400 dark:border-slate-700 rounded-lg px-4 py-2 text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-kawa-500 outline-none"
             />
           </div>
 
@@ -150,11 +150,11 @@ export function PasswordTool() {
         </div>
 
         <div className="space-y-3">
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label className="block text-sm font-bold text-slate-700 dark:text-slate-300">
             Generated Passwords
           </label>
           {passwords.length === 0 ? (
-            <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 text-slate-500 dark:text-slate-400 text-center">
+            <div className="bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg p-4 text-slate-600 dark:text-slate-400 text-center font-bold italic">
               Click "Generate" to create passwords
             </div>
           ) : (
@@ -162,7 +162,7 @@ export function PasswordTool() {
               {passwords.map((pw, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3"
+                  className="flex items-center justify-between bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg p-3 shadow-sm hover:border-kawa-500 transition-colors"
                 >
                   <code className="text-sm font-mono text-slate-800 dark:text-slate-200 break-all">
                     {pw}

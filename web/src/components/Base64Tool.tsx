@@ -33,12 +33,12 @@ export function Base64Tool() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <h2 className="text-2xl font-bold text-white">Base64 Encoder/Decoder</h2>
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Base64 Encoder/Decoder</h2>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-400">Input</label>
+        <label className="text-sm font-bold text-slate-600 dark:text-slate-400">Input</label>
         <textarea
-          className="w-full h-40 bg-gray-800 p-4 rounded-lg border border-gray-700 text-gray-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          className="w-full h-40 bg-white dark:bg-neutral-800 p-4 rounded-lg border border-slate-300 dark:border-neutral-700 text-slate-900 dark:text-neutral-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-kawa-500/50 shadow-sm"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Enter text to encode or decode..."
@@ -50,8 +50,8 @@ export function Base64Tool() {
           onClick={() => handleAction('encode')}
           disabled={loading || !input}
           className={cn(
-            "flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-colors",
-            "bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white"
+            "flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-colors border border-transparent",
+            "bg-kawa-500 hover:bg-kawa-600 disabled:opacity-50 disabled:cursor-not-allowed text-slate-900"
           )}
         >
           <ArrowDownUp className="w-4 h-4" />
@@ -61,8 +61,8 @@ export function Base64Tool() {
           onClick={() => handleAction('decode')}
           disabled={loading || !input}
           className={cn(
-            "flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-colors",
-            "bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-white"
+            "flex items-center gap-2 px-6 py-2 rounded-lg font-bold transition-colors border border-slate-300 dark:border-transparent",
+            "bg-slate-100 dark:bg-gray-700 hover:bg-slate-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed text-slate-700 dark:text-white"
           )}
         >
           <ArrowDownUp className="w-4 h-4" />
@@ -76,10 +76,10 @@ export function Base64Tool() {
         </div>
       ) : output && (
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-400">Output</label>
+          <label className="text-sm font-bold text-slate-600 dark:text-slate-400">Output</label>
           <textarea
             readOnly
-            className="w-full h-40 bg-black/30 p-4 rounded-lg border border-gray-800 text-gray-100 font-mono text-sm focus:outline-none"
+            className="w-full h-40 bg-slate-50 dark:bg-black/30 p-4 rounded-lg border border-slate-300 dark:border-gray-800 text-slate-900 dark:text-neutral-100 font-mono text-sm focus:outline-none shadow-inner"
             value={output}
           />
         </div>

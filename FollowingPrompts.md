@@ -145,3 +145,7 @@ The following prompts were used to generate the code for the project. The prompt
 - |
   Put the different grpc server capabilities in different files, group them per utility tool, do the same with tests
 - |
+  There is an opened bug where the Diff is not keeping the format of the original texts: https://github.com/odinnordico/PrivUtil/issues/7, it is also showing an end of line character. Fix the error
+- |
+  When theme is light, the text area are not changed and it is difficult to read
+- |

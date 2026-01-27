@@ -7,21 +7,21 @@ export function DevTools() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">Developer Utilities</h2>
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Developer Utilities</h2>
 
-      <div className="flex gap-4 border-b border-gray-700">
-        <button onClick={() => setActiveTab('jwt')} className={`pb-2 px-4 font-medium transition-colors ${activeTab === 'jwt' ? 'text-blue-400 border-b-2 border-blue-400' : 'text-gray-400 hover:text-gray-200'}`}>
+      <div className="flex gap-4 border-b border-slate-300 dark:border-gray-700">
+        <button onClick={() => setActiveTab('jwt')} className={`pb-2 px-4 font-medium transition-colors ${activeTab === 'jwt' ? 'text-kawa-600 border-b-2 border-kawa-500' : 'text-slate-500 hover:text-slate-700 dark:text-gray-400 dark:hover:text-gray-200'}`}>
           JWT Debugger
         </button>
-        <button onClick={() => setActiveTab('regex')} className={`pb-2 px-4 font-medium transition-colors ${activeTab === 'regex' ? 'text-blue-400 border-b-2 border-blue-400' : 'text-gray-400 hover:text-gray-200'}`}>
+        <button onClick={() => setActiveTab('regex')} className={`pb-2 px-4 font-medium transition-colors ${activeTab === 'regex' ? 'text-kawa-600 border-b-2 border-kawa-500' : 'text-slate-500 hover:text-slate-700 dark:text-gray-400 dark:hover:text-gray-200'}`}>
           Regex Tester
         </button>
-        <button onClick={() => setActiveTab('json2go')} className={`pb-2 px-4 font-medium transition-colors ${activeTab === 'json2go' ? 'text-blue-400 border-b-2 border-blue-400' : 'text-gray-400 hover:text-gray-200'}`}>
+        <button onClick={() => setActiveTab('json2go')} className={`pb-2 px-4 font-medium transition-colors ${activeTab === 'json2go' ? 'text-kawa-600 border-b-2 border-kawa-500' : 'text-slate-500 hover:text-slate-700 dark:text-gray-400 dark:hover:text-gray-200'}`}>
           JSON to Go
         </button>
       </div>
 
-      <div className="p-6 bg-gray-800 rounded-lg border border-gray-700">
+      <div className="p-6 bg-white dark:bg-neutral-800 rounded-lg border border-slate-300 dark:border-neutral-700 shadow-sm">
         {activeTab === 'jwt' && <JwtDebugger />}
         {activeTab === 'regex' && <RegexTester />}
         {activeTab === 'json2go' && <JsonToGo />}
@@ -51,19 +51,19 @@ function JwtDebugger() {
         value={token} 
         onChange={e => decode(e.target.value)} 
         placeholder="Paste JWT here..." 
-        className="w-full h-24 bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-gray-700 focus:border-blue-500"
+        className="w-full h-24 bg-white dark:bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
       />
       {res?.error ? (
         <div className="text-red-400 bg-red-900/20 p-3 rounded">{res.error}</div>
       ) : (
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-xs text-gray-500 uppercase font-bold">Header</label>
-            <pre className="mt-1 bg-black/30 p-4 rounded text-green-400 font-mono text-sm overflow-auto h-64">{res?.header}</pre>
+            <label className="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold">Header</label>
+            <pre className="mt-1 bg-slate-50 dark:bg-black/30 p-4 rounded text-kawa-700 dark:text-kawa-400 font-mono text-sm overflow-auto h-64 border border-slate-200 dark:border-transparent shadow-inner">{res?.header}</pre>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase font-bold">Payload</label>
-            <pre className="mt-1 bg-black/30 p-4 rounded text-blue-400 font-mono text-sm overflow-auto h-64">{res?.payload}</pre>
+            <label className="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold">Payload</label>
+            <pre className="mt-1 bg-slate-50 dark:bg-black/30 p-4 rounded text-kawa-700 dark:text-kawa-300 font-mono text-sm overflow-auto h-64 border border-slate-200 dark:border-transparent shadow-inner">{res?.payload}</pre>
           </div>
         </div>
       )}
@@ -98,16 +98,16 @@ function RegexTester() {
         value={pattern}
         onChange={e => setPattern(e.target.value)}
         placeholder="e.g. ^[a-z]+$"
-        className="w-full bg-gray-900 text-white px-4 py-2 rounded border border-gray-700 font-mono"
+        className="w-full bg-white dark:bg-gray-900 text-slate-900 dark:text-white px-4 py-2 rounded border border-slate-300 dark:border-gray-700 font-mono focus:ring-2 focus:ring-kawa-500 focus:outline-none shadow-inner"
       />
       <div className="flex gap-4">
         <textarea 
           value={text} 
           onChange={e => setText(e.target.value)} 
           placeholder="Test string..." 
-          className="flex-1 h-48 bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-gray-700"
+          className="flex-1 h-48 bg-white dark:bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
         />
-        <div className="flex-1 h-48 bg-black/30 p-4 rounded font-mono text-sm overflow-auto border border-gray-700">
+        <div className="flex-1 h-48 bg-slate-50 dark:bg-black/30 p-4 rounded font-mono text-sm overflow-auto border border-slate-300 dark:border-gray-700 shadow-inner">
           {error ? (
             <span className="text-red-400">{error}</span>
           ) : (
@@ -120,7 +120,7 @@ function RegexTester() {
           )}
         </div>
       </div>
-      <button onClick={test} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">Test Regex</button>
+      <button onClick={test} className="bg-kawa-500 hover:bg-kawa-600 text-slate-900 px-6 py-2 rounded font-bold transition-all shadow-md active:scale-95">Test Regex</button>
     </div>
   );
 }
@@ -151,17 +151,17 @@ function JsonToGo() {
           value={json} 
           onChange={e => setJson(e.target.value)} 
           placeholder='{"key": "value"}' 
-          className="w-full h-96 bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-gray-700"
+          className="w-full h-96 bg-white dark:bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
         />
         <div className="relative">
           <textarea 
             readOnly 
             value={error || goCode} 
-            className={`w-full h-96 bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-gray-700 ${error ? 'text-red-400' : 'text-green-400'}`}
+            className={`w-full h-96 bg-slate-50 dark:bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 shadow-inner ${error ? 'text-red-500' : 'text-kawa-700 dark:text-kawa-400'}`}
           />
         </div>
       </div>
-      <button onClick={convert} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">Convert</button>
+      <button onClick={convert} className="bg-kawa-500 hover:bg-kawa-600 text-slate-900 px-6 py-2 rounded font-bold transition-all shadow-md active:scale-95">Convert</button>
     </div>
   );
 }

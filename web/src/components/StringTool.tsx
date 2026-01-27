@@ -8,21 +8,21 @@ export function StringTool() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
         <CaseSensitive className="w-6 h-6 text-pink-400" />
         String Utilities
       </h2>
 
-      <div className="flex gap-4 border-b border-gray-700">
-        <button onClick={() => setActiveTab('case')} className={`pb-2 px-4 font-medium transition-colors ${activeTab === 'case' ? 'text-pink-400 border-b-2 border-pink-400' : 'text-gray-400 hover:text-gray-200'}`}>
+      <div className="flex gap-4 border-b border-slate-300 dark:border-gray-700">
+        <button onClick={() => setActiveTab('case')} className={`pb-2 px-4 font-bold transition-colors ${activeTab === 'case' ? 'text-pink-600 border-b-2 border-pink-500' : 'text-slate-500 hover:text-slate-700 dark:text-gray-400 dark:hover:text-gray-200'}`}>
           Case Converter
         </button>
-        <button onClick={() => setActiveTab('escape')} className={`pb-2 px-4 font-medium transition-colors ${activeTab === 'escape' ? 'text-pink-400 border-b-2 border-pink-400' : 'text-gray-400 hover:text-gray-200'}`}>
+        <button onClick={() => setActiveTab('escape')} className={`pb-2 px-4 font-bold transition-colors ${activeTab === 'escape' ? 'text-pink-600 border-b-2 border-pink-500' : 'text-slate-500 hover:text-slate-700 dark:text-gray-400 dark:hover:text-gray-200'}`}>
           String Escaper
         </button>
       </div>
 
-      <div className="p-6 bg-gray-800 rounded-lg border border-gray-700">
+      <div className="p-6 bg-white dark:bg-neutral-800 rounded-lg border border-slate-300 dark:border-neutral-700 shadow-sm">
         {activeTab === 'case' && <CaseConverter />}
         {activeTab === 'escape' && <StringEscaper />}
       </div>
@@ -48,7 +48,7 @@ function CaseConverter() {
         value={text}
         onChange={e => convert(e.target.value)}
         placeholder="Type variable name to convert..."
-        className="w-full h-32 bg-black/30 p-4 rounded-lg font-mono text-sm resize-none focus:outline-none border border-gray-700 focus:border-pink-500"
+        className="w-full h-32 bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-pink-500 text-slate-900 dark:text-neutral-100 shadow-inner"
       />
       
       {res && (
@@ -68,16 +68,16 @@ function CaseConverter() {
 function CopyInput({ label, value }: { label: string, value: string }) {
   return (
     <div className="space-y-1 group">
-      <label className="text-xs text-gray-500 uppercase font-bold">{label}</label>
+      <label className="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold">{label}</label>
       <div className="flex gap-2">
         <input 
           readOnly 
           value={value} 
-          className="flex-1 bg-black/20 text-gray-200 px-3 py-2 rounded font-mono text-sm border border-gray-700/50"
+          className="flex-1 bg-slate-50 dark:bg-black/20 text-slate-900 dark:text-gray-200 px-3 py-2 rounded font-mono text-sm border border-slate-300 dark:border-gray-700/50"
         />
         <button 
           onClick={() => navigator.clipboard.writeText(value)}
-          className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+          className="bg-slate-100 dark:bg-neutral-700 hover:bg-slate-200 dark:hover:bg-neutral-600 text-slate-600 dark:text-white p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity border border-slate-300 dark:border-transparent"
         >
           <Copy className="w-4 h-4" />
         </button>
@@ -107,7 +107,7 @@ function StringEscaper() {
           <select 
             value={mode} 
             onChange={e => setMode(e.target.value)}
-            className="bg-gray-900 text-white px-3 py-1.5 rounded border border-gray-700 text-sm"
+            className="bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white px-3 py-1.5 rounded border border-slate-300 dark:border-gray-700 text-sm focus:ring-2 focus:ring-pink-500"
           >
             <option value="json">JSON String</option>
             <option value="java">Java/C/Go String</option>
@@ -127,13 +127,13 @@ function StringEscaper() {
           value={input}
           onChange={e => setInput(e.target.value)}
           placeholder="Input text..."
-          className="w-full h-64 bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-gray-700 focus:border-pink-500"
+          className="w-full h-64 bg-white dark:bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-pink-500 text-slate-900 dark:text-neutral-100 shadow-inner"
         />
         <textarea 
           readOnly
           value={result}
           placeholder="Result..."
-          className="w-full h-64 bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-gray-700"
+          className="w-full h-64 bg-slate-50 dark:bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 text-slate-900 dark:text-neutral-100"
         />
       </div>
     </div>

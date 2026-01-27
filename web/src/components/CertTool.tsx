@@ -28,19 +28,19 @@ export function CertTool() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
         <FileBadge className="w-6 h-6 text-yellow-400" /> 
         Certificate Inspector
       </h2>
 
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label className="text-gray-400 text-sm">PEM Certificate</label>
+          <label className="text-slate-600 dark:text-gray-400 text-sm font-bold">PEM Certificate</label>
           <textarea 
             value={pem} 
             onChange={e => parse(e.target.value)} 
             placeholder="-----BEGIN CERTIFICATE-----..." 
-            className="w-full h-[500px] bg-black/30 p-4 rounded-lg font-mono text-xs resize-none focus:outline-none border border-gray-700 focus:border-yellow-500 text-gray-300"
+            className="w-full h-[500px] bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-xs resize-none focus:outline-none border border-slate-300 dark:border-gray-700 focus:border-kawa-500 text-slate-900 dark:text-gray-300 shadow-inner"
           />
         </div>
 
@@ -52,9 +52,9 @@ export function CertTool() {
           )}
           
           {cert && (
-            <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
-              <div className="p-4 bg-gray-700/50 border-b border-gray-700 font-medium text-white flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-green-400"/> Certificate Details
+            <div className="bg-white dark:bg-neutral-800 rounded-lg border border-slate-300 dark:border-neutral-700 overflow-hidden shadow-sm">
+              <div className="p-4 bg-slate-50 dark:bg-gray-700/50 border-b border-slate-300 dark:border-gray-700 font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-kawa-600 dark:text-kawa-400"/> Certificate Details
               </div>
               
               <div className="p-4 space-y-6">
@@ -66,13 +66,13 @@ export function CertTool() {
                     <div className="text-xs text-gray-500 uppercase font-bold flex items-center gap-1">
                       <Calendar className="w-3 h-3"/> Not Before
                     </div>
-                    <div className="text-sm font-mono text-gray-200">{cert.notBefore}</div>
+                    <div className="text-sm font-mono text-slate-700 dark:text-gray-200">{cert.notBefore}</div>
                   </div>
                   <div className="space-y-1">
                     <div className="text-xs text-gray-500 uppercase font-bold flex items-center gap-1">
                       <Calendar className="w-3 h-3"/> Not After
                     </div>
-                    <div className="text-sm font-mono text-gray-200">{cert.notAfter}</div>
+                    <div className="text-sm font-mono text-slate-700 dark:text-gray-200">{cert.notAfter}</div>
                   </div>
                 </div>
 
@@ -83,7 +83,7 @@ export function CertTool() {
                   <div className="flex flex-wrap gap-2">
                     {cert.sans && cert.sans.length > 0 ? (
                       cert.sans.map((s: string, i: number) => (
-                        <span key={i} className="px-2 py-1 bg-gray-700 rounded text-xs text-gray-300 font-mono">
+                        <span key={i} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs text-slate-700 dark:text-gray-300 font-mono border border-gray-200 dark:border-transparent">
                           {s}
                         </span>
                       ))
@@ -97,7 +97,7 @@ export function CertTool() {
           )}
           
           {!cert && !error && (
-            <div className="h-full flex items-center justify-center text-gray-600 border-2 border-dashed border-gray-800 rounded-lg">
+            <div className="h-full flex items-center justify-center text-slate-400 dark:text-gray-600 border-2 border-dashed border-slate-300 dark:border-gray-800 rounded-lg min-h-[500px] font-bold">
               Paste a certificate to inspect
             </div>
           )}
@@ -112,8 +112,8 @@ function DetailGroup({ label, value }: { label: string, value: string }) {
   // Normally comes as "CN=foo,O=bar". Let's just display as is for now or maybe split by comma.
   return (
     <div className="space-y-1">
-      <div className="text-xs text-gray-500 uppercase font-bold">{label}</div>
-      <div className="text-sm text-gray-200 font-mono bg-black/20 p-2 rounded break-all border border-gray-700/50">
+      <div className="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold">{label}</div>
+      <div className="text-sm text-slate-700 dark:text-gray-200 font-mono bg-slate-50 dark:bg-black/20 p-2 rounded break-all border border-slate-300 dark:border-gray-700/50 shadow-inner">
         {value}
       </div>
     </div>
