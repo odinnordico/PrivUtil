@@ -11,9 +11,12 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v2
+      - name: repo to lowercase
+        run: |
+          echo "REPO=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
       - name: Build and publish a Docker image for ${{ github.repository }}
         uses: macbre/push-to-ghcr@master
         with:
-          image_name: ${{ github.repository }}  # it will be lowercased internally
+          image_name: ${{ env.REPO }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          extra_args: "--tag ${{ github.repository }}:${{ github.ref_name }}"
+          extra_args: "--tag ${{ env.REPO }}:${{ github.ref_name }}"
