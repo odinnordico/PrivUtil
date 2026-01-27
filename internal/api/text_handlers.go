@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"html"
 	"regexp"
 	"sort"
 	"strings"
@@ -16,10 +17,29 @@ import (
 func (s *Server) Diff(ctx context.Context, req *pb.DiffRequest) (*pb.DiffResponse, error) {
 	dmp := diffmatchpatch.New()
 	diffs := dmp.DiffMain(req.Text1, req.Text2, false)
-	htmlOutput := dmp.DiffPrettyHtml(diffs)
+
+	var buffer strings.Builder
+	for _, diff := range diffs {
+		escapedText := html.EscapeString(diff.Text)
+
+		switch diff.Type {
+		case diffmatchpatch.DiffInsert:
+			buffer.WriteString("<ins style='background:#ccffd8; color:#004d0d; text-decoration:none; padding:1px 2px; border-radius:2px;'>")
+			buffer.WriteString(escapedText)
+			buffer.WriteString("</ins>")
+		case diffmatchpatch.DiffDelete:
+			buffer.WriteString("<del style='background:#ffd7d5; color:#991b1b; text-decoration:line-through; padding:1px 2px; border-radius:2px;'>")
+			buffer.WriteString(escapedText)
+			buffer.WriteString("</del>")
+		case diffmatchpatch.DiffEqual:
+			buffer.WriteString("<span>")
+			buffer.WriteString(escapedText)
+			buffer.WriteString("</span>")
+		}
+	}
 
 	return &pb.DiffResponse{
-		DiffHtml: fmt.Sprintf("<div class='diff-output'>%s</div>", htmlOutput),
+		DiffHtml: fmt.Sprintf("<div class='diff-output' style='white-space: pre-wrap; font-family: monospace;'>%s</div>", buffer.String()),
 	}, nil
 }
 

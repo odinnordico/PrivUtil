@@ -21,6 +21,9 @@ func TestDiff(t *testing.T) {
 		{"different", "hello", "world", true},
 		{"empty", "", "", true},
 		{"one empty", "hello", "", true},
+		{"json", "{\n  \"a\": 1,\n  \"b\": 2\n}", "{\n  \"a\": 1,\n  \"b\": 3\n}", true},
+		{"yaml", "a: 1\nb: 2", "a: 1\nb: 3", true},
+		{"xml", "<a>\n  1\n</a>\n<b>\n  2\n</b>", "<a>\n  1\n</a>\n<b>\n  3\n</b>", true},
 	}
 
 	for _, tt := range tests {
