@@ -19,4 +19,4 @@ jobs:
         with:
           image_name: ${{ env.REPO }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          extra_args: "--tag ${{ env.REPO }}:${{ github.ref_name }}"
+          extra_args: "--tag ${{ env.REPO }}:${{ github.ref_name }} --tag ${{ env.REPO }}:latest"

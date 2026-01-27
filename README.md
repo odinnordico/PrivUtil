@@ -65,7 +65,7 @@ Check out the project packages [here](https://github.com/odinnordico/privutil/pa
 
 ```bash
 docker pull ghcr.io/odinnordico/privutil:latest
-docker run -p 8090:8090 privutil
+docker run --rm -p 8090:8090 privutil
 ```
 
 ### Download from Releases
