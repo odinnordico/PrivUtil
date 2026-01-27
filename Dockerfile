@@ -8,6 +8,6 @@ RUN make build
 
 ENTRYPOINT [ "./privutil" ]
 
-FROM golang:tip-alpine3.23
+FROM alpine:latest
 COPY --from=build /PrivUtil/privutil /bin/privutil
 ENTRYPOINT [ "privutil" ]
