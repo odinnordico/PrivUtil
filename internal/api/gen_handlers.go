@@ -1,0 +1,131 @@
+package api
+
+import (
+	"context"
+	"strings"
+
+	"github.com/brianvoe/gofakeit/v6"
+	"github.com/google/uuid"
+
+	pb "github.com/odinnordico/privutil/proto"
+)
+
+func (s *Server) GenerateUuid(ctx context.Context, req *pb.UuidRequest) (*pb.UuidResponse, error) {
+	var uuids []string
+	count := req.Count
+	if count <= 0 {
+		count = 1
+	}
+	if count > 100 {
+		count = 100
+	}
+
+	for i := 0; i < int(count); i++ {
+		var u uuid.UUID
+		var err error
+
+		if req.Version == "v1" {
+			u, err = uuid.NewUUID()
+		} else {
+			u, err = uuid.NewRandom()
+		}
+
+		if err != nil {
+			return nil, err
+		}
+
+		str := u.String()
+		if !req.Hyphen {
+			str = strings.ReplaceAll(str, "-", "")
+		}
+		if req.Uppercase {
+			str = strings.ToUpper(str)
+		}
+		uuids = append(uuids, str)
+	}
+
+	return &pb.UuidResponse{Uuids: uuids}, nil
+}
+
+func (s *Server) GenerateLorem(ctx context.Context, req *pb.LoremRequest) (*pb.LoremResponse, error) {
+	var text string
+	count := int(req.Count)
+	if count <= 0 {
+		count = 1
+	}
+
+	switch req.Type {
+	case "word":
+		var words []string
+		for i := 0; i < count; i++ {
+			words = append(words, gofakeit.Word())
+		}
+		text = strings.Join(words, " ")
+	case "sentence":
+		var sentences []string
+		for i := 0; i < count; i++ {
+			sentences = append(sentences, gofakeit.Sentence(10))
+		}
+		text = strings.Join(sentences, " ")
+	default:
+		var paragraphs []string
+		for i := 0; i < count; i++ {
+			paragraphs = append(paragraphs, gofakeit.Paragraph(3, 5, 10, "\n"))
+		}
+		text = strings.Join(paragraphs, "\n\n")
+	}
+
+	return &pb.LoremResponse{Text: text}, nil
+}
+
+func (s *Server) GeneratePassword(ctx context.Context, req *pb.PasswordRequest) (*pb.PasswordResponse, error) {
+	length := int(req.Length)
+	if length <= 0 {
+		length = 16
+	}
+	if length > 128 {
+		length = 128
+	}
+
+	count := int(req.Count)
+	if count <= 0 {
+		count = 1
+	}
+	if count > 100 {
+		count = 100
+	}
+
+	// Build character set
+	var charset string
+	if req.CustomChars != "" {
+		charset = req.CustomChars
+	} else {
+		if req.Lowercase {
+			charset += "abcdefghijklmnopqrstuvwxyz"
+		}
+		if req.Uppercase {
+			charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		}
+		if req.Numbers {
+			charset += "0123456789"
+		}
+		if req.Symbols {
+			charset += "!@#$%^&*()-_=+[]{}|;:,.<>?"
+		}
+		// Default to all if nothing selected
+		if charset == "" {
+			charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*"
+		}
+	}
+
+	passwords := make([]string, count)
+	for i := 0; i < count; i++ {
+		password := make([]byte, length)
+		for j := 0; j < length; j++ {
+			password[j] = charset[gofakeit.Number(0, len(charset)-1)]
+		}
+		passwords[i] = string(password)
+	}
+
+	return &pb.PasswordResponse{Passwords: passwords}, nil
+}

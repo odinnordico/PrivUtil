@@ -142,3 +142,6 @@ The following prompts were used to generate the code for the project. The prompt
   Remove `wangyoucao577/go-release-action` from publish.yml, instead use latest of `actions/upload-artifact` keeping the matrix for multiple platforms
 - |
   Update the publish.yml file so the artifacts keep the original name (ensure for windows is .exe), compress in to privutil-{goos}-{goarch}.tar.gz for linux and mac, and privutil-{goos}-{goarch}.zip for windows. Ensure the files are upload to the release
+- |
+  Put the different grpc server capabilities in different files, group them per utility tool, do the same with tests
+- |
