@@ -23,6 +23,18 @@ func TestGenerateUuid(t *testing.T) {
 		{"no hyphen", 1, "v4", false, false},
 		{"uppercase", 1, "v4", true, true},
 		{"v1", 1, "v1", true, false},
+		{"v2", 1, "v2", true, false},
+		{"v3", 1, "v3", true, false},
+		{"v5", 1, "v5", true, false},
+		{"v6", 1, "v6", true, false},
+		{"v7", 1, "v7", true, false},
+		{"v8", 1, "v8", true, false},
+		{"v2 multiple", 3, "v2", true, false},
+		{"v3 no hyphen", 1, "v3", false, false},
+		{"v5 uppercase", 1, "v5", true, true},
+		{"v6 multiple", 5, "v6", true, false},
+		{"v7 no hyphen uppercase", 1, "v7", false, true},
+		{"v8 multiple", 3, "v8", true, false},
 	}
 
 	for _, tt := range tests {
@@ -39,8 +51,60 @@ func TestGenerateUuid(t *testing.T) {
 			if len(resp.Uuids) != int(tt.count) {
 				t.Errorf("GenerateUuid() got %d uuids, want %d", len(resp.Uuids), tt.count)
 			}
+
+			// Validate each UUID
+			for _, uuidStr := range resp.Uuids {
+				// Check hyphen format
+				if tt.hyphen && !containsHyphens(uuidStr) {
+					t.Errorf("GenerateUuid() expected hyphens in UUID: %s", uuidStr)
+				}
+				if !tt.hyphen && containsHyphens(uuidStr) {
+					t.Errorf("GenerateUuid() expected no hyphens in UUID: %s", uuidStr)
+				}
+
+				// Check case
+				if tt.uppercase && !isUpperCase(uuidStr) {
+					t.Errorf("GenerateUuid() expected uppercase UUID: %s", uuidStr)
+				}
+				if !tt.uppercase && isUpperCase(uuidStr) {
+					t.Errorf("GenerateUuid() expected lowercase UUID: %s", uuidStr)
+				}
+
+				// Validate UUID format (with or without hyphens)
+				if tt.hyphen {
+					// Standard format: 8-4-4-4-12
+					if len(uuidStr) != 36 {
+						t.Errorf("GenerateUuid() UUID with hyphens should be 36 chars, got %d: %s", len(uuidStr), uuidStr)
+					}
+				} else {
+					// No hyphens: 32 hex chars
+					if len(uuidStr) != 32 {
+						t.Errorf("GenerateUuid() UUID without hyphens should be 32 chars, got %d: %s", len(uuidStr), uuidStr)
+					}
+				}
+			}
 		})
 	}
+}
+
+// Helper function to check if string contains hyphens
+func containsHyphens(s string) bool {
+	for _, c := range s {
+		if c == '-' {
+			return true
+		}
+	}
+	return false
+}
+
+// Helper function to check if string is uppercase
+func isUpperCase(s string) bool {
+	for _, c := range s {
+		if c >= 'a' && c <= 'z' {
+			return false
+		}
+	}
+	return true
 }
 
 func TestGenerateLorem(t *testing.T) {

@@ -2,6 +2,8 @@ package api
 
 import (
 	"context"
+	"crypto/sha256"
+	"fmt"
 	"strings"
 
 	"github.com/brianvoe/gofakeit/v6"
@@ -24,9 +26,35 @@ func (s *Server) GenerateUuid(ctx context.Context, req *pb.UuidRequest) (*pb.Uui
 		var u uuid.UUID
 		var err error
 
-		if req.Version == "v1" {
+		switch req.Version {
+		case "v1":
+			// Version 1: Time-based UUID
 			u, err = uuid.NewUUID()
-		} else {
+		case "v2":
+			// Version 2: DCE Security UUID (uses NewDCEPerson for simplicity)
+			u, err = uuid.NewDCEPerson()
+		case "v3":
+			// Version 3: Name-based UUID using MD5 hashing
+			// Using DNS namespace and a default name
+			u = uuid.NewMD5(uuid.NameSpaceDNS, []byte("privutil.uuid.v3"))
+		case "v5":
+			// Version 5: Name-based UUID using SHA1 hashing
+			// Using DNS namespace and a default name
+			u = uuid.NewSHA1(uuid.NameSpaceDNS, []byte("privutil.uuid.v5"))
+		case "v6":
+			// Version 6: Time-ordered UUID
+			u, err = uuid.NewV6()
+		case "v7":
+			// Version 7: Unix Epoch time-based UUID
+			u, err = uuid.NewV7()
+		case "v8":
+			// Version 8: Custom UUID (using SHA256 hash with custom data for uniqueness)
+			// V8 is vendor-specific, so we create unique UUIDs using NewHash
+			h := sha256.New()
+			data := []byte(fmt.Sprintf("privutil.uuid.v8.%d", i))
+			u = uuid.NewHash(h, uuid.NameSpaceDNS, data, 8)
+		default:
+			// Default to Version 4: Random UUID
 			u, err = uuid.NewRandom()
 		}
 
