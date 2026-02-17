@@ -35,12 +35,14 @@ func (s *Server) GenerateUuid(ctx context.Context, req *pb.UuidRequest) (*pb.Uui
 			u, err = uuid.NewDCEPerson()
 		case "v3":
 			// Version 3: Name-based UUID using MD5 hashing
-			// Using DNS namespace and a default name
-			u = uuid.NewMD5(uuid.NameSpaceDNS, []byte("privutil.uuid.v3"))
+			// Using DNS namespace with unique data per iteration
+			data := []byte(fmt.Sprintf("privutil.uuid.v3.%d.%d", i, uuid.New().ID()))
+			u = uuid.NewMD5(uuid.NameSpaceDNS, data)
 		case "v5":
 			// Version 5: Name-based UUID using SHA1 hashing
-			// Using DNS namespace and a default name
-			u = uuid.NewSHA1(uuid.NameSpaceDNS, []byte("privutil.uuid.v5"))
+			// Using DNS namespace with unique data per iteration
+			data := []byte(fmt.Sprintf("privutil.uuid.v5.%d.%d", i, uuid.New().ID()))
+			u = uuid.NewSHA1(uuid.NameSpaceDNS, data)
 		case "v6":
 			// Version 6: Time-ordered UUID
 			u, err = uuid.NewV6()

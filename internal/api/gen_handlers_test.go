@@ -99,12 +99,16 @@ func containsHyphens(s string) bool {
 
 // Helper function to check if string is uppercase
 func isUpperCase(s string) bool {
+	hasAlpha := false
 	for _, c := range s {
-		if c >= 'a' && c <= 'z' {
-			return false
+		if (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') {
+			hasAlpha = true
+			if c >= 'a' && c <= 'z' {
+				return false
+			}
 		}
 	}
-	return true
+	return hasAlpha
 }
 
 func TestGenerateLorem(t *testing.T) {
