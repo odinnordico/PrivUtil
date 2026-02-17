@@ -22,6 +22,9 @@ func (s *Server) GenerateUuid(ctx context.Context, req *pb.UuidRequest) (*pb.Uui
 		count = 100
 	}
 
+	// Get the namespace UUID for name-based UUIDs (v3, v5, v8)
+	namespace := getNamespace(req.Namespace)
+
 	for i := 0; i < int(count); i++ {
 		var u uuid.UUID
 		var err error
@@ -35,14 +38,14 @@ func (s *Server) GenerateUuid(ctx context.Context, req *pb.UuidRequest) (*pb.Uui
 			u, err = uuid.NewDCEPerson()
 		case "v3":
 			// Version 3: Name-based UUID using MD5 hashing
-			// Using DNS namespace with unique data per iteration
+			// Using specified namespace with unique data per iteration
 			data := []byte(fmt.Sprintf("privutil.uuid.v3.%d.%d", i, uuid.New().ID()))
-			u = uuid.NewMD5(uuid.NameSpaceDNS, data)
+			u = uuid.NewMD5(namespace, data)
 		case "v5":
 			// Version 5: Name-based UUID using SHA1 hashing
-			// Using DNS namespace with unique data per iteration
+			// Using specified namespace with unique data per iteration
 			data := []byte(fmt.Sprintf("privutil.uuid.v5.%d.%d", i, uuid.New().ID()))
-			u = uuid.NewSHA1(uuid.NameSpaceDNS, data)
+			u = uuid.NewSHA1(namespace, data)
 		case "v6":
 			// Version 6: Time-ordered UUID
 			u, err = uuid.NewV6()
@@ -54,7 +57,7 @@ func (s *Server) GenerateUuid(ctx context.Context, req *pb.UuidRequest) (*pb.Uui
 			// V8 is vendor-specific, so we create unique UUIDs using NewHash
 			h := sha256.New()
 			data := []byte(fmt.Sprintf("privutil.uuid.v8.%d", i))
-			u = uuid.NewHash(h, uuid.NameSpaceDNS, data, 8)
+			u = uuid.NewHash(h, namespace, data, 8)
 		default:
 			// Default to Version 4: Random UUID
 			u, err = uuid.NewRandom()
@@ -75,6 +78,22 @@ func (s *Server) GenerateUuid(ctx context.Context, req *pb.UuidRequest) (*pb.Uui
 	}
 
 	return &pb.UuidResponse{Uuids: uuids}, nil
+}
+
+// getNamespace returns the UUID namespace based on the provided string.
+// Defaults to NameSpaceDNS if empty or invalid.
+func getNamespace(ns string) uuid.UUID {
+	switch strings.ToLower(ns) {
+	case "url":
+		return uuid.NameSpaceURL
+	case "oid":
+		return uuid.NameSpaceOID
+	case "x500":
+		return uuid.NameSpaceX500
+	default:
+		// Default to DNS namespace
+		return uuid.NameSpaceDNS
+	}
 }
 
 func (s *Server) GenerateLorem(ctx context.Context, req *pb.LoremRequest) (*pb.LoremResponse, error) {

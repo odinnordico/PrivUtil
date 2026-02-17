@@ -45,10 +45,20 @@ function UuidGenerator() {
   const [hyphen, setHyphen] = useState(true);
   const [uppercase, setUppercase] = useState(false);
   const [version, setVersion] = useState('v4');
+  const [namespace, setNamespace] = useState('dns');
+
+  // Check if current version uses namespace
+  const usesNamespace = ['v3', 'v5', 'v8'].includes(version);
 
   const generate = async () => {
     try {
-      const resp = await client.generateUuid({ count, hyphen, uppercase, version } as Parameters<typeof client.generateUuid>[0]);
+      const resp = await client.generateUuid({ 
+        count, 
+        hyphen, 
+        uppercase, 
+        version,
+        namespace: usesNamespace ? namespace : ''
+      } as Parameters<typeof client.generateUuid>[0]);
       setUuids(resp.uuids);
     } catch (e) {
       console.error(e);
@@ -67,8 +77,25 @@ function UuidGenerator() {
           <select value={version} onChange={e => setVersion(e.target.value)} className="bg-slate-50 dark:bg-gray-700 text-slate-900 dark:text-white rounded px-2 py-1 border border-slate-300 dark:border-transparent focus:ring-2 focus:ring-kawa-500">
             <option value="v4">v4 (Random)</option>
             <option value="v1">v1 (Time)</option>
+            <option value="v2">v2 (DCE Security)</option>
+            <option value="v3">v3 (MD5 name-based)</option>
+            <option value="v5">v5 (SHA1 name-based)</option>
+            <option value="v6">v6 (Time-ordered)</option>
+            <option value="v7">v7 (Unix time)</option>
+            <option value="v8">v8 (Custom)</option>
           </select>
         </div>
+        {usesNamespace && (
+          <div>
+            <label className="block text-xs text-slate-500 dark:text-gray-400 mb-1 font-bold italic">Namespace</label>
+            <select value={namespace} onChange={e => setNamespace(e.target.value)} className="bg-slate-50 dark:bg-gray-700 text-slate-900 dark:text-white rounded px-2 py-1 border border-slate-300 dark:border-transparent focus:ring-2 focus:ring-kawa-500">
+              <option value="dns">DNS</option>
+              <option value="url">URL</option>
+              <option value="oid">OID</option>
+              <option value="x500">X.500</option>
+            </select>
+          </div>
+        )}
         <label className="flex items-center gap-2 cursor-pointer">
           <input type="checkbox" checked={hyphen} onChange={e => setHyphen(e.target.checked)} />
           <span className="text-slate-700 dark:text-gray-300 text-sm font-medium">Hyphens</span>

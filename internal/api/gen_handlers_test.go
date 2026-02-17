@@ -15,26 +15,33 @@ func TestGenerateUuid(t *testing.T) {
 		name      string
 		count     int32
 		version   string
+		namespace string
 		hyphen    bool
 		uppercase bool
 	}{
-		{"single v4", 1, "v4", true, false},
-		{"multiple", 5, "v4", true, false},
-		{"no hyphen", 1, "v4", false, false},
-		{"uppercase", 1, "v4", true, true},
-		{"v1", 1, "v1", true, false},
-		{"v2", 1, "v2", true, false},
-		{"v3", 1, "v3", true, false},
-		{"v5", 1, "v5", true, false},
-		{"v6", 1, "v6", true, false},
-		{"v7", 1, "v7", true, false},
-		{"v8", 1, "v8", true, false},
-		{"v2 multiple", 3, "v2", true, false},
-		{"v3 no hyphen", 1, "v3", false, false},
-		{"v5 uppercase", 1, "v5", true, true},
-		{"v6 multiple", 5, "v6", true, false},
-		{"v7 no hyphen uppercase", 1, "v7", false, true},
-		{"v8 multiple", 3, "v8", true, false},
+		{"single v4", 1, "v4", "", true, false},
+		{"multiple", 5, "v4", "", true, false},
+		{"no hyphen", 1, "v4", "", false, false},
+		{"uppercase", 1, "v4", "", true, true},
+		{"v1", 1, "v1", "", true, false},
+		{"v2", 1, "v2", "", true, false},
+		{"v3", 1, "v3", "", true, false},
+		{"v3 with dns", 1, "v3", "dns", true, false},
+		{"v3 with url", 1, "v3", "url", true, false},
+		{"v3 with oid", 1, "v3", "oid", true, false},
+		{"v3 with x500", 1, "v3", "x500", true, false},
+		{"v5", 1, "v5", "", true, false},
+		{"v5 with url", 1, "v5", "url", true, false},
+		{"v6", 1, "v6", "", true, false},
+		{"v7", 1, "v7", "", true, false},
+		{"v8", 1, "v8", "", true, false},
+		{"v8 with url", 1, "v8", "url", true, false},
+		{"v2 multiple", 3, "v2", "", true, false},
+		{"v3 no hyphen", 1, "v3", "", false, false},
+		{"v5 uppercase", 1, "v5", "", true, true},
+		{"v6 multiple", 5, "v6", "", true, false},
+		{"v7 no hyphen uppercase", 1, "v7", "", false, true},
+		{"v8 multiple", 3, "v8", "", true, false},
 	}
 
 	for _, tt := range tests {
@@ -42,6 +49,7 @@ func TestGenerateUuid(t *testing.T) {
 			resp, err := s.GenerateUuid(ctx, &pb.UuidRequest{
 				Count:     tt.count,
 				Version:   tt.version,
+				Namespace: tt.namespace,
 				Hyphen:    tt.hyphen,
 				Uppercase: tt.uppercase,
 			})

@@ -85,6 +85,7 @@ message UuidRequest {
   bool uppercase = 2;
   int32 count = 3;
   string version = 4; // "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8"
+  string namespace = 5; // For v3, v5, v8: "dns", "url", "oid", "x500" (default: "dns")
 }
 
 message UuidResponse {
