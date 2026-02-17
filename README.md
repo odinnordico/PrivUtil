@@ -40,7 +40,7 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 
 | Tool                   | Description                             |
 | ---------------------- | --------------------------------------- |
-| **UUID**               | Generate v1/v4 UUIDs                    |
+| **UUID**               | Generate v1-v8 UUIDs                    |
 | **Hash Calculator**    | MD5, SHA1, SHA256, SHA512               |
 | **Lorem Ipsum**        | Generate placeholder text               |
 | **Password Generator** | Secure random passwords                 |
