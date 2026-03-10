@@ -31,10 +31,17 @@ func (s *Server) TimeConvert(ctx context.Context, req *pb.TimeRequest) (*pb.Time
 				time.RFC3339,
 				time.RFC3339Nano,
 				time.Layout,
-				"2006-01-02T15:04:05",
-				"2006-01-02 15:04:05",
-				time.RubyDate,
+				time.ANSIC,
 				time.UnixDate,
+				time.RubyDate,
+				time.RFC850,
+				time.RFC1123,
+				time.RFC1123Z,
+				time.DateTime,
+				"2006-01-02T15:04:05",
+				time.DateOnly,
+				"01/02/2006",
+				"01/02/2006 15:04:05",
 			}
 			var parsed bool
 			for _, layout := range formats {
