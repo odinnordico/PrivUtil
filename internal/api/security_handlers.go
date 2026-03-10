@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"  // #nosec G501
+	"crypto/rand"
+	"crypto/rsa"
 	"crypto/sha1" // #nosec G505
 	"crypto/sha256"
 	"crypto/sha512"
@@ -14,6 +16,8 @@ import (
 	"encoding/pem"
 	"fmt"
 	"strings"
+
+	"golang.org/x/crypto/bcrypt"
 
 	pb "github.com/odinnordico/privutil/proto"
 )
@@ -34,6 +38,16 @@ func (s *Server) CalculateHash(ctx context.Context, req *pb.HashRequest) (*pb.Ha
 	case "sha512":
 		sum := sha512.Sum512(data)
 		hash = hex.EncodeToString(sum[:])
+	case "bcrypt":
+		cost := bcrypt.DefaultCost
+		if reqCost := req.GetCost(); int(reqCost) >= bcrypt.MinCost && int(reqCost) <= bcrypt.MaxCost {
+			cost = int(reqCost)
+		}
+		hashBytes, err := bcrypt.GenerateFromPassword(data, cost)
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate bcrypt hash: %w", err)
+		}
+		hash = string(hashBytes)
 	default:
 		sum := sha256.Sum256(data)
 		hash = hex.EncodeToString(sum[:])
@@ -86,5 +100,40 @@ func (s *Server) CertParse(ctx context.Context, req *pb.CertRequest) (*pb.CertRe
 		NotBefore: cert.NotBefore.Format("2006-01-02T15:04:05Z"), // Simplified format or use time.RFC3339 if imported
 		NotAfter:  cert.NotAfter.Format("2006-01-02T15:04:05Z"),
 		Sans:      cert.DNSNames,
+	}, nil
+}
+
+func (s *Server) GenerateRsaKeyPair(ctx context.Context, req *pb.RsaKeyRequest) (*pb.RsaKeyResponse, error) {
+	bits := int(req.GetBits())
+	if bits == 0 {
+		bits = 2048
+	}
+	if bits < 1024 || bits > 8192 {
+		return &pb.RsaKeyResponse{Error: "bits must be between 1024 and 8192"}, nil
+	}
+
+	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
+	if err != nil {
+		return &pb.RsaKeyResponse{Error: fmt.Sprintf("failed to generate RSA key: %v", err)}, nil
+	}
+
+	privBytes := x509.MarshalPKCS1PrivateKey(privateKey)
+	privPEM := pem.EncodeToMemory(&pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: privBytes,
+	})
+
+	pubBytes, err := x509.MarshalPKIXPublicKey(&privateKey.PublicKey)
+	if err != nil {
+		return &pb.RsaKeyResponse{Error: fmt.Sprintf("failed to marshal RSA public key: %v", err)}, nil
+	}
+	pubPEM := pem.EncodeToMemory(&pem.Block{
+		Type:  "PUBLIC KEY",
+		Bytes: pubBytes,
+	})
+
+	return &pb.RsaKeyResponse{
+		PrivateKey: string(privPEM),
+		PublicKey:  string(pubPEM),
 	}, nil
 }

@@ -40,10 +40,13 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 
 | Tool                   | Description                             |
 | ---------------------- | --------------------------------------- |
-| **UUID**               | Generate v1-v8 UUIDs                    |
-| **Hash Calculator**    | MD5, SHA1, SHA256, SHA512               |
-| **Lorem Ipsum**        | Generate placeholder text               |
-| **Password Generator** | Secure random passwords                 |
+| **Generators**         |
+    - UUID (v4, v7, v8)
+    - Hashes (MD5, SHA, bcrypt, blowfish, etc.)
+    - Number Base Converter
+    - RSA Key Pairs
+| **Lorem Ipsum**        | Configurable dummy text generation      |
+| **Passwords**          | Secure password generation with custom policies |
 | **Encoders**           | URL, HTML entity encode/decode          |
 | **JWT Debugger**       | Decode and inspect JWTs                 |
 | **Certificate Parser** | Parse X.509 PEM certificates            |

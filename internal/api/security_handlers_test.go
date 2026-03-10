@@ -15,17 +15,24 @@ func TestCalculateHash(t *testing.T) {
 		name string
 		algo string
 		text string
+		cost *int32
 	}{
-		{"md5", "md5", "hello"},
-		{"sha1", "sha1", "hello"},
-		{"sha256", "sha256", "hello"},
-		{"sha512", "sha512", "hello"},
-		{"default", "", "hello"},
+		{"md5", "md5", "hello", nil},
+		{"sha1", "sha1", "hello", nil},
+		{"sha256", "sha256", "hello", nil},
+		{"sha512", "sha512", "hello", nil},
+		{"bcrypt default", "bcrypt", "hello", nil},
+		{"bcrypt custom cost", "bcrypt", "hello", func(i int32) *int32 { return &i }(4)},
+		{"default", "", "hello", nil},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			resp, err := s.CalculateHash(ctx, &pb.HashRequest{Text: tt.text, Algo: tt.algo})
+			req := &pb.HashRequest{Text: tt.text, Algo: tt.algo}
+			if tt.cost != nil {
+				req.Cost = tt.cost
+			}
+			resp, err := s.CalculateHash(ctx, req)
 			if err != nil {
 				t.Fatalf("CalculateHash() error = %v", err)
 			}
@@ -63,5 +70,42 @@ func TestCertParse(t *testing.T) {
 	}
 	if resp.Error == "" {
 		t.Error("CertParse() expected error for invalid PEM")
+	}
+}
+
+func TestGenerateRsaKeyPair(t *testing.T) {
+	s := NewServer()
+	ctx := context.Background()
+
+	tests := []struct {
+		name      string
+		bits      int32
+		wantError bool
+	}{
+		{"default bits", 0, false},
+		{"2048 bits", 2048, false},
+		{"invalid small bits", 512, true},
+		{"invalid large bits", 16384, true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			resp, err := s.GenerateRsaKeyPair(ctx, &pb.RsaKeyRequest{Bits: tt.bits})
+			if err != nil {
+				t.Fatalf("GenerateRsaKeyPair() error = %v", err)
+			}
+			if tt.wantError {
+				if resp.Error == "" {
+					t.Error("GenerateRsaKeyPair() expected error but got none")
+				}
+				return
+			}
+			if resp.Error != "" {
+				t.Fatalf("GenerateRsaKeyPair() unexpected error: %s", resp.Error)
+			}
+			if resp.PrivateKey == "" || resp.PublicKey == "" {
+				t.Error("GenerateRsaKeyPair() expected non-empty keys")
+			}
+		})
 	}
 }

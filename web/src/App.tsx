@@ -4,6 +4,7 @@ import { DiffTool } from './components/DiffTool';
 import { Base64Tool } from './components/Base64Tool';
 import { JsonTool } from './components/JsonTool';
 import { ConverterTool } from './components/ConverterTool';
+import { BaseTool } from './components/BaseTool';
 import { GeneratorTool } from './components/GeneratorTool';
 import { TextTool } from './components/TextTool';
 import { EncoderTool } from './components/EncoderTool';
@@ -29,6 +30,7 @@ function App() {
           <Route path="base64" element={<Base64Tool />} />
           <Route path="json" element={<JsonTool />} />
           <Route path="convert" element={<ConverterTool />} />
+          <Route path="base" element={<BaseTool />} />
           <Route path="generators" element={<GeneratorTool />} />
           <Route path="text" element={<TextTool />} />
           <Route path="encoder" element={<EncoderTool />} />

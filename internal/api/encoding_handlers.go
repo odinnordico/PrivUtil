@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html"
+	"math/big"
 	"net/url"
 	"strconv"
 	"strings"
@@ -114,4 +115,97 @@ func jsonMarshal(v interface{}) ([]byte, error) {
 
 func jsonUnmarshal(data []byte, v interface{}) error {
 	return json.Unmarshal(data, v)
+}
+
+func (s *Server) BaseConvert(ctx context.Context, req *pb.BaseConvertRequest) (*pb.BaseConvertResponse, error) {
+	input := strings.TrimSpace(req.Input)
+	sourceBase := int(req.SourceBase)
+
+	if input == "" {
+		return &pb.BaseConvertResponse{Error: "Input cannot be empty"}, nil
+	}
+
+	// Strip prefixes
+	inputLower := strings.ToLower(input)
+	if sourceBase == 16 && strings.HasPrefix(inputLower, "0x") {
+		input = input[2:]
+	} else if sourceBase == 8 && strings.HasPrefix(inputLower, "0o") {
+		input = input[2:]
+	} else if sourceBase == 2 && strings.HasPrefix(inputLower, "0b") {
+		input = input[2:]
+	}
+
+	num := new(big.Int)
+
+	if sourceBase == 64 {
+		// Custom parsing for Base64 integer
+		const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+		for _, r := range input {
+			idx := strings.IndexRune(alphabet, r)
+			if idx == -1 {
+				return &pb.BaseConvertResponse{Error: "Invalid base64 character"}, nil
+			}
+			num.Mul(num, big.NewInt(64))
+			num.Add(num, big.NewInt(int64(idx)))
+		}
+	} else {
+		_, ok := num.SetString(input, sourceBase)
+		if !ok {
+			return &pb.BaseConvertResponse{Error: fmt.Sprintf("Invalid input for base %d", sourceBase)}, nil
+		}
+	}
+
+	// Format targets
+	decimalStr := num.Text(10)
+	hexStr := strings.ToUpper(num.Text(16))
+	binaryStr := num.Text(2)
+	octalStr := num.Text(8)
+
+	// Base64 formatter
+	sign := num.Sign()
+	if sign == 0 {
+		return &pb.BaseConvertResponse{
+			Decimal: "0",
+			Hex:     "0",
+			Binary:  "0",
+			Octal:   "0",
+			Base64:  "A",
+		}, nil
+	}
+
+	absNum := new(big.Int).Abs(num)
+	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+	var b64Builder strings.Builder
+	zero := big.NewInt(0)
+	sixtyFour := big.NewInt(64)
+	
+	for absNum.Cmp(zero) > 0 {
+		mod := new(big.Int)
+		absNum.DivMod(absNum, sixtyFour, mod)
+		b64Builder.WriteByte(alphabet[mod.Int64()])
+	}
+	
+	// Reverse the builder since we extracted least significant digits first
+	b64Bytes := []byte(b64Builder.String())
+	for i, j := 0, len(b64Bytes)-1; i < j; i, j = i+1, j-1 {
+		b64Bytes[i], b64Bytes[j] = b64Bytes[j], b64Bytes[i]
+	}
+	base64Str := string(b64Bytes)
+	
+	if sign < 0 {
+		// Just prefixing minus based on math magnitude base conversion assumption
+		decimalStr = "-" + decimalStr
+		hexStr = "-" + hexStr
+		binaryStr = "-" + binaryStr
+		octalStr = "-" + octalStr
+		base64Str = "-" + base64Str
+	}
+
+	return &pb.BaseConvertResponse{
+		Decimal: decimalStr,
+		Hex:     hexStr,
+		Binary:  binaryStr,
+		Octal:   octalStr,
+		Base64:  base64Str,
+	}, nil
 }

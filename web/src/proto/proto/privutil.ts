@@ -179,8 +179,9 @@ export interface LoremResponse {
 
 export interface HashRequest {
   text: string;
-  /** "md5", "sha1", "sha256", "sha512" */
+  /** "md5", "sha1", "sha256", "sha512", "bcrypt" */
   algo: string;
+  cost?: number | undefined;
 }
 
 export interface HashResponse {
@@ -371,6 +372,32 @@ export interface PasswordRequest {
 
 export interface PasswordResponse {
   passwords: string[];
+  error: string;
+}
+
+export interface RsaKeyRequest {
+  /** e.g. 1024, 2048, 4096 */
+  bits: number;
+}
+
+export interface RsaKeyResponse {
+  privateKey: string;
+  publicKey: string;
+  error: string;
+}
+
+export interface BaseConvertRequest {
+  input: string;
+  /** e.g., 10, 16, 2, 8, or 64 */
+  sourceBase: number;
+}
+
+export interface BaseConvertResponse {
+  decimal: string;
+  hex: string;
+  binary: string;
+  octal: string;
+  base64: string;
   error: string;
 }
 
@@ -1313,7 +1340,7 @@ export const LoremResponse: MessageFns<LoremResponse> = {
 };
 
 function createBaseHashRequest(): HashRequest {
-  return { text: "", algo: "" };
+  return { text: "", algo: "", cost: undefined };
 }
 
 export const HashRequest: MessageFns<HashRequest> = {
@@ -1323,6 +1350,9 @@ export const HashRequest: MessageFns<HashRequest> = {
     }
     if (message.algo !== "") {
       writer.uint32(18).string(message.algo);
+    }
+    if (message.cost !== undefined) {
+      writer.uint32(24).int32(message.cost);
     }
     return writer;
   },
@@ -1350,6 +1380,14 @@ export const HashRequest: MessageFns<HashRequest> = {
           message.algo = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.cost = reader.int32();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1363,6 +1401,7 @@ export const HashRequest: MessageFns<HashRequest> = {
     return {
       text: isSet(object.text) ? globalThis.String(object.text) : "",
       algo: isSet(object.algo) ? globalThis.String(object.algo) : "",
+      cost: isSet(object.cost) ? globalThis.Number(object.cost) : undefined,
     };
   },
 
@@ -1374,6 +1413,9 @@ export const HashRequest: MessageFns<HashRequest> = {
     if (message.algo !== "") {
       obj.algo = message.algo;
     }
+    if (message.cost !== undefined) {
+      obj.cost = Math.round(message.cost);
+    }
     return obj;
   },
 
@@ -1384,6 +1426,7 @@ export const HashRequest: MessageFns<HashRequest> = {
     const message = createBaseHashRequest();
     message.text = object.text ?? "";
     message.algo = object.algo ?? "";
+    message.cost = object.cost ?? undefined;
     return message;
   },
 };
@@ -4196,6 +4239,384 @@ export const PasswordResponse: MessageFns<PasswordResponse> = {
   },
 };
 
+function createBaseRsaKeyRequest(): RsaKeyRequest {
+  return { bits: 0 };
+}
+
+export const RsaKeyRequest: MessageFns<RsaKeyRequest> = {
+  encode(message: RsaKeyRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.bits !== 0) {
+      writer.uint32(8).int32(message.bits);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RsaKeyRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRsaKeyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.bits = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RsaKeyRequest {
+    return { bits: isSet(object.bits) ? globalThis.Number(object.bits) : 0 };
+  },
+
+  toJSON(message: RsaKeyRequest): unknown {
+    const obj: any = {};
+    if (message.bits !== 0) {
+      obj.bits = Math.round(message.bits);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RsaKeyRequest>, I>>(base?: I): RsaKeyRequest {
+    return RsaKeyRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RsaKeyRequest>, I>>(object: I): RsaKeyRequest {
+    const message = createBaseRsaKeyRequest();
+    message.bits = object.bits ?? 0;
+    return message;
+  },
+};
+
+function createBaseRsaKeyResponse(): RsaKeyResponse {
+  return { privateKey: "", publicKey: "", error: "" };
+}
+
+export const RsaKeyResponse: MessageFns<RsaKeyResponse> = {
+  encode(message: RsaKeyResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.privateKey !== "") {
+      writer.uint32(10).string(message.privateKey);
+    }
+    if (message.publicKey !== "") {
+      writer.uint32(18).string(message.publicKey);
+    }
+    if (message.error !== "") {
+      writer.uint32(26).string(message.error);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RsaKeyResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRsaKeyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.privateKey = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.publicKey = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.error = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RsaKeyResponse {
+    return {
+      privateKey: isSet(object.privateKey)
+        ? globalThis.String(object.privateKey)
+        : isSet(object.private_key)
+        ? globalThis.String(object.private_key)
+        : "",
+      publicKey: isSet(object.publicKey)
+        ? globalThis.String(object.publicKey)
+        : isSet(object.public_key)
+        ? globalThis.String(object.public_key)
+        : "",
+      error: isSet(object.error) ? globalThis.String(object.error) : "",
+    };
+  },
+
+  toJSON(message: RsaKeyResponse): unknown {
+    const obj: any = {};
+    if (message.privateKey !== "") {
+      obj.privateKey = message.privateKey;
+    }
+    if (message.publicKey !== "") {
+      obj.publicKey = message.publicKey;
+    }
+    if (message.error !== "") {
+      obj.error = message.error;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RsaKeyResponse>, I>>(base?: I): RsaKeyResponse {
+    return RsaKeyResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RsaKeyResponse>, I>>(object: I): RsaKeyResponse {
+    const message = createBaseRsaKeyResponse();
+    message.privateKey = object.privateKey ?? "";
+    message.publicKey = object.publicKey ?? "";
+    message.error = object.error ?? "";
+    return message;
+  },
+};
+
+function createBaseBaseConvertRequest(): BaseConvertRequest {
+  return { input: "", sourceBase: 0 };
+}
+
+export const BaseConvertRequest: MessageFns<BaseConvertRequest> = {
+  encode(message: BaseConvertRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.input !== "") {
+      writer.uint32(10).string(message.input);
+    }
+    if (message.sourceBase !== 0) {
+      writer.uint32(16).int32(message.sourceBase);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BaseConvertRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBaseConvertRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.input = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.sourceBase = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BaseConvertRequest {
+    return {
+      input: isSet(object.input) ? globalThis.String(object.input) : "",
+      sourceBase: isSet(object.sourceBase)
+        ? globalThis.Number(object.sourceBase)
+        : isSet(object.source_base)
+        ? globalThis.Number(object.source_base)
+        : 0,
+    };
+  },
+
+  toJSON(message: BaseConvertRequest): unknown {
+    const obj: any = {};
+    if (message.input !== "") {
+      obj.input = message.input;
+    }
+    if (message.sourceBase !== 0) {
+      obj.sourceBase = Math.round(message.sourceBase);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<BaseConvertRequest>, I>>(base?: I): BaseConvertRequest {
+    return BaseConvertRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<BaseConvertRequest>, I>>(object: I): BaseConvertRequest {
+    const message = createBaseBaseConvertRequest();
+    message.input = object.input ?? "";
+    message.sourceBase = object.sourceBase ?? 0;
+    return message;
+  },
+};
+
+function createBaseBaseConvertResponse(): BaseConvertResponse {
+  return { decimal: "", hex: "", binary: "", octal: "", base64: "", error: "" };
+}
+
+export const BaseConvertResponse: MessageFns<BaseConvertResponse> = {
+  encode(message: BaseConvertResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.decimal !== "") {
+      writer.uint32(10).string(message.decimal);
+    }
+    if (message.hex !== "") {
+      writer.uint32(18).string(message.hex);
+    }
+    if (message.binary !== "") {
+      writer.uint32(26).string(message.binary);
+    }
+    if (message.octal !== "") {
+      writer.uint32(34).string(message.octal);
+    }
+    if (message.base64 !== "") {
+      writer.uint32(42).string(message.base64);
+    }
+    if (message.error !== "") {
+      writer.uint32(50).string(message.error);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BaseConvertResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBaseConvertResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.decimal = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.hex = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.binary = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.octal = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.base64 = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.error = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BaseConvertResponse {
+    return {
+      decimal: isSet(object.decimal) ? globalThis.String(object.decimal) : "",
+      hex: isSet(object.hex) ? globalThis.String(object.hex) : "",
+      binary: isSet(object.binary) ? globalThis.String(object.binary) : "",
+      octal: isSet(object.octal) ? globalThis.String(object.octal) : "",
+      base64: isSet(object.base64) ? globalThis.String(object.base64) : "",
+      error: isSet(object.error) ? globalThis.String(object.error) : "",
+    };
+  },
+
+  toJSON(message: BaseConvertResponse): unknown {
+    const obj: any = {};
+    if (message.decimal !== "") {
+      obj.decimal = message.decimal;
+    }
+    if (message.hex !== "") {
+      obj.hex = message.hex;
+    }
+    if (message.binary !== "") {
+      obj.binary = message.binary;
+    }
+    if (message.octal !== "") {
+      obj.octal = message.octal;
+    }
+    if (message.base64 !== "") {
+      obj.base64 = message.base64;
+    }
+    if (message.error !== "") {
+      obj.error = message.error;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<BaseConvertResponse>, I>>(base?: I): BaseConvertResponse {
+    return BaseConvertResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<BaseConvertResponse>, I>>(object: I): BaseConvertResponse {
+    const message = createBaseBaseConvertResponse();
+    message.decimal = object.decimal ?? "";
+    message.hex = object.hex ?? "";
+    message.binary = object.binary ?? "";
+    message.octal = object.octal ?? "";
+    message.base64 = object.base64 ?? "";
+    message.error = object.error ?? "";
+    return message;
+  },
+};
+
 export type PrivUtilServiceDefinition = typeof PrivUtilServiceDefinition;
 export const PrivUtilServiceDefinition = {
   name: "PrivUtilService",
@@ -4417,6 +4838,22 @@ export const PrivUtilServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    generateRsaKeyPair: {
+      name: "GenerateRsaKeyPair",
+      requestType: RsaKeyRequest,
+      requestStream: false,
+      responseType: RsaKeyResponse,
+      responseStream: false,
+      options: {},
+    },
+    baseConvert: {
+      name: "BaseConvert",
+      requestType: BaseConvertRequest,
+      requestStream: false,
+      responseType: BaseConvertResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -4463,6 +4900,14 @@ export interface PrivUtilServiceImplementation<CallContextExt = {}> {
     request: PasswordRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<PasswordResponse>>;
+  generateRsaKeyPair(
+    request: RsaKeyRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<RsaKeyResponse>>;
+  baseConvert(
+    request: BaseConvertRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<BaseConvertResponse>>;
 }
 
 export interface PrivUtilServiceClient<CallOptionsExt = {}> {
@@ -4508,6 +4953,14 @@ export interface PrivUtilServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<PasswordRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<PasswordResponse>;
+  generateRsaKeyPair(
+    request: DeepPartial<RsaKeyRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<RsaKeyResponse>;
+  baseConvert(
+    request: DeepPartial<BaseConvertRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<BaseConvertResponse>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

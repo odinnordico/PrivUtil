@@ -3,7 +3,7 @@ import { client } from '../lib/client';
 import { RefreshCw, Copy, Hash, FileText } from 'lucide-react';
 
 export function GeneratorTool() {
-  const [activeTab, setActiveTab] = useState<'uuid' | 'lorem' | 'hash'>('uuid');
+  const [activeTab, setActiveTab] = useState<'uuid' | 'lorem' | 'hash' | 'rsa'>('uuid');
 
   return (
     <div className="space-y-6">
@@ -28,12 +28,19 @@ export function GeneratorTool() {
         >
           Hash Calculator
         </button>
+        <button
+          onClick={() => setActiveTab('rsa')}
+          className={`pb-2 px-4 font-bold transition-colors ${activeTab === 'rsa' ? 'text-kawa-600 border-b-2 border-kawa-500' : 'text-slate-500 hover:text-slate-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+        >
+          RSA Keys
+        </button>
       </div>
 
       <div className="p-6 bg-white dark:bg-neutral-800 rounded-lg border border-slate-300 dark:border-neutral-700 shadow-sm">
         {activeTab === 'uuid' && <UuidGenerator />}
         {activeTab === 'lorem' && <LoremGenerator />}
         {activeTab === 'hash' && <HashGenerator />}
+        {activeTab === 'rsa' && <RsaGenerator />}
       </div>
     </div>
   );
@@ -169,10 +176,15 @@ function HashGenerator() {
   const [input, setInput] = useState('');
   const [hash, setHash] = useState('');
   const [algo, setAlgo] = useState('sha256');
+  const [cost, setCost] = useState(10);
 
   const calculate = async () => {
     try {
-      const resp = await client.calculateHash({ text: input, algo } as Parameters<typeof client.calculateHash>[0]);
+      const args: any = { text: input, algo };
+      if (algo === 'bcrypt') {
+        args.cost = cost;
+      }
+      const resp = await client.calculateHash(args as Parameters<typeof client.calculateHash>[0]);
       setHash(resp.hash);
     } catch (e) { console.error(e); }
   };
@@ -187,8 +199,22 @@ function HashGenerator() {
             <option value="sha1">SHA1</option>
             <option value="sha256">SHA256</option>
             <option value="sha512">SHA512</option>
+            <option value="bcrypt">Bcrypt</option>
           </select>
         </div>
+        {algo === 'bcrypt' && (
+          <div>
+            <label className="block text-sm text-slate-600 dark:text-gray-400 mb-1 font-bold">Cost</label>
+            <input 
+              type="number" 
+              value={cost} 
+              onChange={e => setCost(parseInt(e.target.value))} 
+              className="bg-white dark:bg-gray-700 text-slate-900 dark:text-white rounded px-3 py-2 w-full md:w-32 border border-slate-300 dark:border-transparent focus:ring-2 focus:ring-kawa-500 shadow-sm"
+              min="4" 
+              max="31"
+            />
+          </div>
+        )}
         <div>
           <label className="block text-sm text-slate-600 dark:text-gray-400 mb-1 font-bold">Input Text</label>
           <textarea 
@@ -213,6 +239,82 @@ function HashGenerator() {
                 <Copy className="w-4 h-4"/>
               </button>
             </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function RsaGenerator() {
+  const [bits, setBits] = useState(2048);
+  const [privateKey, setPrivateKey] = useState('');
+  const [publicKey, setPublicKey] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const generate = async () => {
+    try {
+      setLoading(true);
+      const resp = await client.generateRsaKeyPair({ bits } as Parameters<typeof client.generateRsaKeyPair>[0]);
+      if (resp.error) {
+        setPrivateKey(`Error: ${resp.error}`);
+        setPublicKey('');
+      } else {
+        setPrivateKey(resp.privateKey);
+        setPublicKey(resp.publicKey);
+      }
+    } catch (e) { 
+      console.error(e);
+      setPrivateKey('Failed to generate key pair.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-4">
+        <div>
+          <label className="block text-sm text-slate-600 dark:text-gray-400 mb-1 font-bold">Bit Size</label>
+          <select value={bits} onChange={e => setBits(parseInt(e.target.value))} className="bg-slate-50 dark:bg-gray-700 text-slate-900 dark:text-white rounded px-3 py-2 w-full md:w-32 border border-slate-300 dark:border-transparent focus:ring-2 focus:ring-kawa-500 shadow-sm">
+            <option value="1024">1024</option>
+            <option value="2048">2048</option>
+            <option value="4096">4096</option>
+          </select>
+        </div>
+        <button onClick={generate} disabled={loading} className="bg-kawa-500 hover:bg-kawa-600 disabled:opacity-50 text-slate-900 px-6 py-2 rounded flex items-center gap-2 w-fit font-bold transition-all shadow-md active:scale-95">
+          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Generate Key Pair
+        </button>
+        {privateKey && (
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-slate-600 dark:text-gray-400 mb-1 font-bold">Private Key</label>
+              <div className="bg-slate-50 dark:bg-black/30 p-3 rounded font-mono break-all text-kawa-700 dark:text-kawa-300 relative group border border-slate-300 dark:border-transparent h-64 overflow-y-auto shadow-inner whitespace-pre-wrap text-xs">
+                {privateKey}
+                <button 
+                  onClick={() => navigator.clipboard.writeText(privateKey)}
+                  className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-gray-800 p-1 rounded border border-gray-200 dark:border-transparent transition-all"
+                  title="Copy Private Key"
+                >
+                  <Copy className="w-4 h-4"/>
+                </button>
+              </div>
+            </div>
+            {publicKey && (
+              <div>
+                <label className="block text-sm text-slate-600 dark:text-gray-400 mb-1 font-bold">Public Key</label>
+                <div className="bg-slate-50 dark:bg-black/30 p-3 rounded font-mono break-all text-kawa-700 dark:text-kawa-300 relative group border border-slate-300 dark:border-transparent h-64 overflow-y-auto shadow-inner whitespace-pre-wrap text-xs">
+                  {publicKey}
+                  <button 
+                    onClick={() => navigator.clipboard.writeText(publicKey)}
+                    className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-gray-800 p-1 rounded border border-gray-200 dark:border-transparent transition-all"
+                    title="Copy Public Key"
+                  >
+                    <Copy className="w-4 h-4"/>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

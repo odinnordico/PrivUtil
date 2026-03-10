@@ -32,6 +32,8 @@ service PrivUtilService {
   rpc SqlFormat(SqlRequest) returns (SqlResponse) {}
   rpc IpCalc(IpRequest) returns (IpResponse) {}
   rpc GeneratePassword(PasswordRequest) returns (PasswordResponse) {}
+  rpc GenerateRsaKeyPair(RsaKeyRequest) returns (RsaKeyResponse) {}
+  rpc BaseConvert(BaseConvertRequest) returns (BaseConvertResponse) {}
 }
 
 message DiffRequest {
@@ -103,7 +105,8 @@ message LoremResponse {
 
 message HashRequest {
   string text = 1;
-  string algo = 2; // "md5", "sha1", "sha256", "sha512"
+  string algo = 2; // "md5", "sha1", "sha256", "sha512", "bcrypt"
+  optional int32 cost = 3;
 }
 
 message HashResponse {
@@ -296,4 +299,28 @@ message PasswordRequest {
 message PasswordResponse {
   repeated string passwords = 1;
   string error = 2;
+}
+
+message RsaKeyRequest {
+  int32 bits = 1; // e.g. 1024, 2048, 4096
+}
+
+message RsaKeyResponse {
+  string private_key = 1;
+  string public_key = 2;
+  string error = 3;
+}
+
+message BaseConvertRequest {
+  string input = 1;
+  int32 source_base = 2; // e.g., 10, 16, 2, 8, or 64
+}
+
+message BaseConvertResponse {
+  string decimal = 1;
+  string hex = 2;
+  string binary = 3;
+  string octal = 4;
+  string base64 = 5;
+  string error = 6;
 }

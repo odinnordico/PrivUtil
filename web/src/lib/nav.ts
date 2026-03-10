@@ -16,6 +16,7 @@ import {
   Database,
   Network,
   Key,
+  Hash,
   type LucideIcon
 } from 'lucide-react';
 
@@ -56,6 +57,12 @@ export const navItems: ToolItem[] = [
     icon: ArrowLeftRight, 
     path: '/convert',
     description: 'Convert between JSON, YAML, and XML formats'
+  },
+  { 
+    name: 'Number Base', 
+    icon: Hash, 
+    path: '/base',
+    description: 'Convert numbers across Decimal, Hexadecimal, Binary, etc.'
   },
   { 
     name: 'Generators', 
