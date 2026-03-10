@@ -4854,6 +4854,22 @@ export const PrivUtilServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    markdownToHtml: {
+      name: "MarkdownToHtml",
+      requestType: TextRequest,
+      requestStream: false,
+      responseType: TextResponse,
+      responseStream: false,
+      options: {},
+    },
+    htmlToMarkdown: {
+      name: "HtmlToMarkdown",
+      requestType: TextRequest,
+      requestStream: false,
+      responseType: TextResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -4908,6 +4924,8 @@ export interface PrivUtilServiceImplementation<CallContextExt = {}> {
     request: BaseConvertRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<BaseConvertResponse>>;
+  markdownToHtml(request: TextRequest, context: CallContext & CallContextExt): Promise<DeepPartial<TextResponse>>;
+  htmlToMarkdown(request: TextRequest, context: CallContext & CallContextExt): Promise<DeepPartial<TextResponse>>;
 }
 
 export interface PrivUtilServiceClient<CallOptionsExt = {}> {
@@ -4961,6 +4979,8 @@ export interface PrivUtilServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<BaseConvertRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<BaseConvertResponse>;
+  markdownToHtml(request: DeepPartial<TextRequest>, options?: CallOptions & CallOptionsExt): Promise<TextResponse>;
+  htmlToMarkdown(request: DeepPartial<TextRequest>, options?: CallOptions & CallOptionsExt): Promise<TextResponse>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

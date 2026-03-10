@@ -48,6 +48,8 @@ const (
 	PrivUtilService_GeneratePassword_FullMethodName   = "/privutil.PrivUtilService/GeneratePassword"
 	PrivUtilService_GenerateRsaKeyPair_FullMethodName = "/privutil.PrivUtilService/GenerateRsaKeyPair"
 	PrivUtilService_BaseConvert_FullMethodName        = "/privutil.PrivUtilService/BaseConvert"
+	PrivUtilService_MarkdownToHtml_FullMethodName     = "/privutil.PrivUtilService/MarkdownToHtml"
+	PrivUtilService_HtmlToMarkdown_FullMethodName     = "/privutil.PrivUtilService/HtmlToMarkdown"
 )
 
 // PrivUtilServiceClient is the client API for PrivUtilService service.
@@ -83,6 +85,8 @@ type PrivUtilServiceClient interface {
 	GeneratePassword(ctx context.Context, in *PasswordRequest, opts ...grpc.CallOption) (*PasswordResponse, error)
 	GenerateRsaKeyPair(ctx context.Context, in *RsaKeyRequest, opts ...grpc.CallOption) (*RsaKeyResponse, error)
 	BaseConvert(ctx context.Context, in *BaseConvertRequest, opts ...grpc.CallOption) (*BaseConvertResponse, error)
+	MarkdownToHtml(ctx context.Context, in *TextRequest, opts ...grpc.CallOption) (*TextResponse, error)
+	HtmlToMarkdown(ctx context.Context, in *TextRequest, opts ...grpc.CallOption) (*TextResponse, error)
 }
 
 type privUtilServiceClient struct {
@@ -383,6 +387,26 @@ func (c *privUtilServiceClient) BaseConvert(ctx context.Context, in *BaseConvert
 	return out, nil
 }
 
+func (c *privUtilServiceClient) MarkdownToHtml(ctx context.Context, in *TextRequest, opts ...grpc.CallOption) (*TextResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TextResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_MarkdownToHtml_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) HtmlToMarkdown(ctx context.Context, in *TextRequest, opts ...grpc.CallOption) (*TextResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TextResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_HtmlToMarkdown_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PrivUtilServiceServer is the server API for PrivUtilService service.
 // All implementations must embed UnimplementedPrivUtilServiceServer
 // for forward compatibility
@@ -416,6 +440,8 @@ type PrivUtilServiceServer interface {
 	GeneratePassword(context.Context, *PasswordRequest) (*PasswordResponse, error)
 	GenerateRsaKeyPair(context.Context, *RsaKeyRequest) (*RsaKeyResponse, error)
 	BaseConvert(context.Context, *BaseConvertRequest) (*BaseConvertResponse, error)
+	MarkdownToHtml(context.Context, *TextRequest) (*TextResponse, error)
+	HtmlToMarkdown(context.Context, *TextRequest) (*TextResponse, error)
 	mustEmbedUnimplementedPrivUtilServiceServer()
 }
 
@@ -509,6 +535,12 @@ func (UnimplementedPrivUtilServiceServer) GenerateRsaKeyPair(context.Context, *R
 }
 func (UnimplementedPrivUtilServiceServer) BaseConvert(context.Context, *BaseConvertRequest) (*BaseConvertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BaseConvert not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) MarkdownToHtml(context.Context, *TextRequest) (*TextResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MarkdownToHtml not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) HtmlToMarkdown(context.Context, *TextRequest) (*TextResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HtmlToMarkdown not implemented")
 }
 func (UnimplementedPrivUtilServiceServer) mustEmbedUnimplementedPrivUtilServiceServer() {}
 
@@ -1045,6 +1077,42 @@ func _PrivUtilService_BaseConvert_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PrivUtilService_MarkdownToHtml_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TextRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).MarkdownToHtml(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_MarkdownToHtml_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).MarkdownToHtml(ctx, req.(*TextRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_HtmlToMarkdown_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TextRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).HtmlToMarkdown(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_HtmlToMarkdown_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).HtmlToMarkdown(ctx, req.(*TextRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PrivUtilService_ServiceDesc is the grpc.ServiceDesc for PrivUtilService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1167,6 +1235,14 @@ var PrivUtilService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BaseConvert",
 			Handler:    _PrivUtilService_BaseConvert_Handler,
+		},
+		{
+			MethodName: "MarkdownToHtml",
+			Handler:    _PrivUtilService_MarkdownToHtml_Handler,
+		},
+		{
+			MethodName: "HtmlToMarkdown",
+			Handler:    _PrivUtilService_HtmlToMarkdown_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

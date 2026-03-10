@@ -17,6 +17,7 @@ import {
   Network,
   Key,
   Hash,
+  FileCode,
   type LucideIcon
 } from 'lucide-react';
 
@@ -141,5 +142,11 @@ export const navItems: ToolItem[] = [
     icon: Key, 
     path: '/password',
     description: 'Generate secure random passwords'
+  },
+  { 
+    name: 'Markdown', 
+    icon: FileCode, 
+    path: '/markdown',
+    description: 'Convert between Markdown and HTML'
   },
 ];

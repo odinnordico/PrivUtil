@@ -35,6 +35,7 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 | **Case Converter**      | camelCase, snake_case, PascalCase, kebab-case |
 | **Time Converter**      | Unix timestamps, timezone conversion          |
 | **IP Calculator**       | IPv4/IPv6 subnet calculations                 |
+| **Markdown**            | Convert between Markdown and HTML             |
 
 ### Generators & Security
 

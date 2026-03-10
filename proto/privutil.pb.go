@@ -3324,7 +3324,7 @@ var file_proto_privutil_proto_rawDesc = []byte{
 	0x10, 0x02, 0x12, 0x0b, 0x0a, 0x07, 0x52, 0x45, 0x56, 0x45, 0x52, 0x53, 0x45, 0x10, 0x03, 0x12,
 	0x0a, 0x0a, 0x06, 0x44, 0x45, 0x44, 0x55, 0x50, 0x45, 0x10, 0x04, 0x12, 0x10, 0x0a, 0x0c, 0x52,
 	0x45, 0x4d, 0x4f, 0x56, 0x45, 0x5f, 0x45, 0x4d, 0x50, 0x54, 0x59, 0x10, 0x05, 0x12, 0x08, 0x0a,
-	0x04, 0x54, 0x52, 0x49, 0x4d, 0x10, 0x06, 0x32, 0xb6, 0x0f, 0x0a, 0x0f, 0x50, 0x72, 0x69, 0x76,
+	0x04, 0x54, 0x52, 0x49, 0x4d, 0x10, 0x06, 0x32, 0xbc, 0x10, 0x0a, 0x0f, 0x50, 0x72, 0x69, 0x76,
 	0x55, 0x74, 0x69, 0x6c, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x37, 0x0a, 0x04, 0x44,
 	0x69, 0x66, 0x66, 0x12, 0x15, 0x2e, 0x70, 0x72, 0x69, 0x76, 0x75, 0x74, 0x69, 0x6c, 0x2e, 0x44,
 	0x69, 0x66, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70, 0x72, 0x69,
@@ -3448,10 +3448,18 @@ var file_proto_privutil_proto_rawDesc = []byte{
 	0x65, 0x43, 0x6f, 0x6e, 0x76, 0x65, 0x72, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
 	0x1d, 0x2e, 0x70, 0x72, 0x69, 0x76, 0x75, 0x74, 0x69, 0x6c, 0x2e, 0x42, 0x61, 0x73, 0x65, 0x43,
 	0x6f, 0x6e, 0x76, 0x65, 0x72, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
-	0x42, 0x27, 0x5a, 0x25, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6f,
-	0x64, 0x69, 0x6e, 0x6e, 0x6f, 0x72, 0x64, 0x69, 0x63, 0x6f, 0x2f, 0x70, 0x72, 0x69, 0x76, 0x75,
-	0x74, 0x69, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x12, 0x41, 0x0a, 0x0e, 0x4d, 0x61, 0x72, 0x6b, 0x64, 0x6f, 0x77, 0x6e, 0x54, 0x6f, 0x48, 0x74,
+	0x6d, 0x6c, 0x12, 0x15, 0x2e, 0x70, 0x72, 0x69, 0x76, 0x75, 0x74, 0x69, 0x6c, 0x2e, 0x54, 0x65,
+	0x78, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70, 0x72, 0x69, 0x76,
+	0x75, 0x74, 0x69, 0x6c, 0x2e, 0x54, 0x65, 0x78, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x00, 0x12, 0x41, 0x0a, 0x0e, 0x48, 0x74, 0x6d, 0x6c, 0x54, 0x6f, 0x4d, 0x61, 0x72,
+	0x6b, 0x64, 0x6f, 0x77, 0x6e, 0x12, 0x15, 0x2e, 0x70, 0x72, 0x69, 0x76, 0x75, 0x74, 0x69, 0x6c,
+	0x2e, 0x54, 0x65, 0x78, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x70,
+	0x72, 0x69, 0x76, 0x75, 0x74, 0x69, 0x6c, 0x2e, 0x54, 0x65, 0x78, 0x74, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x27, 0x5a, 0x25, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
+	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6f, 0x64, 0x69, 0x6e, 0x6e, 0x6f, 0x72, 0x64, 0x69, 0x63, 0x6f,
+	0x2f, 0x70, 0x72, 0x69, 0x76, 0x75, 0x74, 0x69, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3555,37 +3563,41 @@ var file_proto_privutil_proto_depIdxs = []int32{
 	46, // 29: privutil.PrivUtilService.GeneratePassword:input_type -> privutil.PasswordRequest
 	48, // 30: privutil.PrivUtilService.GenerateRsaKeyPair:input_type -> privutil.RsaKeyRequest
 	50, // 31: privutil.PrivUtilService.BaseConvert:input_type -> privutil.BaseConvertRequest
-	3,  // 32: privutil.PrivUtilService.Diff:output_type -> privutil.DiffResponse
-	5,  // 33: privutil.PrivUtilService.Base64Encode:output_type -> privutil.Base64Response
-	5,  // 34: privutil.PrivUtilService.Base64Decode:output_type -> privutil.Base64Response
-	7,  // 35: privutil.PrivUtilService.JsonFormat:output_type -> privutil.JsonFormatResponse
-	9,  // 36: privutil.PrivUtilService.Convert:output_type -> privutil.ConvertResponse
-	11, // 37: privutil.PrivUtilService.GenerateUuid:output_type -> privutil.UuidResponse
-	13, // 38: privutil.PrivUtilService.GenerateLorem:output_type -> privutil.LoremResponse
-	15, // 39: privutil.PrivUtilService.CalculateHash:output_type -> privutil.HashResponse
-	43, // 40: privutil.PrivUtilService.TextInspect:output_type -> privutil.TextInspectResponse
-	45, // 41: privutil.PrivUtilService.TextManipulate:output_type -> privutil.TextManipulateResponse
-	17, // 42: privutil.PrivUtilService.UrlEncode:output_type -> privutil.TextResponse
-	17, // 43: privutil.PrivUtilService.UrlDecode:output_type -> privutil.TextResponse
-	17, // 44: privutil.PrivUtilService.HtmlEncode:output_type -> privutil.TextResponse
-	17, // 45: privutil.PrivUtilService.HtmlDecode:output_type -> privutil.TextResponse
-	19, // 46: privutil.PrivUtilService.TimeConvert:output_type -> privutil.TimeResponse
-	21, // 47: privutil.PrivUtilService.JwtDecode:output_type -> privutil.JwtResponse
-	23, // 48: privutil.PrivUtilService.RegexTest:output_type -> privutil.RegexResponse
-	25, // 49: privutil.PrivUtilService.JsonToGo:output_type -> privutil.JsonToGoResponse
-	27, // 50: privutil.PrivUtilService.CronExplain:output_type -> privutil.CronResponse
-	29, // 51: privutil.PrivUtilService.CertParse:output_type -> privutil.CertResponse
-	31, // 52: privutil.PrivUtilService.ColorConvert:output_type -> privutil.ColorResponse
-	33, // 53: privutil.PrivUtilService.CaseConvert:output_type -> privutil.CaseResponse
-	35, // 54: privutil.PrivUtilService.StringEscape:output_type -> privutil.EscapeResponse
-	37, // 55: privutil.PrivUtilService.TextSimilarity:output_type -> privutil.SimilarityResponse
-	39, // 56: privutil.PrivUtilService.SqlFormat:output_type -> privutil.SqlResponse
-	41, // 57: privutil.PrivUtilService.IpCalc:output_type -> privutil.IpResponse
-	47, // 58: privutil.PrivUtilService.GeneratePassword:output_type -> privutil.PasswordResponse
-	49, // 59: privutil.PrivUtilService.GenerateRsaKeyPair:output_type -> privutil.RsaKeyResponse
-	51, // 60: privutil.PrivUtilService.BaseConvert:output_type -> privutil.BaseConvertResponse
-	32, // [32:61] is the sub-list for method output_type
-	3,  // [3:32] is the sub-list for method input_type
+	16, // 32: privutil.PrivUtilService.MarkdownToHtml:input_type -> privutil.TextRequest
+	16, // 33: privutil.PrivUtilService.HtmlToMarkdown:input_type -> privutil.TextRequest
+	3,  // 34: privutil.PrivUtilService.Diff:output_type -> privutil.DiffResponse
+	5,  // 35: privutil.PrivUtilService.Base64Encode:output_type -> privutil.Base64Response
+	5,  // 36: privutil.PrivUtilService.Base64Decode:output_type -> privutil.Base64Response
+	7,  // 37: privutil.PrivUtilService.JsonFormat:output_type -> privutil.JsonFormatResponse
+	9,  // 38: privutil.PrivUtilService.Convert:output_type -> privutil.ConvertResponse
+	11, // 39: privutil.PrivUtilService.GenerateUuid:output_type -> privutil.UuidResponse
+	13, // 40: privutil.PrivUtilService.GenerateLorem:output_type -> privutil.LoremResponse
+	15, // 41: privutil.PrivUtilService.CalculateHash:output_type -> privutil.HashResponse
+	43, // 42: privutil.PrivUtilService.TextInspect:output_type -> privutil.TextInspectResponse
+	45, // 43: privutil.PrivUtilService.TextManipulate:output_type -> privutil.TextManipulateResponse
+	17, // 44: privutil.PrivUtilService.UrlEncode:output_type -> privutil.TextResponse
+	17, // 45: privutil.PrivUtilService.UrlDecode:output_type -> privutil.TextResponse
+	17, // 46: privutil.PrivUtilService.HtmlEncode:output_type -> privutil.TextResponse
+	17, // 47: privutil.PrivUtilService.HtmlDecode:output_type -> privutil.TextResponse
+	19, // 48: privutil.PrivUtilService.TimeConvert:output_type -> privutil.TimeResponse
+	21, // 49: privutil.PrivUtilService.JwtDecode:output_type -> privutil.JwtResponse
+	23, // 50: privutil.PrivUtilService.RegexTest:output_type -> privutil.RegexResponse
+	25, // 51: privutil.PrivUtilService.JsonToGo:output_type -> privutil.JsonToGoResponse
+	27, // 52: privutil.PrivUtilService.CronExplain:output_type -> privutil.CronResponse
+	29, // 53: privutil.PrivUtilService.CertParse:output_type -> privutil.CertResponse
+	31, // 54: privutil.PrivUtilService.ColorConvert:output_type -> privutil.ColorResponse
+	33, // 55: privutil.PrivUtilService.CaseConvert:output_type -> privutil.CaseResponse
+	35, // 56: privutil.PrivUtilService.StringEscape:output_type -> privutil.EscapeResponse
+	37, // 57: privutil.PrivUtilService.TextSimilarity:output_type -> privutil.SimilarityResponse
+	39, // 58: privutil.PrivUtilService.SqlFormat:output_type -> privutil.SqlResponse
+	41, // 59: privutil.PrivUtilService.IpCalc:output_type -> privutil.IpResponse
+	47, // 60: privutil.PrivUtilService.GeneratePassword:output_type -> privutil.PasswordResponse
+	49, // 61: privutil.PrivUtilService.GenerateRsaKeyPair:output_type -> privutil.RsaKeyResponse
+	51, // 62: privutil.PrivUtilService.BaseConvert:output_type -> privutil.BaseConvertResponse
+	17, // 63: privutil.PrivUtilService.MarkdownToHtml:output_type -> privutil.TextResponse
+	17, // 64: privutil.PrivUtilService.HtmlToMarkdown:output_type -> privutil.TextResponse
+	34, // [34:65] is the sub-list for method output_type
+	3,  // [3:34] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
 	3,  // [3:3] is the sub-list for extension extendee
 	0,  // [0:3] is the sub-list for field type_name

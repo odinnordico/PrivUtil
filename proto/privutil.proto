@@ -34,6 +34,8 @@ service PrivUtilService {
   rpc GeneratePassword(PasswordRequest) returns (PasswordResponse) {}
   rpc GenerateRsaKeyPair(RsaKeyRequest) returns (RsaKeyResponse) {}
   rpc BaseConvert(BaseConvertRequest) returns (BaseConvertResponse) {}
+  rpc MarkdownToHtml(TextRequest) returns (TextResponse) {}
+  rpc HtmlToMarkdown(TextRequest) returns (TextResponse) {}
 }
 
 message DiffRequest {

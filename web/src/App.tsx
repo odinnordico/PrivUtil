@@ -18,6 +18,7 @@ import { SimilarityTool } from './components/SimilarityTool';
 import { SqlTool } from './components/SqlTool';
 import { IpTool } from './components/IpTool';
 import { PasswordTool } from './components/PasswordTool';
+import { MarkdownTool } from './components/MarkdownTool';
 import { Dashboard } from './components/Dashboard';
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
           <Route path="sql" element={<SqlTool />} />
           <Route path="ip" element={<IpTool />} />
           <Route path="password" element={<PasswordTool />} />
+          <Route path="markdown" element={<MarkdownTool />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

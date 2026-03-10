@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -11,7 +12,9 @@ import (
 	"strconv"
 	"strings"
 
+	htmltomarkdown "github.com/JohannesKaufmann/html-to-markdown/v2"
 	pb "github.com/odinnordico/privutil/proto"
+	"github.com/yuin/goldmark"
 )
 
 func (s *Server) Base64Encode(ctx context.Context, req *pb.Base64Request) (*pb.Base64Response, error) {
@@ -208,4 +211,20 @@ func (s *Server) BaseConvert(ctx context.Context, req *pb.BaseConvertRequest) (*
 		Octal:   octalStr,
 		Base64:  base64Str,
 	}, nil
+}
+
+func (s *Server) MarkdownToHtml(ctx context.Context, req *pb.TextRequest) (*pb.TextResponse, error) {
+	var buf bytes.Buffer
+	if err := goldmark.Convert([]byte(req.Text), &buf); err != nil {
+		return &pb.TextResponse{Text: "Error: " + err.Error()}, nil
+	}
+	return &pb.TextResponse{Text: buf.String()}, nil
+}
+
+func (s *Server) HtmlToMarkdown(ctx context.Context, req *pb.TextRequest) (*pb.TextResponse, error) {
+	markdown, err := htmltomarkdown.ConvertString(req.Text)
+	if err != nil {
+		return &pb.TextResponse{Text: "Error: " + err.Error()}, nil
+	}
+	return &pb.TextResponse{Text: markdown}, nil
 }

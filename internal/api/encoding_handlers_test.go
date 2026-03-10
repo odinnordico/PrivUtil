@@ -186,3 +186,57 @@ func TestBaseConvert(t *testing.T) {
 		})
 	}
 }
+
+func TestMarkdownToHtml(t *testing.T) {
+	s := NewServer()
+	ctx := context.Background()
+
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{"heading", "# Hello", "<h1>Hello</h1>\n"},
+		{"bold", "**bold**", "<p><strong>bold</strong></p>\n"},
+		{"paragraph", "Hello world", "<p>Hello world</p>\n"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			resp, err := s.MarkdownToHtml(ctx, &pb.TextRequest{Text: tt.input})
+			if err != nil {
+				t.Fatalf("MarkdownToHtml() error = %v", err)
+			}
+			if resp.Text != tt.want {
+				t.Errorf("MarkdownToHtml() = %q, want %q", resp.Text, tt.want)
+			}
+		})
+	}
+}
+
+func TestHtmlToMarkdown(t *testing.T) {
+	s := NewServer()
+	ctx := context.Background()
+
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{"heading", "<h1>Hello</h1>", "# Hello"},
+		{"bold", "<p><strong>bold</strong></p>", "**bold**"},
+		{"paragraph", "<p>Hello world</p>", "Hello world"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			resp, err := s.HtmlToMarkdown(ctx, &pb.TextRequest{Text: tt.input})
+			if err != nil {
+				t.Fatalf("HtmlToMarkdown() error = %v", err)
+			}
+			if resp.Text != tt.want {
+				t.Errorf("HtmlToMarkdown() = %q, want %q", resp.Text, tt.want)
+			}
+		})
+	}
+}
