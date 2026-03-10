@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { navItems } from '../lib/nav';
 
 export function Dashboard() {
-  const [term, setTerm] = useState('');
+  const [searchParams] = useSearchParams();
+  const term = searchParams.get('q') || '';
 
   const filtered = navItems.filter(item => 
     item.path !== '/' && ( // Exclude dashboard itself
@@ -22,18 +21,6 @@ export function Dashboard() {
         <p className="text-slate-500 dark:text-slate-400 text-lg">
           Offline-capable developer utility suite. Privacy-first, no server tracking.
         </p>
-        
-        <div className="relative max-w-lg mx-auto w-full mt-6">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 w-5 h-5" />
-          <input 
-            type="text" 
-            value={term}
-            onChange={e => setTerm(e.target.value)}
-            placeholder="Search tools..."
-            className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-full py-3 pl-12 pr-6 text-slate-900 dark:text-white focus:ring-2 focus:ring-kawa-500 focus:outline-none focus:border-transparent transition-all shadow-lg placeholder:text-slate-400"
-            autoFocus
-          />
-        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-12">
