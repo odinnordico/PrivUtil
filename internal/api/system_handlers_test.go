@@ -20,6 +20,13 @@ func TestTimeConvert(t *testing.T) {
 		{"unix", "1609459200"},
 		{"unix ms", "1609459200000"},
 		{"rfc3339", "2021-01-01T00:00:00Z"},
+		{"date only", "2021-01-01"},
+		{"datetime", "2021-01-01 00:00:00"},
+		{"us date", "01/01/2021"},
+		{"us date time", "01/01/2021 00:00:00"},
+		{"ansic", "Fri Jan  1 00:00:00 2021"},
+		{"rfc850", "Friday, 01-Jan-21 00:00:00 UTC"},
+		{"rfc1123", "Fri, 01 Jan 2021 00:00:00 UTC"},
 	}
 
 	for _, tt := range tests {
@@ -33,6 +40,16 @@ func TestTimeConvert(t *testing.T) {
 			}
 		})
 	}
+
+	t.Run("invalid input", func(t *testing.T) {
+		resp, err := s.TimeConvert(ctx, &pb.TimeRequest{Input: "not-a-date"})
+		if err != nil {
+			t.Fatalf("TimeConvert() error = %v", err)
+		}
+		if resp.Iso != "Invalid input format" {
+			t.Errorf("TimeConvert() expected 'Invalid input format', got %q", resp.Iso)
+		}
+	})
 }
 
 func TestCronExplain(t *testing.T) {
