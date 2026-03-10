@@ -181,20 +181,20 @@ func (s *Server) BaseConvert(ctx context.Context, req *pb.BaseConvertRequest) (*
 	var b64Builder strings.Builder
 	zero := big.NewInt(0)
 	sixtyFour := big.NewInt(64)
-	
+
 	for absNum.Cmp(zero) > 0 {
 		mod := new(big.Int)
 		absNum.DivMod(absNum, sixtyFour, mod)
 		b64Builder.WriteByte(alphabet[mod.Int64()])
 	}
-	
+
 	// Reverse the builder since we extracted least significant digits first
 	b64Bytes := []byte(b64Builder.String())
 	for i, j := 0, len(b64Bytes)-1; i < j; i, j = i+1, j-1 {
 		b64Bytes[i], b64Bytes[j] = b64Bytes[j], b64Bytes[i]
 	}
 	base64Str := string(b64Bytes)
-	
+
 	if sign < 0 {
 		// Just prefixing minus based on math magnitude base conversion assumption
 		decimalStr = "-" + decimalStr

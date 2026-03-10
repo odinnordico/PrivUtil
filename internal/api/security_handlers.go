@@ -3,7 +3,7 @@ package api
 import (
 	"bytes"
 	"context"
-	"crypto/md5"  // #nosec G501
+	"crypto/md5" // #nosec G501
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha1" // #nosec G505

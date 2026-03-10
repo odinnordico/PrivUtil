@@ -180,11 +180,9 @@ function HashGenerator() {
 
   const calculate = async () => {
     try {
-      const args: any = { text: input, algo };
-      if (algo === 'bcrypt') {
-        args.cost = cost;
-      }
-      const resp = await client.calculateHash(args as Parameters<typeof client.calculateHash>[0]);
+      const resp = await client.calculateHash({
+        text: input, algo, cost: algo === 'bcrypt' ? cost : undefined,
+      } as Parameters<typeof client.calculateHash>[0]);
       setHash(resp.hash);
     } catch (e) { console.error(e); }
   };
