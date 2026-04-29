@@ -1,6 +1,6 @@
-import { 
-  FileDiff, 
-  Binary, 
+import {
+  FileDiff,
+  Binary,
   LayoutDashboard,
   FileJson,
   ArrowLeftRight,
@@ -8,6 +8,7 @@ import {
   AlignLeft,
   Link as LinkIcon,
   Clock,
+  CalendarClock,
   Terminal,
   Palette,
   FileBadge,
@@ -95,9 +96,9 @@ export const navItems: ToolItem[] = [
     path: '/dev',
     description: 'JWT Debugger, Regex Tester, JSON to Go'
   },
-  { 
-    name: 'Cron Tools', 
-    icon: Clock, 
+  {
+    name: 'Cron Tools',
+    icon: CalendarClock,
     path: '/cron',
     description: 'Explain and test cron expressions'
   },

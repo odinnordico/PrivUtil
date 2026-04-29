@@ -1,13 +1,24 @@
-FROM golang:tip-alpine3.23 as build
-RUN apk update && apk add --no-cache make g++
-RUN apk add nodejs npm
-RUN mkdir PrivUtil
-COPY . /PrivUtil/
+FROM golang:1.26-alpine3.23 AS build
+
+RUN apk add --no-cache make g++ nodejs npm
+
 WORKDIR /PrivUtil
-RUN make build
 
-ENTRYPOINT [ "./privutil" ]
+# Cache Go module downloads separately from source changes
+COPY go.mod go.sum ./
+RUN go mod download
 
-FROM alpine:latest
+# Cache npm installs separately from source changes
+COPY web/package.json web/package-lock.json ./web/
+RUN cd web && npm ci
+
+# Copy source (node_modules excluded via .dockerignore)
+COPY . .
+
+RUN make build-go
+
+FROM alpine:3.23
+RUN addgroup -S privutil && adduser -S privutil -G privutil
 COPY --from=build /PrivUtil/privutil /bin/privutil
-ENTRYPOINT [ "privutil" ]
+USER privutil
+ENTRYPOINT ["privutil"]

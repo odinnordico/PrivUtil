@@ -77,7 +77,7 @@ function UuidGenerator() {
       <div className="flex flex-wrap gap-4 items-end">
         <div>
           <label className="block text-xs text-gray-400 mb-1">Count</label>
-          <input type="number" value={count} onChange={e => setCount(parseInt(e.target.value))} className="bg-gray-700 text-white rounded px-2 py-1 w-20" min="1" max="100"/>
+          <input type="number" value={count} onChange={e => setCount(parseInt(e.target.value))} className="bg-slate-50 dark:bg-gray-700 text-slate-900 dark:text-white rounded px-2 py-1 w-20 border border-slate-300 dark:border-transparent" min="1" max="100"/>
         </div>
         <div>
           <label className="block text-xs text-slate-500 dark:text-gray-400 mb-1 font-bold italic">Version</label>
@@ -111,7 +111,7 @@ function UuidGenerator() {
           <input type="checkbox" checked={uppercase} onChange={e => setUppercase(e.target.checked)} />
           <span className="text-slate-700 dark:text-gray-300 text-sm font-medium">Uppercase</span>
         </label>
-        <button onClick={generate} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded flex items-center gap-2">
+        <button onClick={generate} className="bg-kawa-500 hover:bg-kawa-600 text-slate-900 px-4 py-1.5 rounded flex items-center gap-2 font-bold shadow-md transition-all active:scale-95">
           <RefreshCw className="w-4 h-4" /> Generate
         </button>
       </div>
@@ -161,7 +161,7 @@ function LoremGenerator() {
         </div>
         <div>
           <label className="block text-xs text-gray-400 mb-1">Count</label>
-          <input type="number" value={count} onChange={e => setCount(parseInt(e.target.value))} className="bg-gray-700 text-white rounded px-2 py-1 w-20" min="1" max="100"/>
+          <input type="number" value={count} onChange={e => setCount(parseInt(e.target.value))} className="bg-slate-50 dark:bg-gray-700 text-slate-900 dark:text-white rounded px-2 py-1 w-20 border border-slate-300 dark:border-transparent" min="1" max="100"/>
         </div>
         <button onClick={generate} className="bg-kawa-500 hover:bg-kawa-600 text-slate-900 px-4 py-1.5 rounded flex items-center gap-2 font-bold shadow-md transition-all active:scale-95">
           <FileText className="w-4 h-4" /> Generate

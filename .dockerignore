@@ -1,0 +1,14 @@
+.git/
+.github/
+.agent/
+.claude/
+wiki/
+web/node_modules/
+web/coverage/
+web/dist/
+internal/server/dist/
+coverage.out
+coverage.html
+privutil
+privutil.exe
+*.md
