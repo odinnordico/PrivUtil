@@ -96,14 +96,17 @@ func (s *Server) IpCalc(ctx context.Context, req *pb.IpRequest) (*pb.IpResponse,
 
 	ones, bits := ipnet.Mask.Size()
 	network := ipnet.IP
-	var broadcast net.IP
-	var netmask net.IP = net.IP(ipnet.Mask)
+	netmask := net.IP(ipnet.Mask)
 
+	ipLen := len(ipnet.Mask)
+	lastIP := make(net.IP, ipLen)
+	for i := 0; i < ipLen; i++ {
+		lastIP[i] = network[i] | ^ipnet.Mask[i]
+	}
+
+	var broadcastStr string
 	if ip.To4() != nil {
-		broadcast = make(net.IP, 4)
-		for i := 0; i < 4; i++ {
-			broadcast[i] = network[i] | ^ipnet.Mask[i]
-		}
+		broadcastStr = lastIP.String()
 	}
 
 	var count int64
@@ -113,22 +116,28 @@ func (s *Server) IpCalc(ctx context.Context, req *pb.IpRequest) (*pb.IpResponse,
 
 	return &pb.IpResponse{
 		Network:   network.String(),
-		Broadcast: broadcast.String(),
+		Broadcast: broadcastStr,
 		Netmask:   netmask.String(),
 		NumHosts:  count,
 		FirstIp:   network.String(),
-		LastIp:    broadcast.String(),
+		LastIp:    lastIP.String(),
 	}, nil
 }
 
 func describeCron(expr string) string {
 	parts := strings.Fields(expr)
-	if len(parts) != 5 {
+	var min, hour, dom, month, dow string
+	switch len(parts) {
+	case 5:
+		min, hour, dom, month, dow = parts[0], parts[1], parts[2], parts[3], parts[4]
+	case 6:
+		// 6-field form: seconds minute hour dom month dow
+		min, hour, dom, month, dow = parts[1], parts[2], parts[3], parts[4], parts[5]
+	default:
 		return "Invalid cron expression format"
 	}
-	min, hour, dom, month, dow := parts[0], parts[1], parts[2], parts[3], parts[4]
 
-	if expr == "* * * * *" {
+	if min == "*" && hour == "*" && dom == "*" && month == "*" && dow == "*" {
 		return "Every minute"
 	}
 	if strings.HasPrefix(min, "*/") && hour == "*" && dom == "*" && month == "*" && dow == "*" {

@@ -1,10 +1,16 @@
 package server
 
 import (
+	"context"
 	"embed"
+	"errors"
+	"fmt"
 	"io/fs"
 	"net/http"
+	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
@@ -26,46 +32,58 @@ func New(addr string, grpcServer *grpc.Server) *Server {
 	}
 }
 
-func (s *Server) Start() error {
+func (s *Server) newHandler(distFS fs.FS) http.Handler {
 	wrappedGrpc := grpcweb.WrapServer(s.grpcServer, grpcweb.WithOriginFunc(func(origin string) bool {
-		return true // Allow all origins for dev
+		return true // intentional: privutil is a local utility, not exposed to the internet
 	}))
-
-	// Setup static file server
-	distFS, _ := fs.Sub(staticFiles, "dist")
 	fileServer := http.FileServer(http.FS(distFS))
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if wrappedGrpc.IsGrpcWebRequest(r) {
+			wrappedGrpc.ServeHTTP(w, r)
+			return
+		}
+
+		path := strings.TrimPrefix(r.URL.Path, "/")
+		if path == "" {
+			path = "index.html"
+		}
+
+		if _, err := fs.Stat(distFS, path); err != nil {
+			r.URL.Path = "/"
+			fileServer.ServeHTTP(w, r)
+			return
+		}
+
+		fileServer.ServeHTTP(w, r)
+	})
+}
+
+func (s *Server) Start() error {
+	distFS, err := fs.Sub(staticFiles, "dist")
+	if err != nil {
+		return fmt.Errorf("failed to access embedded assets: %w", err)
+	}
+
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
 
 	httpServer := &http.Server{
 		Addr:              s.addr,
-		ReadHeaderTimeout: 3 * time.Second, // G112: Potential Slowloris Attack
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if wrappedGrpc.IsGrpcWebRequest(r) {
-				wrappedGrpc.ServeHTTP(w, r)
-				return
-			}
-
-			// Serve static files
-			// If file exists in dist, serve it. Otherwise serve index.html for SPA routing
-			path := r.URL.Path
-			if path == "/" {
-				path = "index.html"
-			}
-
-			// Check if file exists in the embedded FS
-			f, err := distFS.Open(strings.TrimPrefix(path, "/"))
-			if err != nil {
-				// File not found, serve index.html for client-side routing
-				r.URL.Path = "/"
-				fileServer.ServeHTTP(w, r)
-				return
-			}
-			if f != nil {
-				_ = f.Close() // #nosec G104: Errors unhandled
-			}
-
-			fileServer.ServeHTTP(w, r)
-		}),
+		ReadHeaderTimeout: 3 * time.Second,
+		Handler:           s.newHandler(distFS),
 	}
 
-	return httpServer.ListenAndServe()
+	go func() {
+		<-ctx.Done()
+		s.grpcServer.GracefulStop()
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		_ = httpServer.Shutdown(shutdownCtx)
+	}()
+
+	if err := httpServer.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
+		return err
+	}
+	return nil
 }

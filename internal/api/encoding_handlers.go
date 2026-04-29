@@ -64,15 +64,15 @@ func (s *Server) StringEscape(ctx context.Context, req *pb.EscapeRequest) (*pb.E
 	switch req.Mode {
 	case "json":
 		if req.Action == "escape" {
-			b, _ := jsonMarshal(text)
+			b, _ := json.Marshal(text)
 			res = string(b)
 		} else {
 			if strings.HasPrefix(text, "\"") && strings.HasSuffix(text, "\"") {
-				if err := jsonUnmarshal([]byte(text), &res); err != nil {
+				if err := json.Unmarshal([]byte(text), &res); err != nil {
 					return &pb.EscapeResponse{Error: "Invalid JSON string"}, nil
 				}
 			} else {
-				if err := jsonUnmarshal([]byte("\""+text+"\""), &res); err != nil {
+				if err := json.Unmarshal([]byte("\""+text+"\""), &res); err != nil {
 					return &pb.EscapeResponse{Error: "Could not unescape"}, nil
 				}
 			}
@@ -110,14 +110,6 @@ func (s *Server) StringEscape(ctx context.Context, req *pb.EscapeRequest) (*pb.E
 	}
 
 	return &pb.EscapeResponse{Result: res}, nil
-}
-
-func jsonMarshal(v interface{}) ([]byte, error) {
-	return json.Marshal(v)
-}
-
-func jsonUnmarshal(data []byte, v interface{}) error {
-	return json.Unmarshal(data, v)
 }
 
 func (s *Server) BaseConvert(ctx context.Context, req *pb.BaseConvertRequest) (*pb.BaseConvertResponse, error) {

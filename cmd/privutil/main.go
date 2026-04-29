@@ -24,10 +24,9 @@ var (
 func main() {
 	// Define CLI flags
 	port := flag.String("port", getEnvOrDefault("PORT", "8090"), "Port to listen on")
-	host := flag.String("host", getEnvOrDefault("HOST", ""), "Host to bind to (default: all interfaces)")
-	logLevel := flag.String("log-level", getEnvOrDefault("LOG_LEVEL", "info"), "Log level: debug, info, warn, error")
+	host := flag.String("host", getEnvOrDefault("HOST", ""), "Host to bind to (empty = all interfaces)")
+	logLevel := flag.String("log-level", getEnvOrDefault("LOG_LEVEL", "info"), "Log level: debug, info (debug adds file/line to log output)")
 	version := flag.Bool("version", false, "Print version and exit")
-	help := flag.Bool("help", false, "Show help message")
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "PrivUtil - Offline-capable developer utility suite\n\n")
@@ -42,19 +41,18 @@ func main() {
 
 	flag.Parse()
 
-	if *help {
-		flag.Usage()
-		os.Exit(0)
-	}
-
 	if *version {
 		fmt.Printf("PrivUtil %s (built %s)\n", Version, BuildTime)
 		os.Exit(0)
 	}
 
-	// Configure logging based on level
-	if *logLevel == "debug" {
+	switch *logLevel {
+	case "debug":
 		log.SetFlags(log.LstdFlags | log.Lshortfile)
+	case "info":
+		// default log flags
+	default:
+		log.Fatalf("Unsupported log level %q: use debug or info", *logLevel)
 	}
 
 	// Create gRPC server
@@ -66,16 +64,11 @@ func main() {
 	srv := server.New(addr, grpcServer)
 
 	log.Printf("Starting PrivUtil on %s...", addr)
-	if *logLevel == "debug" {
-		log.Printf("Log level: %s", *logLevel)
-	}
-
 	if err := srv.Start(); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }
 
-// getEnvOrDefault returns environment variable value or default
 func getEnvOrDefault(key, defaultValue string) string {
 	if value := os.Getenv(key); value != "" {
 		return value

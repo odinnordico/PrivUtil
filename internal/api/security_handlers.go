@@ -16,6 +16,7 @@ import (
 	"encoding/pem"
 	"fmt"
 	"strings"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -97,8 +98,8 @@ func (s *Server) CertParse(ctx context.Context, req *pb.CertRequest) (*pb.CertRe
 	return &pb.CertResponse{
 		Subject:   cert.Subject.String(),
 		Issuer:    cert.Issuer.String(),
-		NotBefore: cert.NotBefore.Format("2006-01-02T15:04:05Z"), // Simplified format or use time.RFC3339 if imported
-		NotAfter:  cert.NotAfter.Format("2006-01-02T15:04:05Z"),
+		NotBefore: cert.NotBefore.UTC().Format(time.RFC3339),
+		NotAfter:  cert.NotAfter.UTC().Format(time.RFC3339),
 		Sans:      cert.DNSNames,
 	}, nil
 }

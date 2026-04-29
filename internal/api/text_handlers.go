@@ -125,13 +125,13 @@ func (s *Server) TextSimilarity(ctx context.Context, req *pb.SimilarityRequest) 
 			if r1[j-1] != r2[i-1] {
 				change++
 			}
-			currentRow[j] = minInt(add, minInt(del, change))
+			currentRow[j] = min(add, del, change)
 		}
 	}
 	dist := currentRow[n]
 
 	// Calculate similarity 0.0 - 1.0
-	maxLen := maxInt(n, m)
+	maxLen := max(n, m)
 	var sim float32
 	if maxLen == 0 {
 		sim = 1.0
@@ -244,16 +244,3 @@ func splitIntoWords(s string) []string {
 	return strings.Fields(s)
 }
 
-func minInt(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func maxInt(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}

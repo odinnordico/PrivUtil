@@ -206,8 +206,8 @@ func (s *Server) ColorConvert(ctx context.Context, req *pb.ColorRequest) (*pb.Co
 	}
 
 	rf, gf, bf := float64(r)/255.0, float64(g)/255.0, float64(b)/255.0
-	maxC := max(rf, max(gf, bf))
-	minC := min(rf, min(gf, bf))
+	maxC := max(rf, gf, bf)
+	minC := min(rf, gf, bf)
 	delta := maxC - minC
 
 	var hue, sat, lum float64
@@ -256,16 +256,3 @@ func toPascalCase(s string) string {
 	return strings.Join(words, "")
 }
 
-func max(a, b float64) float64 {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func min(a, b float64) float64 {
-	if a < b {
-		return a
-	}
-	return b
-}

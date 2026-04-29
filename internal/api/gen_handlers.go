@@ -2,8 +2,10 @@ package api
 
 import (
 	"context"
+	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
+	"math/big"
 	"strings"
 
 	"github.com/brianvoe/gofakeit/v6"
@@ -167,11 +169,16 @@ func (s *Server) GeneratePassword(ctx context.Context, req *pb.PasswordRequest) 
 		}
 	}
 
+	charsetLen := big.NewInt(int64(len(charset)))
 	passwords := make([]string, count)
 	for i := 0; i < count; i++ {
 		password := make([]byte, length)
 		for j := 0; j < length; j++ {
-			password[j] = charset[gofakeit.Number(0, len(charset)-1)]
+			idx, err := rand.Int(rand.Reader, charsetLen)
+			if err != nil {
+				return nil, fmt.Errorf("failed to generate password: %w", err)
+			}
+			password[j] = charset[idx.Int64()]
 		}
 		passwords[i] = string(password)
 	}

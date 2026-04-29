@@ -1,5 +1,6 @@
 # Agent rules/workflows downloaded by agent-cli (do not commit)
 .agent/
+.claude/
 
 !.gitkeep
 
@@ -33,6 +34,7 @@ yarn-error.log
 # React Build
 web/dist/**
 web/build/
+web/coverage/
 web/node_modules/
 
 internal/server/dist/**
