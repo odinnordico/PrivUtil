@@ -24,6 +24,7 @@ const (
 	PrivUtilService_Base64Decode_FullMethodName       = "/privutil.PrivUtilService/Base64Decode"
 	PrivUtilService_JsonFormat_FullMethodName         = "/privutil.PrivUtilService/JsonFormat"
 	PrivUtilService_Convert_FullMethodName            = "/privutil.PrivUtilService/Convert"
+	PrivUtilService_ValidateData_FullMethodName       = "/privutil.PrivUtilService/ValidateData"
 	PrivUtilService_GenerateUuid_FullMethodName       = "/privutil.PrivUtilService/GenerateUuid"
 	PrivUtilService_GenerateLorem_FullMethodName      = "/privutil.PrivUtilService/GenerateLorem"
 	PrivUtilService_CalculateHash_FullMethodName      = "/privutil.PrivUtilService/CalculateHash"
@@ -50,6 +51,45 @@ const (
 	PrivUtilService_BaseConvert_FullMethodName        = "/privutil.PrivUtilService/BaseConvert"
 	PrivUtilService_MarkdownToHtml_FullMethodName     = "/privutil.PrivUtilService/MarkdownToHtml"
 	PrivUtilService_HtmlToMarkdown_FullMethodName     = "/privutil.PrivUtilService/HtmlToMarkdown"
+	PrivUtilService_HmacGenerate_FullMethodName       = "/privutil.PrivUtilService/HmacGenerate"
+	PrivUtilService_OtpGenerate_FullMethodName        = "/privutil.PrivUtilService/OtpGenerate"
+	PrivUtilService_OtpValidate_FullMethodName        = "/privutil.PrivUtilService/OtpValidate"
+	PrivUtilService_UlidGenerate_FullMethodName       = "/privutil.PrivUtilService/UlidGenerate"
+	PrivUtilService_CaesarCipher_FullMethodName       = "/privutil.PrivUtilService/CaesarCipher"
+	PrivUtilService_TextEncode_FullMethodName         = "/privutil.PrivUtilService/TextEncode"
+	PrivUtilService_MorseCode_FullMethodName          = "/privutil.PrivUtilService/MorseCode"
+	PrivUtilService_BasicAuthGenerate_FullMethodName  = "/privutil.PrivUtilService/BasicAuthGenerate"
+	PrivUtilService_ChmodCalc_FullMethodName          = "/privutil.PrivUtilService/ChmodCalc"
+	PrivUtilService_Ipv4Convert_FullMethodName        = "/privutil.PrivUtilService/Ipv4Convert"
+	PrivUtilService_Ipv4RangeExpand_FullMethodName    = "/privutil.PrivUtilService/Ipv4RangeExpand"
+	PrivUtilService_GeneratePort_FullMethodName       = "/privutil.PrivUtilService/GeneratePort"
+	PrivUtilService_GenerateMac_FullMethodName        = "/privutil.PrivUtilService/GenerateMac"
+	PrivUtilService_Slugify_FullMethodName            = "/privutil.PrivUtilService/Slugify"
+	PrivUtilService_HiddenChars_FullMethodName        = "/privutil.PrivUtilService/HiddenChars"
+	PrivUtilService_TextReplace_FullMethodName        = "/privutil.PrivUtilService/TextReplace"
+	PrivUtilService_StringObfuscate_FullMethodName    = "/privutil.PrivUtilService/StringObfuscate"
+	PrivUtilService_NumeronymGenerate_FullMethodName  = "/privutil.PrivUtilService/NumeronymGenerate"
+	PrivUtilService_NatoAlphabet_FullMethodName       = "/privutil.PrivUtilService/NatoAlphabet"
+	PrivUtilService_ListProcess_FullMethodName        = "/privutil.PrivUtilService/ListProcess"
+	PrivUtilService_MathEval_FullMethodName           = "/privutil.PrivUtilService/MathEval"
+	PrivUtilService_PercentageCalc_FullMethodName     = "/privutil.PrivUtilService/PercentageCalc"
+	PrivUtilService_TempConvert_FullMethodName        = "/privutil.PrivUtilService/TempConvert"
+	PrivUtilService_UnitConvert_FullMethodName        = "/privutil.PrivUtilService/UnitConvert"
+	PrivUtilService_DateDiff_FullMethodName           = "/privutil.PrivUtilService/DateDiff"
+	PrivUtilService_LeapYear_FullMethodName           = "/privutil.PrivUtilService/LeapYear"
+	PrivUtilService_DateAdd_FullMethodName            = "/privutil.PrivUtilService/DateAdd"
+	PrivUtilService_DateFormat_FullMethodName         = "/privutil.PrivUtilService/DateFormat"
+	PrivUtilService_DateInfo_FullMethodName           = "/privutil.PrivUtilService/DateInfo"
+	PrivUtilService_UrlParse_FullMethodName           = "/privutil.PrivUtilService/UrlParse"
+	PrivUtilService_UserAgentParse_FullMethodName     = "/privutil.PrivUtilService/UserAgentParse"
+	PrivUtilService_HttpStatusSearch_FullMethodName   = "/privutil.PrivUtilService/HttpStatusSearch"
+	PrivUtilService_MimeLookup_FullMethodName         = "/privutil.PrivUtilService/MimeLookup"
+	PrivUtilService_DockerRunToCompose_FullMethodName = "/privutil.PrivUtilService/DockerRunToCompose"
+	PrivUtilService_GitCheatSheet_FullMethodName      = "/privutil.PrivUtilService/GitCheatSheet"
+	PrivUtilService_SvgOptimize_FullMethodName        = "/privutil.PrivUtilService/SvgOptimize"
+	PrivUtilService_ExifRead_FullMethodName           = "/privutil.PrivUtilService/ExifRead"
+	PrivUtilService_FileToBase64_FullMethodName       = "/privutil.PrivUtilService/FileToBase64"
+	PrivUtilService_Base64ToFile_FullMethodName       = "/privutil.PrivUtilService/Base64ToFile"
 )
 
 // PrivUtilServiceClient is the client API for PrivUtilService service.
@@ -61,6 +101,7 @@ type PrivUtilServiceClient interface {
 	Base64Decode(ctx context.Context, in *Base64Request, opts ...grpc.CallOption) (*Base64Response, error)
 	JsonFormat(ctx context.Context, in *JsonFormatRequest, opts ...grpc.CallOption) (*JsonFormatResponse, error)
 	Convert(ctx context.Context, in *ConvertRequest, opts ...grpc.CallOption) (*ConvertResponse, error)
+	ValidateData(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateResponse, error)
 	GenerateUuid(ctx context.Context, in *UuidRequest, opts ...grpc.CallOption) (*UuidResponse, error)
 	GenerateLorem(ctx context.Context, in *LoremRequest, opts ...grpc.CallOption) (*LoremResponse, error)
 	CalculateHash(ctx context.Context, in *HashRequest, opts ...grpc.CallOption) (*HashResponse, error)
@@ -87,6 +128,45 @@ type PrivUtilServiceClient interface {
 	BaseConvert(ctx context.Context, in *BaseConvertRequest, opts ...grpc.CallOption) (*BaseConvertResponse, error)
 	MarkdownToHtml(ctx context.Context, in *TextRequest, opts ...grpc.CallOption) (*TextResponse, error)
 	HtmlToMarkdown(ctx context.Context, in *TextRequest, opts ...grpc.CallOption) (*TextResponse, error)
+	HmacGenerate(ctx context.Context, in *HmacRequest, opts ...grpc.CallOption) (*HmacResponse, error)
+	OtpGenerate(ctx context.Context, in *OtpRequest, opts ...grpc.CallOption) (*OtpResponse, error)
+	OtpValidate(ctx context.Context, in *OtpValidateRequest, opts ...grpc.CallOption) (*OtpValidateResponse, error)
+	UlidGenerate(ctx context.Context, in *UlidRequest, opts ...grpc.CallOption) (*UlidResponse, error)
+	CaesarCipher(ctx context.Context, in *CaesarRequest, opts ...grpc.CallOption) (*CaesarResponse, error)
+	TextEncode(ctx context.Context, in *TextEncodeRequest, opts ...grpc.CallOption) (*TextEncodeResponse, error)
+	MorseCode(ctx context.Context, in *MorseRequest, opts ...grpc.CallOption) (*MorseResponse, error)
+	BasicAuthGenerate(ctx context.Context, in *BasicAuthRequest, opts ...grpc.CallOption) (*BasicAuthResponse, error)
+	ChmodCalc(ctx context.Context, in *ChmodRequest, opts ...grpc.CallOption) (*ChmodResponse, error)
+	Ipv4Convert(ctx context.Context, in *Ipv4ConvertRequest, opts ...grpc.CallOption) (*Ipv4ConvertResponse, error)
+	Ipv4RangeExpand(ctx context.Context, in *Ipv4RangeRequest, opts ...grpc.CallOption) (*Ipv4RangeResponse, error)
+	GeneratePort(ctx context.Context, in *PortRequest, opts ...grpc.CallOption) (*PortResponse, error)
+	GenerateMac(ctx context.Context, in *MacRequest, opts ...grpc.CallOption) (*MacResponse, error)
+	Slugify(ctx context.Context, in *SlugifyRequest, opts ...grpc.CallOption) (*SlugifyResponse, error)
+	HiddenChars(ctx context.Context, in *HiddenCharsRequest, opts ...grpc.CallOption) (*HiddenCharsResponse, error)
+	TextReplace(ctx context.Context, in *TextReplaceRequest, opts ...grpc.CallOption) (*TextReplaceResponse, error)
+	StringObfuscate(ctx context.Context, in *StringObfuscateRequest, opts ...grpc.CallOption) (*StringObfuscateResponse, error)
+	NumeronymGenerate(ctx context.Context, in *NumeronymRequest, opts ...grpc.CallOption) (*NumeronymResponse, error)
+	NatoAlphabet(ctx context.Context, in *NatoRequest, opts ...grpc.CallOption) (*NatoResponse, error)
+	ListProcess(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	MathEval(ctx context.Context, in *MathEvalRequest, opts ...grpc.CallOption) (*MathEvalResponse, error)
+	PercentageCalc(ctx context.Context, in *PercentageRequest, opts ...grpc.CallOption) (*PercentageResponse, error)
+	TempConvert(ctx context.Context, in *TempConvertRequest, opts ...grpc.CallOption) (*TempConvertResponse, error)
+	UnitConvert(ctx context.Context, in *UnitConvertRequest, opts ...grpc.CallOption) (*UnitConvertResponse, error)
+	DateDiff(ctx context.Context, in *DateDiffRequest, opts ...grpc.CallOption) (*DateDiffResponse, error)
+	LeapYear(ctx context.Context, in *LeapYearRequest, opts ...grpc.CallOption) (*LeapYearResponse, error)
+	DateAdd(ctx context.Context, in *DateAddRequest, opts ...grpc.CallOption) (*DateAddResponse, error)
+	DateFormat(ctx context.Context, in *DateFormatRequest, opts ...grpc.CallOption) (*DateFormatResponse, error)
+	DateInfo(ctx context.Context, in *DateInfoRequest, opts ...grpc.CallOption) (*DateInfoResponse, error)
+	UrlParse(ctx context.Context, in *UrlParseRequest, opts ...grpc.CallOption) (*UrlParseResponse, error)
+	UserAgentParse(ctx context.Context, in *UserAgentParseRequest, opts ...grpc.CallOption) (*UserAgentParseResponse, error)
+	HttpStatusSearch(ctx context.Context, in *HttpStatusSearchRequest, opts ...grpc.CallOption) (*HttpStatusSearchResponse, error)
+	MimeLookup(ctx context.Context, in *MimeLookupRequest, opts ...grpc.CallOption) (*MimeLookupResponse, error)
+	DockerRunToCompose(ctx context.Context, in *DockerRunToComposeRequest, opts ...grpc.CallOption) (*DockerRunToComposeResponse, error)
+	GitCheatSheet(ctx context.Context, in *GitCheatSheetRequest, opts ...grpc.CallOption) (*GitCheatSheetResponse, error)
+	SvgOptimize(ctx context.Context, in *SvgOptimizeRequest, opts ...grpc.CallOption) (*SvgOptimizeResponse, error)
+	ExifRead(ctx context.Context, in *ExifReadRequest, opts ...grpc.CallOption) (*ExifReadResponse, error)
+	FileToBase64(ctx context.Context, in *FileToBase64Request, opts ...grpc.CallOption) (*FileToBase64Response, error)
+	Base64ToFile(ctx context.Context, in *Base64ToFileRequest, opts ...grpc.CallOption) (*Base64ToFileResponse, error)
 }
 
 type privUtilServiceClient struct {
@@ -141,6 +221,16 @@ func (c *privUtilServiceClient) Convert(ctx context.Context, in *ConvertRequest,
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ConvertResponse)
 	err := c.cc.Invoke(ctx, PrivUtilService_Convert_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) ValidateData(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ValidateResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_ValidateData_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -407,6 +497,396 @@ func (c *privUtilServiceClient) HtmlToMarkdown(ctx context.Context, in *TextRequ
 	return out, nil
 }
 
+func (c *privUtilServiceClient) HmacGenerate(ctx context.Context, in *HmacRequest, opts ...grpc.CallOption) (*HmacResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HmacResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_HmacGenerate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) OtpGenerate(ctx context.Context, in *OtpRequest, opts ...grpc.CallOption) (*OtpResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OtpResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_OtpGenerate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) OtpValidate(ctx context.Context, in *OtpValidateRequest, opts ...grpc.CallOption) (*OtpValidateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OtpValidateResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_OtpValidate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) UlidGenerate(ctx context.Context, in *UlidRequest, opts ...grpc.CallOption) (*UlidResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UlidResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_UlidGenerate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) CaesarCipher(ctx context.Context, in *CaesarRequest, opts ...grpc.CallOption) (*CaesarResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CaesarResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_CaesarCipher_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) TextEncode(ctx context.Context, in *TextEncodeRequest, opts ...grpc.CallOption) (*TextEncodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TextEncodeResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_TextEncode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) MorseCode(ctx context.Context, in *MorseRequest, opts ...grpc.CallOption) (*MorseResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MorseResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_MorseCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) BasicAuthGenerate(ctx context.Context, in *BasicAuthRequest, opts ...grpc.CallOption) (*BasicAuthResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BasicAuthResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_BasicAuthGenerate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) ChmodCalc(ctx context.Context, in *ChmodRequest, opts ...grpc.CallOption) (*ChmodResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ChmodResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_ChmodCalc_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) Ipv4Convert(ctx context.Context, in *Ipv4ConvertRequest, opts ...grpc.CallOption) (*Ipv4ConvertResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Ipv4ConvertResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_Ipv4Convert_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) Ipv4RangeExpand(ctx context.Context, in *Ipv4RangeRequest, opts ...grpc.CallOption) (*Ipv4RangeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Ipv4RangeResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_Ipv4RangeExpand_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) GeneratePort(ctx context.Context, in *PortRequest, opts ...grpc.CallOption) (*PortResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PortResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_GeneratePort_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) GenerateMac(ctx context.Context, in *MacRequest, opts ...grpc.CallOption) (*MacResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MacResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_GenerateMac_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) Slugify(ctx context.Context, in *SlugifyRequest, opts ...grpc.CallOption) (*SlugifyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SlugifyResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_Slugify_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) HiddenChars(ctx context.Context, in *HiddenCharsRequest, opts ...grpc.CallOption) (*HiddenCharsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HiddenCharsResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_HiddenChars_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) TextReplace(ctx context.Context, in *TextReplaceRequest, opts ...grpc.CallOption) (*TextReplaceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TextReplaceResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_TextReplace_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) StringObfuscate(ctx context.Context, in *StringObfuscateRequest, opts ...grpc.CallOption) (*StringObfuscateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(StringObfuscateResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_StringObfuscate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) NumeronymGenerate(ctx context.Context, in *NumeronymRequest, opts ...grpc.CallOption) (*NumeronymResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NumeronymResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_NumeronymGenerate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) NatoAlphabet(ctx context.Context, in *NatoRequest, opts ...grpc.CallOption) (*NatoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NatoResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_NatoAlphabet_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) ListProcess(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_ListProcess_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) MathEval(ctx context.Context, in *MathEvalRequest, opts ...grpc.CallOption) (*MathEvalResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MathEvalResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_MathEval_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) PercentageCalc(ctx context.Context, in *PercentageRequest, opts ...grpc.CallOption) (*PercentageResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PercentageResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_PercentageCalc_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) TempConvert(ctx context.Context, in *TempConvertRequest, opts ...grpc.CallOption) (*TempConvertResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TempConvertResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_TempConvert_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) UnitConvert(ctx context.Context, in *UnitConvertRequest, opts ...grpc.CallOption) (*UnitConvertResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UnitConvertResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_UnitConvert_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) DateDiff(ctx context.Context, in *DateDiffRequest, opts ...grpc.CallOption) (*DateDiffResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DateDiffResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_DateDiff_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) LeapYear(ctx context.Context, in *LeapYearRequest, opts ...grpc.CallOption) (*LeapYearResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LeapYearResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_LeapYear_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) DateAdd(ctx context.Context, in *DateAddRequest, opts ...grpc.CallOption) (*DateAddResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DateAddResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_DateAdd_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) DateFormat(ctx context.Context, in *DateFormatRequest, opts ...grpc.CallOption) (*DateFormatResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DateFormatResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_DateFormat_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) DateInfo(ctx context.Context, in *DateInfoRequest, opts ...grpc.CallOption) (*DateInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DateInfoResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_DateInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) UrlParse(ctx context.Context, in *UrlParseRequest, opts ...grpc.CallOption) (*UrlParseResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UrlParseResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_UrlParse_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) UserAgentParse(ctx context.Context, in *UserAgentParseRequest, opts ...grpc.CallOption) (*UserAgentParseResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserAgentParseResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_UserAgentParse_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) HttpStatusSearch(ctx context.Context, in *HttpStatusSearchRequest, opts ...grpc.CallOption) (*HttpStatusSearchResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HttpStatusSearchResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_HttpStatusSearch_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) MimeLookup(ctx context.Context, in *MimeLookupRequest, opts ...grpc.CallOption) (*MimeLookupResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MimeLookupResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_MimeLookup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) DockerRunToCompose(ctx context.Context, in *DockerRunToComposeRequest, opts ...grpc.CallOption) (*DockerRunToComposeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DockerRunToComposeResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_DockerRunToCompose_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) GitCheatSheet(ctx context.Context, in *GitCheatSheetRequest, opts ...grpc.CallOption) (*GitCheatSheetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GitCheatSheetResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_GitCheatSheet_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) SvgOptimize(ctx context.Context, in *SvgOptimizeRequest, opts ...grpc.CallOption) (*SvgOptimizeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SvgOptimizeResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_SvgOptimize_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) ExifRead(ctx context.Context, in *ExifReadRequest, opts ...grpc.CallOption) (*ExifReadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExifReadResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_ExifRead_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) FileToBase64(ctx context.Context, in *FileToBase64Request, opts ...grpc.CallOption) (*FileToBase64Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FileToBase64Response)
+	err := c.cc.Invoke(ctx, PrivUtilService_FileToBase64_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) Base64ToFile(ctx context.Context, in *Base64ToFileRequest, opts ...grpc.CallOption) (*Base64ToFileResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Base64ToFileResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_Base64ToFile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PrivUtilServiceServer is the server API for PrivUtilService service.
 // All implementations must embed UnimplementedPrivUtilServiceServer
 // for forward compatibility
@@ -416,6 +896,7 @@ type PrivUtilServiceServer interface {
 	Base64Decode(context.Context, *Base64Request) (*Base64Response, error)
 	JsonFormat(context.Context, *JsonFormatRequest) (*JsonFormatResponse, error)
 	Convert(context.Context, *ConvertRequest) (*ConvertResponse, error)
+	ValidateData(context.Context, *ValidateRequest) (*ValidateResponse, error)
 	GenerateUuid(context.Context, *UuidRequest) (*UuidResponse, error)
 	GenerateLorem(context.Context, *LoremRequest) (*LoremResponse, error)
 	CalculateHash(context.Context, *HashRequest) (*HashResponse, error)
@@ -442,6 +923,45 @@ type PrivUtilServiceServer interface {
 	BaseConvert(context.Context, *BaseConvertRequest) (*BaseConvertResponse, error)
 	MarkdownToHtml(context.Context, *TextRequest) (*TextResponse, error)
 	HtmlToMarkdown(context.Context, *TextRequest) (*TextResponse, error)
+	HmacGenerate(context.Context, *HmacRequest) (*HmacResponse, error)
+	OtpGenerate(context.Context, *OtpRequest) (*OtpResponse, error)
+	OtpValidate(context.Context, *OtpValidateRequest) (*OtpValidateResponse, error)
+	UlidGenerate(context.Context, *UlidRequest) (*UlidResponse, error)
+	CaesarCipher(context.Context, *CaesarRequest) (*CaesarResponse, error)
+	TextEncode(context.Context, *TextEncodeRequest) (*TextEncodeResponse, error)
+	MorseCode(context.Context, *MorseRequest) (*MorseResponse, error)
+	BasicAuthGenerate(context.Context, *BasicAuthRequest) (*BasicAuthResponse, error)
+	ChmodCalc(context.Context, *ChmodRequest) (*ChmodResponse, error)
+	Ipv4Convert(context.Context, *Ipv4ConvertRequest) (*Ipv4ConvertResponse, error)
+	Ipv4RangeExpand(context.Context, *Ipv4RangeRequest) (*Ipv4RangeResponse, error)
+	GeneratePort(context.Context, *PortRequest) (*PortResponse, error)
+	GenerateMac(context.Context, *MacRequest) (*MacResponse, error)
+	Slugify(context.Context, *SlugifyRequest) (*SlugifyResponse, error)
+	HiddenChars(context.Context, *HiddenCharsRequest) (*HiddenCharsResponse, error)
+	TextReplace(context.Context, *TextReplaceRequest) (*TextReplaceResponse, error)
+	StringObfuscate(context.Context, *StringObfuscateRequest) (*StringObfuscateResponse, error)
+	NumeronymGenerate(context.Context, *NumeronymRequest) (*NumeronymResponse, error)
+	NatoAlphabet(context.Context, *NatoRequest) (*NatoResponse, error)
+	ListProcess(context.Context, *ListRequest) (*ListResponse, error)
+	MathEval(context.Context, *MathEvalRequest) (*MathEvalResponse, error)
+	PercentageCalc(context.Context, *PercentageRequest) (*PercentageResponse, error)
+	TempConvert(context.Context, *TempConvertRequest) (*TempConvertResponse, error)
+	UnitConvert(context.Context, *UnitConvertRequest) (*UnitConvertResponse, error)
+	DateDiff(context.Context, *DateDiffRequest) (*DateDiffResponse, error)
+	LeapYear(context.Context, *LeapYearRequest) (*LeapYearResponse, error)
+	DateAdd(context.Context, *DateAddRequest) (*DateAddResponse, error)
+	DateFormat(context.Context, *DateFormatRequest) (*DateFormatResponse, error)
+	DateInfo(context.Context, *DateInfoRequest) (*DateInfoResponse, error)
+	UrlParse(context.Context, *UrlParseRequest) (*UrlParseResponse, error)
+	UserAgentParse(context.Context, *UserAgentParseRequest) (*UserAgentParseResponse, error)
+	HttpStatusSearch(context.Context, *HttpStatusSearchRequest) (*HttpStatusSearchResponse, error)
+	MimeLookup(context.Context, *MimeLookupRequest) (*MimeLookupResponse, error)
+	DockerRunToCompose(context.Context, *DockerRunToComposeRequest) (*DockerRunToComposeResponse, error)
+	GitCheatSheet(context.Context, *GitCheatSheetRequest) (*GitCheatSheetResponse, error)
+	SvgOptimize(context.Context, *SvgOptimizeRequest) (*SvgOptimizeResponse, error)
+	ExifRead(context.Context, *ExifReadRequest) (*ExifReadResponse, error)
+	FileToBase64(context.Context, *FileToBase64Request) (*FileToBase64Response, error)
+	Base64ToFile(context.Context, *Base64ToFileRequest) (*Base64ToFileResponse, error)
 	mustEmbedUnimplementedPrivUtilServiceServer()
 }
 
@@ -463,6 +983,9 @@ func (UnimplementedPrivUtilServiceServer) JsonFormat(context.Context, *JsonForma
 }
 func (UnimplementedPrivUtilServiceServer) Convert(context.Context, *ConvertRequest) (*ConvertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Convert not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) ValidateData(context.Context, *ValidateRequest) (*ValidateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidateData not implemented")
 }
 func (UnimplementedPrivUtilServiceServer) GenerateUuid(context.Context, *UuidRequest) (*UuidResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateUuid not implemented")
@@ -541,6 +1064,123 @@ func (UnimplementedPrivUtilServiceServer) MarkdownToHtml(context.Context, *TextR
 }
 func (UnimplementedPrivUtilServiceServer) HtmlToMarkdown(context.Context, *TextRequest) (*TextResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HtmlToMarkdown not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) HmacGenerate(context.Context, *HmacRequest) (*HmacResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HmacGenerate not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) OtpGenerate(context.Context, *OtpRequest) (*OtpResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OtpGenerate not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) OtpValidate(context.Context, *OtpValidateRequest) (*OtpValidateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OtpValidate not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) UlidGenerate(context.Context, *UlidRequest) (*UlidResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UlidGenerate not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) CaesarCipher(context.Context, *CaesarRequest) (*CaesarResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CaesarCipher not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) TextEncode(context.Context, *TextEncodeRequest) (*TextEncodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TextEncode not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) MorseCode(context.Context, *MorseRequest) (*MorseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MorseCode not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) BasicAuthGenerate(context.Context, *BasicAuthRequest) (*BasicAuthResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BasicAuthGenerate not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) ChmodCalc(context.Context, *ChmodRequest) (*ChmodResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChmodCalc not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) Ipv4Convert(context.Context, *Ipv4ConvertRequest) (*Ipv4ConvertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ipv4Convert not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) Ipv4RangeExpand(context.Context, *Ipv4RangeRequest) (*Ipv4RangeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ipv4RangeExpand not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) GeneratePort(context.Context, *PortRequest) (*PortResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GeneratePort not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) GenerateMac(context.Context, *MacRequest) (*MacResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateMac not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) Slugify(context.Context, *SlugifyRequest) (*SlugifyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Slugify not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) HiddenChars(context.Context, *HiddenCharsRequest) (*HiddenCharsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HiddenChars not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) TextReplace(context.Context, *TextReplaceRequest) (*TextReplaceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TextReplace not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) StringObfuscate(context.Context, *StringObfuscateRequest) (*StringObfuscateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StringObfuscate not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) NumeronymGenerate(context.Context, *NumeronymRequest) (*NumeronymResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NumeronymGenerate not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) NatoAlphabet(context.Context, *NatoRequest) (*NatoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NatoAlphabet not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) ListProcess(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProcess not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) MathEval(context.Context, *MathEvalRequest) (*MathEvalResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MathEval not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) PercentageCalc(context.Context, *PercentageRequest) (*PercentageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PercentageCalc not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) TempConvert(context.Context, *TempConvertRequest) (*TempConvertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TempConvert not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) UnitConvert(context.Context, *UnitConvertRequest) (*UnitConvertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnitConvert not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) DateDiff(context.Context, *DateDiffRequest) (*DateDiffResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DateDiff not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) LeapYear(context.Context, *LeapYearRequest) (*LeapYearResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LeapYear not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) DateAdd(context.Context, *DateAddRequest) (*DateAddResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DateAdd not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) DateFormat(context.Context, *DateFormatRequest) (*DateFormatResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DateFormat not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) DateInfo(context.Context, *DateInfoRequest) (*DateInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DateInfo not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) UrlParse(context.Context, *UrlParseRequest) (*UrlParseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UrlParse not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) UserAgentParse(context.Context, *UserAgentParseRequest) (*UserAgentParseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserAgentParse not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) HttpStatusSearch(context.Context, *HttpStatusSearchRequest) (*HttpStatusSearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HttpStatusSearch not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) MimeLookup(context.Context, *MimeLookupRequest) (*MimeLookupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MimeLookup not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) DockerRunToCompose(context.Context, *DockerRunToComposeRequest) (*DockerRunToComposeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DockerRunToCompose not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) GitCheatSheet(context.Context, *GitCheatSheetRequest) (*GitCheatSheetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GitCheatSheet not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) SvgOptimize(context.Context, *SvgOptimizeRequest) (*SvgOptimizeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SvgOptimize not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) ExifRead(context.Context, *ExifReadRequest) (*ExifReadResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExifRead not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) FileToBase64(context.Context, *FileToBase64Request) (*FileToBase64Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FileToBase64 not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) Base64ToFile(context.Context, *Base64ToFileRequest) (*Base64ToFileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Base64ToFile not implemented")
 }
 func (UnimplementedPrivUtilServiceServer) mustEmbedUnimplementedPrivUtilServiceServer() {}
 
@@ -641,6 +1281,24 @@ func _PrivUtilService_Convert_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PrivUtilServiceServer).Convert(ctx, req.(*ConvertRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_ValidateData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).ValidateData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_ValidateData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).ValidateData(ctx, req.(*ValidateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1113,6 +1771,708 @@ func _PrivUtilService_HtmlToMarkdown_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PrivUtilService_HmacGenerate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HmacRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).HmacGenerate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_HmacGenerate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).HmacGenerate(ctx, req.(*HmacRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_OtpGenerate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OtpRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).OtpGenerate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_OtpGenerate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).OtpGenerate(ctx, req.(*OtpRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_OtpValidate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OtpValidateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).OtpValidate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_OtpValidate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).OtpValidate(ctx, req.(*OtpValidateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_UlidGenerate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UlidRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).UlidGenerate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_UlidGenerate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).UlidGenerate(ctx, req.(*UlidRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_CaesarCipher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CaesarRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).CaesarCipher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_CaesarCipher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).CaesarCipher(ctx, req.(*CaesarRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_TextEncode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TextEncodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).TextEncode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_TextEncode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).TextEncode(ctx, req.(*TextEncodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_MorseCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MorseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).MorseCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_MorseCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).MorseCode(ctx, req.(*MorseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_BasicAuthGenerate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BasicAuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).BasicAuthGenerate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_BasicAuthGenerate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).BasicAuthGenerate(ctx, req.(*BasicAuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_ChmodCalc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChmodRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).ChmodCalc(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_ChmodCalc_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).ChmodCalc(ctx, req.(*ChmodRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_Ipv4Convert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Ipv4ConvertRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).Ipv4Convert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_Ipv4Convert_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).Ipv4Convert(ctx, req.(*Ipv4ConvertRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_Ipv4RangeExpand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Ipv4RangeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).Ipv4RangeExpand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_Ipv4RangeExpand_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).Ipv4RangeExpand(ctx, req.(*Ipv4RangeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_GeneratePort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PortRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).GeneratePort(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_GeneratePort_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).GeneratePort(ctx, req.(*PortRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_GenerateMac_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MacRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).GenerateMac(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_GenerateMac_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).GenerateMac(ctx, req.(*MacRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_Slugify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SlugifyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).Slugify(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_Slugify_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).Slugify(ctx, req.(*SlugifyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_HiddenChars_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HiddenCharsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).HiddenChars(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_HiddenChars_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).HiddenChars(ctx, req.(*HiddenCharsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_TextReplace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TextReplaceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).TextReplace(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_TextReplace_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).TextReplace(ctx, req.(*TextReplaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_StringObfuscate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StringObfuscateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).StringObfuscate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_StringObfuscate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).StringObfuscate(ctx, req.(*StringObfuscateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_NumeronymGenerate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NumeronymRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).NumeronymGenerate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_NumeronymGenerate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).NumeronymGenerate(ctx, req.(*NumeronymRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_NatoAlphabet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NatoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).NatoAlphabet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_NatoAlphabet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).NatoAlphabet(ctx, req.(*NatoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_ListProcess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).ListProcess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_ListProcess_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).ListProcess(ctx, req.(*ListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_MathEval_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MathEvalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).MathEval(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_MathEval_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).MathEval(ctx, req.(*MathEvalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_PercentageCalc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PercentageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).PercentageCalc(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_PercentageCalc_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).PercentageCalc(ctx, req.(*PercentageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_TempConvert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TempConvertRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).TempConvert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_TempConvert_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).TempConvert(ctx, req.(*TempConvertRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_UnitConvert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnitConvertRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).UnitConvert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_UnitConvert_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).UnitConvert(ctx, req.(*UnitConvertRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_DateDiff_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DateDiffRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).DateDiff(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_DateDiff_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).DateDiff(ctx, req.(*DateDiffRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_LeapYear_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LeapYearRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).LeapYear(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_LeapYear_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).LeapYear(ctx, req.(*LeapYearRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_DateAdd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DateAddRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).DateAdd(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_DateAdd_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).DateAdd(ctx, req.(*DateAddRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_DateFormat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DateFormatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).DateFormat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_DateFormat_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).DateFormat(ctx, req.(*DateFormatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_DateInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DateInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).DateInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_DateInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).DateInfo(ctx, req.(*DateInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_UrlParse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UrlParseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).UrlParse(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_UrlParse_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).UrlParse(ctx, req.(*UrlParseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_UserAgentParse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserAgentParseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).UserAgentParse(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_UserAgentParse_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).UserAgentParse(ctx, req.(*UserAgentParseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_HttpStatusSearch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HttpStatusSearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).HttpStatusSearch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_HttpStatusSearch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).HttpStatusSearch(ctx, req.(*HttpStatusSearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_MimeLookup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MimeLookupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).MimeLookup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_MimeLookup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).MimeLookup(ctx, req.(*MimeLookupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_DockerRunToCompose_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DockerRunToComposeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).DockerRunToCompose(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_DockerRunToCompose_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).DockerRunToCompose(ctx, req.(*DockerRunToComposeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_GitCheatSheet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GitCheatSheetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).GitCheatSheet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_GitCheatSheet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).GitCheatSheet(ctx, req.(*GitCheatSheetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_SvgOptimize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SvgOptimizeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).SvgOptimize(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_SvgOptimize_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).SvgOptimize(ctx, req.(*SvgOptimizeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_ExifRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExifReadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).ExifRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_ExifRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).ExifRead(ctx, req.(*ExifReadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_FileToBase64_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FileToBase64Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).FileToBase64(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_FileToBase64_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).FileToBase64(ctx, req.(*FileToBase64Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_Base64ToFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Base64ToFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).Base64ToFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_Base64ToFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).Base64ToFile(ctx, req.(*Base64ToFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PrivUtilService_ServiceDesc is the grpc.ServiceDesc for PrivUtilService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1139,6 +2499,10 @@ var PrivUtilService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Convert",
 			Handler:    _PrivUtilService_Convert_Handler,
+		},
+		{
+			MethodName: "ValidateData",
+			Handler:    _PrivUtilService_ValidateData_Handler,
 		},
 		{
 			MethodName: "GenerateUuid",
@@ -1243,6 +2607,162 @@ var PrivUtilService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "HtmlToMarkdown",
 			Handler:    _PrivUtilService_HtmlToMarkdown_Handler,
+		},
+		{
+			MethodName: "HmacGenerate",
+			Handler:    _PrivUtilService_HmacGenerate_Handler,
+		},
+		{
+			MethodName: "OtpGenerate",
+			Handler:    _PrivUtilService_OtpGenerate_Handler,
+		},
+		{
+			MethodName: "OtpValidate",
+			Handler:    _PrivUtilService_OtpValidate_Handler,
+		},
+		{
+			MethodName: "UlidGenerate",
+			Handler:    _PrivUtilService_UlidGenerate_Handler,
+		},
+		{
+			MethodName: "CaesarCipher",
+			Handler:    _PrivUtilService_CaesarCipher_Handler,
+		},
+		{
+			MethodName: "TextEncode",
+			Handler:    _PrivUtilService_TextEncode_Handler,
+		},
+		{
+			MethodName: "MorseCode",
+			Handler:    _PrivUtilService_MorseCode_Handler,
+		},
+		{
+			MethodName: "BasicAuthGenerate",
+			Handler:    _PrivUtilService_BasicAuthGenerate_Handler,
+		},
+		{
+			MethodName: "ChmodCalc",
+			Handler:    _PrivUtilService_ChmodCalc_Handler,
+		},
+		{
+			MethodName: "Ipv4Convert",
+			Handler:    _PrivUtilService_Ipv4Convert_Handler,
+		},
+		{
+			MethodName: "Ipv4RangeExpand",
+			Handler:    _PrivUtilService_Ipv4RangeExpand_Handler,
+		},
+		{
+			MethodName: "GeneratePort",
+			Handler:    _PrivUtilService_GeneratePort_Handler,
+		},
+		{
+			MethodName: "GenerateMac",
+			Handler:    _PrivUtilService_GenerateMac_Handler,
+		},
+		{
+			MethodName: "Slugify",
+			Handler:    _PrivUtilService_Slugify_Handler,
+		},
+		{
+			MethodName: "HiddenChars",
+			Handler:    _PrivUtilService_HiddenChars_Handler,
+		},
+		{
+			MethodName: "TextReplace",
+			Handler:    _PrivUtilService_TextReplace_Handler,
+		},
+		{
+			MethodName: "StringObfuscate",
+			Handler:    _PrivUtilService_StringObfuscate_Handler,
+		},
+		{
+			MethodName: "NumeronymGenerate",
+			Handler:    _PrivUtilService_NumeronymGenerate_Handler,
+		},
+		{
+			MethodName: "NatoAlphabet",
+			Handler:    _PrivUtilService_NatoAlphabet_Handler,
+		},
+		{
+			MethodName: "ListProcess",
+			Handler:    _PrivUtilService_ListProcess_Handler,
+		},
+		{
+			MethodName: "MathEval",
+			Handler:    _PrivUtilService_MathEval_Handler,
+		},
+		{
+			MethodName: "PercentageCalc",
+			Handler:    _PrivUtilService_PercentageCalc_Handler,
+		},
+		{
+			MethodName: "TempConvert",
+			Handler:    _PrivUtilService_TempConvert_Handler,
+		},
+		{
+			MethodName: "UnitConvert",
+			Handler:    _PrivUtilService_UnitConvert_Handler,
+		},
+		{
+			MethodName: "DateDiff",
+			Handler:    _PrivUtilService_DateDiff_Handler,
+		},
+		{
+			MethodName: "LeapYear",
+			Handler:    _PrivUtilService_LeapYear_Handler,
+		},
+		{
+			MethodName: "DateAdd",
+			Handler:    _PrivUtilService_DateAdd_Handler,
+		},
+		{
+			MethodName: "DateFormat",
+			Handler:    _PrivUtilService_DateFormat_Handler,
+		},
+		{
+			MethodName: "DateInfo",
+			Handler:    _PrivUtilService_DateInfo_Handler,
+		},
+		{
+			MethodName: "UrlParse",
+			Handler:    _PrivUtilService_UrlParse_Handler,
+		},
+		{
+			MethodName: "UserAgentParse",
+			Handler:    _PrivUtilService_UserAgentParse_Handler,
+		},
+		{
+			MethodName: "HttpStatusSearch",
+			Handler:    _PrivUtilService_HttpStatusSearch_Handler,
+		},
+		{
+			MethodName: "MimeLookup",
+			Handler:    _PrivUtilService_MimeLookup_Handler,
+		},
+		{
+			MethodName: "DockerRunToCompose",
+			Handler:    _PrivUtilService_DockerRunToCompose_Handler,
+		},
+		{
+			MethodName: "GitCheatSheet",
+			Handler:    _PrivUtilService_GitCheatSheet_Handler,
+		},
+		{
+			MethodName: "SvgOptimize",
+			Handler:    _PrivUtilService_SvgOptimize_Handler,
+		},
+		{
+			MethodName: "ExifRead",
+			Handler:    _PrivUtilService_ExifRead_Handler,
+		},
+		{
+			MethodName: "FileToBase64",
+			Handler:    _PrivUtilService_FileToBase64_Handler,
+		},
+		{
+			MethodName: "Base64ToFile",
+			Handler:    _PrivUtilService_Base64ToFile_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

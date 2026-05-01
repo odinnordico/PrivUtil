@@ -9,7 +9,7 @@ export function BaseTool() {
   const [valOctal, setValOctal] = useState('');
   const [valBase64, setValBase64] = useState('');
 
-  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Only call the API when explicitly typed by the user, not dynamically
   const performConversion = useCallback(async (input: string, sourceBase: number) => {

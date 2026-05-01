@@ -20,8 +20,16 @@ const SimilarityTool  = lazy(() => import('./components/SimilarityTool').then(m 
 const SqlTool         = lazy(() => import('./components/SqlTool').then(m => ({ default: m.SqlTool })));
 const IpTool          = lazy(() => import('./components/IpTool').then(m => ({ default: m.IpTool })));
 const PasswordTool    = lazy(() => import('./components/PasswordTool').then(m => ({ default: m.PasswordTool })));
-const MarkdownTool    = lazy(() => import('./components/MarkdownTool').then(m => ({ default: m.MarkdownTool })));
-const Dashboard       = lazy(() => import('./components/Dashboard').then(m => ({ default: m.Dashboard })));
+const MarkdownTool       = lazy(() => import('./components/MarkdownTool').then(m => ({ default: m.MarkdownTool })));
+const DataValidatorTool  = lazy(() => import('./components/DataValidatorTool').then(m => ({ default: m.DataValidatorTool })));
+const NetworkTool          = lazy(() => import('./components/NetworkTool').then(m => ({ default: m.NetworkTool })));
+const EncodingCryptoTool   = lazy(() => import('./components/EncodingCryptoTool').then(m => ({ default: m.EncodingCryptoTool })));
+const TextStringTool     = lazy(() => import('./components/TextStringTool').then(m => ({ default: m.TextStringTool })));
+const MathUnitTool       = lazy(() => import('./components/MathUnitTool').then(m => ({ default: m.MathUnitTool })));
+const DateTimeTool       = lazy(() => import('./components/DateTimeTool').then(m => ({ default: m.DateTimeTool })));
+const WebDevOpsTool      = lazy(() => import('./components/WebDevOpsTool').then(m => ({ default: m.WebDevOpsTool })));
+const MediaTool          = lazy(() => import('./components/MediaTool').then(m => ({ default: m.MediaTool })));
+const Dashboard          = lazy(() => import('./components/Dashboard').then(m => ({ default: m.Dashboard })));
 
 function App() {
   return (
@@ -48,6 +56,14 @@ function App() {
           <Route path="ip"        element={<Suspense><IpTool /></Suspense>} />
           <Route path="password"  element={<Suspense><PasswordTool /></Suspense>} />
           <Route path="markdown"  element={<Suspense><MarkdownTool /></Suspense>} />
+          <Route path="validate"  element={<Suspense><DataValidatorTool /></Suspense>} />
+          <Route path="network"   element={<Suspense><NetworkTool /></Suspense>} />
+          <Route path="crypto"       element={<Suspense><EncodingCryptoTool /></Suspense>} />
+          <Route path="text-string"  element={<Suspense><TextStringTool /></Suspense>} />
+          <Route path="math"         element={<Suspense><MathUnitTool /></Suspense>} />
+          <Route path="datetime"     element={<Suspense><DateTimeTool /></Suspense>} />
+          <Route path="webdevops"    element={<Suspense><WebDevOpsTool /></Suspense>} />
+          <Route path="media"        element={<Suspense><MediaTool /></Suspense>} />
           <Route path="*"         element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

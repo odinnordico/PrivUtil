@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   FileJson,
   ArrowLeftRight,
+  ShieldCheck,
   Zap,
   AlignLeft,
   Link as LinkIcon,
@@ -16,9 +17,16 @@ import {
   GitCompareArrows,
   Database,
   Network,
+  Wifi,
   Key,
   Hash,
   FileCode,
+  Lock,
+  Shuffle,
+  Calculator,
+  Calendar,
+  Globe,
+  ImageIcon,
   type LucideIcon
 } from 'lucide-react';
 
@@ -54,11 +62,17 @@ export const navItems: ToolItem[] = [
     path: '/json',
     description: 'Format, minify and validate JSON data'
   },
-  { 
-    name: 'Universal Converter', 
-    icon: ArrowLeftRight, 
+  {
+    name: 'Universal Converter',
+    icon: ArrowLeftRight,
     path: '/convert',
-    description: 'Convert between JSON, YAML, and XML formats'
+    description: 'Convert between JSON, YAML, XML, TOML, and CSV formats'
+  },
+  {
+    name: 'Data Validator',
+    icon: ShieldCheck,
+    path: '/validate',
+    description: 'Validate JSON, YAML, XML, and TOML with error highlighting'
   },
   { 
     name: 'Number Base', 
@@ -66,11 +80,17 @@ export const navItems: ToolItem[] = [
     path: '/base',
     description: 'Convert numbers across Decimal, Hexadecimal, Binary, etc.'
   },
-  { 
-    name: 'Generators', 
-    icon: Zap, 
+  {
+    name: 'Generators',
+    icon: Zap,
     path: '/generators',
     description: 'Generate UUIDs, Lorem Ipsum, and Hashes'
+  },
+  {
+    name: 'Encoding & Crypto',
+    icon: Lock,
+    path: '/crypto',
+    description: 'HMAC, OTP/TOTP, ULID, Caesar cipher, text encoding, Morse code, Basic Auth'
   },
   { 
     name: 'Text Tools', 
@@ -132,11 +152,17 @@ export const navItems: ToolItem[] = [
     path: '/sql',
     description: 'Beautify and format SQL queries'
   },
-  { 
-    name: 'IP Calc', 
-    icon: Network, 
+  {
+    name: 'IP Calc',
+    icon: Network,
     path: '/ip',
     description: 'IPv4/IPv6 subnet calculator'
+  },
+  {
+    name: 'Network Tools',
+    icon: Wifi,
+    path: '/network',
+    description: 'chmod, IPv4 converter, range expander, port & MAC generator'
   },
   { 
     name: 'Password Generator', 
@@ -144,9 +170,39 @@ export const navItems: ToolItem[] = [
     path: '/password',
     description: 'Generate secure random passwords'
   },
-  { 
-    name: 'Markdown', 
-    icon: FileCode, 
+  {
+    name: 'Text & String',
+    icon: Shuffle,
+    path: '/text-string',
+    description: 'Slugify, hidden chars, find/replace, obfuscator, numeronym, NATO alphabet, list tools'
+  },
+  {
+    name: 'Math & Units',
+    icon: Calculator,
+    path: '/math',
+    description: 'Expression evaluator, percentage calculator, temperature & unit converter'
+  },
+  {
+    name: 'Date & Time',
+    icon: Calendar,
+    path: '/datetime',
+    description: 'Date diff, leap year checker, date arithmetic, formatters, and date info'
+  },
+  {
+    name: 'Web & DevOps',
+    icon: Globe,
+    path: '/webdevops',
+    description: 'URL parser, User-Agent, HTTP status codes, MIME types, Docker→Compose, Git cheat sheet'
+  },
+  {
+    name: 'Media Tools',
+    icon: ImageIcon,
+    path: '/media',
+    description: 'SVG optimizer, EXIF/image metadata reader, Base64 ↔ file converter'
+  },
+  {
+    name: 'Markdown',
+    icon: FileCode,
     path: '/markdown',
     description: 'Convert between Markdown and HTML'
   },

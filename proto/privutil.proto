@@ -10,6 +10,7 @@ service PrivUtilService {
   rpc Base64Decode(Base64Request) returns (Base64Response) {}
   rpc JsonFormat(JsonFormatRequest) returns (JsonFormatResponse) {}
   rpc Convert(ConvertRequest) returns (ConvertResponse) {}
+  rpc ValidateData(ValidateRequest) returns (ValidateResponse) {}
   rpc GenerateUuid(UuidRequest) returns (UuidResponse) {}
   rpc GenerateLorem(LoremRequest) returns (LoremResponse) {}
   rpc CalculateHash(HashRequest) returns (HashResponse) {}
@@ -36,6 +37,45 @@ service PrivUtilService {
   rpc BaseConvert(BaseConvertRequest) returns (BaseConvertResponse) {}
   rpc MarkdownToHtml(TextRequest) returns (TextResponse) {}
   rpc HtmlToMarkdown(TextRequest) returns (TextResponse) {}
+  rpc HmacGenerate(HmacRequest) returns (HmacResponse) {}
+  rpc OtpGenerate(OtpRequest) returns (OtpResponse) {}
+  rpc OtpValidate(OtpValidateRequest) returns (OtpValidateResponse) {}
+  rpc UlidGenerate(UlidRequest) returns (UlidResponse) {}
+  rpc CaesarCipher(CaesarRequest) returns (CaesarResponse) {}
+  rpc TextEncode(TextEncodeRequest) returns (TextEncodeResponse) {}
+  rpc MorseCode(MorseRequest) returns (MorseResponse) {}
+  rpc BasicAuthGenerate(BasicAuthRequest) returns (BasicAuthResponse) {}
+  rpc ChmodCalc(ChmodRequest) returns (ChmodResponse) {}
+  rpc Ipv4Convert(Ipv4ConvertRequest) returns (Ipv4ConvertResponse) {}
+  rpc Ipv4RangeExpand(Ipv4RangeRequest) returns (Ipv4RangeResponse) {}
+  rpc GeneratePort(PortRequest) returns (PortResponse) {}
+  rpc GenerateMac(MacRequest) returns (MacResponse) {}
+  rpc Slugify(SlugifyRequest) returns (SlugifyResponse) {}
+  rpc HiddenChars(HiddenCharsRequest) returns (HiddenCharsResponse) {}
+  rpc TextReplace(TextReplaceRequest) returns (TextReplaceResponse) {}
+  rpc StringObfuscate(StringObfuscateRequest) returns (StringObfuscateResponse) {}
+  rpc NumeronymGenerate(NumeronymRequest) returns (NumeronymResponse) {}
+  rpc NatoAlphabet(NatoRequest) returns (NatoResponse) {}
+  rpc ListProcess(ListRequest) returns (ListResponse) {}
+  rpc MathEval(MathEvalRequest) returns (MathEvalResponse) {}
+  rpc PercentageCalc(PercentageRequest) returns (PercentageResponse) {}
+  rpc TempConvert(TempConvertRequest) returns (TempConvertResponse) {}
+  rpc UnitConvert(UnitConvertRequest) returns (UnitConvertResponse) {}
+  rpc DateDiff(DateDiffRequest) returns (DateDiffResponse) {}
+  rpc LeapYear(LeapYearRequest) returns (LeapYearResponse) {}
+  rpc DateAdd(DateAddRequest) returns (DateAddResponse) {}
+  rpc DateFormat(DateFormatRequest) returns (DateFormatResponse) {}
+  rpc DateInfo(DateInfoRequest) returns (DateInfoResponse) {}
+  rpc UrlParse(UrlParseRequest) returns (UrlParseResponse) {}
+  rpc UserAgentParse(UserAgentParseRequest) returns (UserAgentParseResponse) {}
+  rpc HttpStatusSearch(HttpStatusSearchRequest) returns (HttpStatusSearchResponse) {}
+  rpc MimeLookup(MimeLookupRequest) returns (MimeLookupResponse) {}
+  rpc DockerRunToCompose(DockerRunToComposeRequest) returns (DockerRunToComposeResponse) {}
+  rpc GitCheatSheet(GitCheatSheetRequest) returns (GitCheatSheetResponse) {}
+  rpc SvgOptimize(SvgOptimizeRequest) returns (SvgOptimizeResponse) {}
+  rpc ExifRead(ExifReadRequest) returns (ExifReadResponse) {}
+  rpc FileToBase64(FileToBase64Request) returns (FileToBase64Response) {}
+  rpc Base64ToFile(Base64ToFileRequest) returns (Base64ToFileResponse) {}
 }
 
 message DiffRequest {
@@ -70,18 +110,34 @@ message JsonFormatResponse {
 enum DataFormat {
   JSON = 0;
   YAML = 1;
-  XML = 2;
+  XML  = 2;
+  TOML = 3;
+  CSV  = 4;
 }
 
 message ConvertRequest {
   string data = 1;
   DataFormat source_format = 2;
   DataFormat target_format = 3;
+  string csv_delimiter = 4; // single character; defaults to ","
+  bool csv_no_header = 5;   // if true, CSV rows are arrays instead of objects
 }
 
 message ConvertResponse {
   string data = 1;
   string error = 2;
+}
+
+message ValidateRequest {
+  string data = 1;
+  DataFormat format = 2; // JSON, YAML, XML, or TOML
+}
+
+message ValidateResponse {
+  bool valid = 1;
+  string error = 2;
+  int32 line = 3;
+  int32 column = 4;
 }
 
 message UuidRequest {
@@ -325,4 +381,636 @@ message BaseConvertResponse {
   string octal = 4;
   string base64 = 5;
   string error = 6;
+}
+
+message ChmodRequest {
+  string input = 1; // octal "755" or symbolic "rwxr-xr-x"
+}
+
+message ChmodResponse {
+  string octal         = 1;
+  string symbolic      = 2;  // "rwxr-xr-x"
+  int32  value         = 3;  // decimal value e.g. 493
+  bool   owner_read    = 4;
+  bool   owner_write   = 5;
+  bool   owner_execute = 6;
+  bool   group_read    = 7;
+  bool   group_write   = 8;
+  bool   group_execute = 9;
+  bool   other_read    = 10;
+  bool   other_write   = 11;
+  bool   other_execute = 12;
+  bool   setuid        = 13;
+  bool   setgid        = 14;
+  bool   sticky        = 15;
+  string description   = 16;
+  string error         = 17;
+}
+
+message Ipv4ConvertRequest {
+  string input = 1; // dotted "192.168.1.1", decimal "3232235777", hex "0xC0A80101", binary "11000000..."
+}
+
+message Ipv4ConvertResponse {
+  string dotted  = 1;  // "192.168.1.1"
+  string decimal = 2;  // "3232235777"
+  string hex     = 3;  // "0xC0A80101"
+  string binary  = 4;  // "11000000.10101000.00000001.00000001"
+  string error   = 5;
+}
+
+message Ipv4RangeRequest {
+  string start = 1;  // dotted decimal
+  string end   = 2;  // dotted decimal
+}
+
+message Ipv4RangeResponse {
+  repeated string addresses = 1;  // individual IPs (capped at 256)
+  repeated string cidrs     = 2;  // CIDR summary
+  int64           total     = 3;  // total count in range
+  string          error     = 4;
+}
+
+message PortRequest {
+  int32 count          = 1;
+  int32 min            = 2;
+  int32 max            = 3;
+  bool  exclude_system = 4;  // exclude ports 0–1023
+}
+
+message PortResponse {
+  repeated int32 ports = 1;
+  string         error = 2;
+}
+
+message MacRequest {
+  int32  count     = 1;
+  string separator = 2;  // ":", "-", "." (Cisco), or "" (none)
+  bool   uppercase = 3;
+  string oui       = 4;  // optional 3-byte OUI prefix e.g. "00:1A:2B"
+  bool   unicast   = 5;  // ensure unicast bit is set (bit 0 of first byte = 0)
+  bool   local     = 6;  // set locally-administered bit (bit 1 of first byte = 1)
+}
+
+message MacResponse {
+  repeated string addresses = 1;
+  string          error     = 2;
+}
+
+message HmacRequest {
+  string message = 1;
+  string secret  = 2;
+  string algo    = 3; // "sha256", "sha512", "sha1", "md5"
+}
+
+message HmacResponse {
+  string hex    = 1;
+  string base64 = 2;
+  string error  = 3;
+}
+
+message OtpRequest {
+  string secret          = 1; // base32-encoded secret
+  string type            = 2; // "totp" or "hotp"
+  int64  counter         = 3; // HOTP counter
+  int32  digits          = 4; // 6 or 8 (default 6)
+  int32  period          = 5; // TOTP period seconds (default 30)
+  string algo            = 6; // "sha1", "sha256", "sha512" (default sha1)
+  bool   generate_secret = 7; // if true, generate a new random secret
+}
+
+message OtpResponse {
+  string code           = 1;
+  string secret         = 2; // populated when generate_secret=true
+  int64  valid_until    = 3; // unix timestamp when current period ends
+  int64  time_remaining = 4; // seconds until next period
+  string uri            = 5; // otpauth:// URI
+  string error          = 6;
+}
+
+message OtpValidateRequest {
+  string secret  = 1;
+  string code    = 2;
+  int32  window  = 3; // allowed drift in periods (default 1)
+  int32  period  = 4; // default 30
+  string algo    = 5; // "sha1", "sha256", "sha512"
+}
+
+message OtpValidateResponse {
+  bool   valid = 1;
+  string error = 2;
+}
+
+message UlidRequest {
+  int32 count     = 1;
+  bool  monotonic = 2; // use monotonic entropy for ordering within same millisecond
+}
+
+message UlidResponse {
+  repeated string ulids = 1;
+  string          error = 2;
+}
+
+message CaesarRequest {
+  string text   = 1;
+  int32  shift  = 2; // 1–25; ROT13 = 13
+  string action = 3; // "encode" or "decode"
+}
+
+message CaesarResponse {
+  string result = 1;
+  string error  = 2;
+}
+
+message TextEncodeRequest {
+  string text   = 1;
+  string action = 2; // "encode" or "decode"
+  string format = 3; // "binary", "hex", "octal", "decimal"
+}
+
+message TextEncodeResponse {
+  string result = 1;
+  string error  = 2;
+}
+
+message MorseRequest {
+  string text   = 1;
+  string action = 2; // "encode" or "decode"
+}
+
+message MorseResponse {
+  string result = 1;
+  string error  = 2;
+}
+
+message BasicAuthRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message BasicAuthResponse {
+  string header     = 1; // "Basic <token>"
+  string token      = 2; // base64 part only
+  string decoded    = 3; // "username:password" (for reverse direction)
+  string error      = 4;
+}
+
+message SlugifyRequest {
+  string text      = 1;
+  string separator = 2;  // "-" (default), "_", or "" (no separator)
+  bool   uppercase = 3;  // default false → lowercase
+  int32  max_len   = 4;  // 0 = unlimited
+}
+message SlugifyResponse {
+  string result = 1;
+  string error  = 2;
+}
+
+message HiddenCharsRequest {
+  string text = 1;
+}
+message HiddenCharInfo {
+  string name      = 1;
+  string codepoint = 2;
+  int32  count     = 3;
+}
+message HiddenCharsResponse {
+  bool                    has_hidden = 1;
+  repeated HiddenCharInfo chars      = 2;
+  string                  annotated  = 3;  // original with [U+XXXX] markers
+  string                  cleaned    = 4;  // original with hidden chars removed
+  string                  error      = 5;
+}
+
+message TextReplaceRequest {
+  string text             = 1;
+  string find             = 2;
+  string replace_with     = 3;
+  bool   use_regex        = 4;
+  bool   case_insensitive = 5;
+}
+message TextReplaceResponse {
+  string result = 1;
+  int32  count  = 2;
+  string error  = 3;
+}
+
+message StringObfuscateRequest {
+  string text       = 1;
+  int32  keep_start = 2;
+  int32  keep_end   = 3;
+  string mask_char  = 4;  // default "*"
+}
+message StringObfuscateResponse {
+  string result = 1;
+  string error  = 2;
+}
+
+message NumeronymRequest {
+  string text = 1;
+}
+message NumeronymResponse {
+  repeated string words  = 1;  // numeronym per word
+  string          result = 2;  // space-joined
+  string          error  = 3;
+}
+
+message NatoRequest {
+  string text   = 1;
+  string action = 2;  // "encode" or "decode"
+}
+message NatoResponse {
+  string result = 1;
+  string error  = 2;
+}
+
+enum ListAction {
+  LIST_SORT_AZ      = 0;
+  LIST_SORT_ZA      = 1;
+  LIST_SORT_NUMERIC = 2;
+  LIST_SHUFFLE      = 3;
+  LIST_DEDUPE       = 4;
+  LIST_UNIQUE_ONLY  = 5;
+  LIST_DUPLICATES   = 6;
+  LIST_FREQUENCY    = 7;
+  LIST_REVERSE      = 8;
+  LIST_TRIM         = 9;
+  LIST_REMOVE_EMPTY = 10;
+}
+
+message ListRequest {
+  string     text             = 1;
+  ListAction action           = 2;
+  bool       case_insensitive = 3;
+}
+message ListFreqItem {
+  string line  = 1;
+  int32  count = 2;
+}
+message ListResponse {
+  string                result       = 1;
+  int32                 input_count  = 2;
+  int32                 output_count = 3;
+  repeated ListFreqItem frequency    = 4;
+  string                error        = 5;
+}
+
+// ── Math evaluator ────────────────────────────────────────────────────────────
+
+message MathVariable {
+  string name  = 1;
+  double value = 2;
+}
+message MathEvalRequest {
+  string                expression = 1;
+  repeated MathVariable variables  = 2;
+  int32                 precision  = 3;  // 0-15 decimal places, default 10
+  bool                  degrees    = 4;  // if true, trig input/output in degrees
+}
+message MathEvalResponse {
+  string result    = 1;
+  double raw_value = 2;
+  string error     = 3;
+}
+
+// ── Percentage calculator ─────────────────────────────────────────────────────
+
+enum PercentMode {
+  PCT_X_OF_Y  = 0;  // what is A% of B?
+  PCT_WHAT    = 1;  // A is what % of B?
+  PCT_CHANGE  = 2;  // % change from A to B
+  PCT_REVERSE = 3;  // A is B% of what?
+}
+message PercentageRequest {
+  PercentMode mode = 1;
+  double      a    = 2;
+  double      b    = 3;
+}
+message PercentageResponse {
+  double result    = 1;
+  string formatted = 2;  // human-readable sentence
+  string formula   = 3;  // the formula used
+  string error     = 4;
+}
+
+// ── Temperature converter ─────────────────────────────────────────────────────
+
+message TempConvertRequest {
+  double value     = 1;
+  string from_unit = 2;  // "c", "f", "k"
+}
+message TempConvertResponse {
+  double celsius    = 1;
+  double fahrenheit = 2;
+  double kelvin     = 3;
+  string error      = 4;
+}
+
+// ── Unit converter ────────────────────────────────────────────────────────────
+
+enum UnitCategory {
+  UNIT_BYTES  = 0;
+  UNIT_LENGTH = 1;
+  UNIT_MASS   = 2;
+  UNIT_AREA   = 3;
+  UNIT_VOLUME = 4;
+  UNIT_SPEED  = 5;
+}
+message UnitConvertRequest {
+  double       value     = 1;
+  string       from_unit = 2;
+  UnitCategory category  = 3;
+}
+message UnitResult {
+  string unit      = 1;
+  string label     = 2;
+  double value     = 3;
+  string formatted = 4;
+}
+message UnitConvertResponse {
+  repeated UnitResult results = 1;
+  string              error   = 2;
+}
+
+// ── Date difference ───────────────────────────────────────────────────────────
+
+message DateDiffRequest {
+  string from_date = 1;  // any parseable date/datetime string
+  string to_date   = 2;
+}
+message DateDiffResponse {
+  int64  years       = 1;
+  int64  months      = 2;
+  int64  weeks       = 3;
+  int64  days        = 4;
+  int64  hours       = 5;
+  int64  minutes     = 6;
+  int64  seconds     = 7;
+  int64  total_days  = 8;
+  int64  total_hours = 9;
+  int64  total_secs  = 10;
+  bool   negative    = 11;  // true when from is after to
+  string human       = 12;  // e.g. "2 years, 3 months, 5 days"
+  string error       = 13;
+}
+
+// ── Leap year checker ─────────────────────────────────────────────────────────
+
+message LeapYearRequest {
+  string input = 1;  // single year, comma list, or "YYYY-YYYY" range
+}
+message LeapYearEntry {
+  int32 year    = 1;
+  bool  is_leap = 2;
+}
+message LeapYearResponse {
+  repeated LeapYearEntry results    = 1;
+  int32                  leap_count = 2;
+  string                 error      = 3;
+}
+
+// ── Date arithmetic ───────────────────────────────────────────────────────────
+
+message DateAddRequest {
+  string date    = 1;
+  int32  years   = 2;
+  int32  months  = 3;
+  int32  weeks   = 4;
+  int32  days    = 5;
+  int32  hours   = 6;
+  int32  minutes = 7;
+  int32  seconds = 8;
+}
+message DateAddResponse {
+  string iso         = 1;   // YYYY-MM-DD
+  string iso_full    = 2;   // RFC3339
+  string unix        = 3;
+  string weekday     = 4;
+  int32  day_of_year = 5;
+  int32  iso_week    = 6;
+  string formatted   = 7;   // "Monday, 15 January 2024"
+  string error       = 8;
+}
+
+// ── Date formatter ────────────────────────────────────────────────────────────
+
+message DateFormatRequest {
+  string date_str  = 1;
+  string timezone  = 2;  // IANA tz name, default "UTC"
+}
+message DateFormatEntry {
+  string label  = 1;
+  string result = 2;
+}
+message DateFormatResponse {
+  repeated DateFormatEntry formats = 1;
+  string                   error   = 2;
+}
+
+// ── Date info ─────────────────────────────────────────────────────────────────
+
+message DateInfoRequest {
+  string date = 1;
+}
+message DateInfoResponse {
+  string weekday          = 1;
+  bool   is_weekend       = 2;
+  int32  day_of_year      = 3;
+  int32  days_in_year     = 4;
+  int32  days_left_year   = 5;
+  int32  iso_week         = 6;
+  int32  iso_year         = 7;
+  string quarter          = 8;   // "Q1"…"Q4"
+  int32  days_in_month    = 9;
+  int32  days_left_month  = 10;
+  int64  unix_sec         = 11;
+  string zodiac           = 12;
+  string season           = 13;  // Northern hemisphere
+  int64  days_since_epoch = 14;
+  string error            = 15;
+}
+
+// ── URL Parser ────────────────────────────────────────────────────────────────
+
+message QueryParam {
+  string key   = 1;
+  string value = 2;
+}
+message UrlParseRequest {
+  string url = 1;
+}
+message UrlParseResponse {
+  string              scheme       = 1;
+  string              username     = 2;
+  string              password     = 3;
+  string              host         = 4;   // hostname:port
+  string              hostname     = 5;
+  string              port         = 6;
+  string              path         = 7;
+  string              query        = 8;   // raw query string
+  repeated QueryParam query_params = 9;
+  string              fragment     = 10;
+  string              normalized   = 11;
+  bool                is_valid     = 12;
+  string              error        = 13;
+}
+
+// ── User-Agent Parser ─────────────────────────────────────────────────────────
+
+message UserAgentParseRequest {
+  string user_agent = 1;
+}
+message UAParsedField {
+  string label = 1;
+  string value = 2;
+}
+message UserAgentParseResponse {
+  string               browser_name    = 1;
+  string               browser_version = 2;
+  string               os_name         = 3;
+  string               os_version      = 4;
+  string               device_type     = 5;  // "desktop", "mobile", "tablet", "bot"
+  string               engine          = 6;
+  string               engine_version  = 7;
+  bool                 is_bot          = 8;
+  bool                 is_mobile       = 9;
+  repeated UAParsedField fields        = 10;
+  string               error           = 11;
+}
+
+// ── HTTP Status Codes ─────────────────────────────────────────────────────────
+
+message HttpStatusSearchRequest {
+  string query    = 1;  // code number, name keyword, or "" for all
+  string category = 2;  // "1xx", "2xx", "3xx", "4xx", "5xx", or "" for all
+}
+message HttpStatusEntry {
+  int32  code        = 1;
+  string name        = 2;
+  string description = 3;
+  string category    = 4;
+}
+message HttpStatusSearchResponse {
+  repeated HttpStatusEntry entries = 1;
+}
+
+// ── MIME Type Lookup ──────────────────────────────────────────────────────────
+
+message MimeLookupRequest {
+  string query = 1;  // extension (with or without dot) or MIME type or partial
+}
+message MimeEntry {
+  string mime_type   = 1;
+  string extensions  = 2;  // comma-separated
+  string category    = 3;
+  string description = 4;
+}
+message MimeLookupResponse {
+  repeated MimeEntry entries = 1;
+  string             error   = 2;
+}
+
+// ── Docker run → Compose ──────────────────────────────────────────────────────
+
+message DockerRunToComposeRequest {
+  string command = 1;  // full docker run command string
+}
+message DockerRunToComposeResponse {
+  string          compose_yaml = 1;
+  repeated string warnings     = 2;
+  string          service_name = 3;
+  string          image        = 4;
+  string          error        = 5;
+}
+
+// ── Git Cheat Sheet ───────────────────────────────────────────────────────────
+
+message GitCheatSheetRequest {
+  string query    = 1;  // search term (empty = all)
+  string category = 2;  // filter by category name (empty = all)
+}
+message GitCmd {
+  string          command     = 1;
+  string          description = 2;
+  repeated string examples    = 3;
+}
+message GitCmdCategory {
+  string          name     = 1;
+  repeated GitCmd commands = 2;
+}
+message GitCheatSheetResponse {
+  repeated GitCmdCategory categories = 1;
+}
+
+// ── SVG Optimizer ─────────────────────────────────────────────────────────────
+
+message SvgOptimizeRequest {
+  string svg                  = 1;
+  string preset               = 2;  // "safe" (default), "aggressive", "minimal", "custom"
+  // Only used when preset = "custom":
+  bool   remove_comments      = 3;
+  bool   remove_xml_decl      = 4;
+  bool   remove_doctype       = 5;
+  bool   remove_metadata      = 6;
+  bool   remove_title         = 7;
+  bool   remove_desc          = 8;
+  bool   remove_empty_groups  = 9;
+  bool   collapse_whitespace  = 10;
+  bool   remove_empty_attrs   = 11;
+}
+message SvgOptimizeResponse {
+  string          result         = 1;
+  int32           original_size  = 2;
+  int32           optimized_size = 3;
+  float           savings_pct    = 4;
+  repeated string applied        = 5;
+  string          error          = 6;
+}
+
+// ── Image Metadata / EXIF ─────────────────────────────────────────────────────
+
+message ExifReadRequest {
+  bytes  data     = 1;
+  string filename = 2;
+}
+message ExifField {
+  string label = 1;
+  string value = 2;
+  string group = 3;
+}
+message ExifReadResponse {
+  string          format       = 1;
+  int32           width        = 2;
+  int32           height       = 3;
+  string          gps_decimal  = 4;   // "lat, lng" in decimal degrees (empty if no GPS)
+  string          gps_dms      = 5;   // "48°51'30\"N, 2°17'40\"E" style
+  string          maps_url     = 6;   // Google Maps link
+  repeated ExifField fields    = 7;
+  string          error        = 8;
+}
+
+// ── File ↔ Base64 ─────────────────────────────────────────────────────────────
+
+message FileToBase64Request {
+  bytes  data     = 1;
+  string filename = 2;
+  bool   wrap_uri = 3;  // prefix result with "data:<mime>;base64,"
+}
+message FileToBase64Response {
+  string encoded   = 1;  // raw base64 (no prefix)
+  string data_uri  = 2;  // full data URI
+  string mime_type = 3;
+  int32  size      = 4;
+  string error     = 5;
+}
+message Base64ToFileRequest {
+  string encoded  = 1;  // raw base64 or full data URI
+  string filename = 2;  // optional suggested output filename
+}
+message Base64ToFileResponse {
+  bytes  data      = 1;
+  string mime_type = 2;
+  string filename  = 3;
+  int32  size      = 4;
+  string error     = 5;
 }

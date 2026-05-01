@@ -17,15 +17,18 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
+require github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
+
 require (
 	github.com/JohannesKaufmann/dom v0.2.0 // indirect
-	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
-	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
-	github.com/klauspost/compress v1.11.7 // indirect
-	github.com/rs/cors v1.7.0 // indirect
+	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
+	github.com/desertbit/timer v1.0.1 // indirect
+	github.com/oklog/ulid/v2 v2.1.1
+	github.com/pelletier/go-toml/v2 v2.3.0
+	github.com/rs/cors v1.11.1 // indirect
 	golang.org/x/net v0.53.0 // indirect
 	golang.org/x/sys v0.43.0 // indirect
-	golang.org/x/text v0.36.0 // indirect
+	golang.org/x/text v0.36.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260427160629-7cedc36a6bc4 // indirect
-	nhooyr.io/websocket v1.8.6 // indirect
+	nhooyr.io/websocket v1.8.17 // indirect
 )
