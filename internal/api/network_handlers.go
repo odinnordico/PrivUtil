@@ -260,7 +260,7 @@ func parseAnyIPv4(input string) (uint32, error) {
 	if strings.HasPrefix(strings.ToLower(input), "0x") {
 		clean := input[2:]
 		if matched, _ := regexp.MatchString(`(?i)^[0-9a-f]{1,8}$`, clean); matched {
-			v, err := strconv.ParseUint(clean, 16, 64)
+			v, err := strconv.ParseUint(clean, 16, 32)
 			if err == nil {
 				return uint32(v), nil
 			}
@@ -278,7 +278,7 @@ func parseAnyIPv4(input string) (uint32, error) {
 
 	// 4. Exactly 8 hex digits containing at least one a-f letter (unambiguous hex)
 	if hexNoPrefix.MatchString(input) && strings.ContainsAny(strings.ToLower(input), "abcdef") {
-		v, err := strconv.ParseUint(input, 16, 64)
+		v, err := strconv.ParseUint(input, 16, 32)
 		if err == nil {
 			return uint32(v), nil
 		}

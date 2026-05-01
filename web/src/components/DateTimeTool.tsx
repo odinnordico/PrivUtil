@@ -111,7 +111,7 @@ function DateDiffTab() {
   const dTo = useDebounce(to);
 
   useEffect(() => {
-    if (!dFrom || !dTo) { setResult(null); return; }
+    if (!dFrom || !dTo) return;
     client.dateDiff({ fromDate: dFrom, toDate: dTo } as Parameters<typeof client.dateDiff>[0])
       .then(r => { setError(r.error); if (!r.error) setResult(r); })
       .catch(e => setError(String(e)));
@@ -161,7 +161,7 @@ function DateDiffTab() {
 
       <ErrorMsg msg={error} />
 
-      {result && !error && (
+      {dFrom && dTo && result && !error && (
         <div className="space-y-4">
           {result.negative && (
             <div className="text-xs text-amber-600 dark:text-amber-400 font-medium">
@@ -216,7 +216,7 @@ function LeapYearTab() {
 
   useEffect(() => {
     const trimmed = debounced.trim();
-    if (!trimmed) { setResults([]); return; }
+    if (!trimmed) return;
     client.leapYear({ input: trimmed } as Parameters<typeof client.leapYear>[0])
       .then(r => { setError(r.error); if (!r.error) { setResults(r.results); setLeapCount(r.leapCount); } })
       .catch(e => setError(String(e)));
@@ -237,7 +237,7 @@ function LeapYearTab() {
         />
       </div>
       <ErrorMsg msg={error} />
-      {results.length > 0 && !error && (
+      {debounced.trim() && results.length > 0 && !error && (
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
             <span className="font-semibold text-kawa-600 dark:text-kawa-400">{leapCount}</span> leap year{leapCount !== 1 ? 's' : ''} out of {results.length}
@@ -335,7 +335,7 @@ function DateAddTab() {
   const dFields = useDebounce(fields);
 
   useEffect(() => {
-    if (!dDate) { setResult(null); return; }
+    if (!dDate) return;
     client.dateAdd({
       date: dDate,
       ...dFields,
@@ -381,7 +381,7 @@ function DateAddTab() {
 
       <ErrorMsg msg={error} />
 
-      {result && !error && (
+      {dDate && result && !error && (
         <div className="space-y-3">
           {/* Big result */}
           <div className="bg-kawa-50 dark:bg-kawa-900/20 rounded-xl border border-kawa-200 dark:border-kawa-800 p-4">
@@ -425,7 +425,7 @@ function DateFormatTab() {
   const dTz = useDebounce(timezone, 500);
 
   useEffect(() => {
-    if (!dDate) { setFormats([]); return; }
+    if (!dDate) return;
     client.dateFormat({ dateStr: dDate, timezone: dTz || 'UTC' } as Parameters<typeof client.dateFormat>[0])
       .then(r => { setError(r.error); if (!r.error) setFormats(r.formats); })
       .catch(e => setError(String(e)));
@@ -469,7 +469,7 @@ function DateFormatTab() {
 
       <ErrorMsg msg={error} />
 
-      {formats.length > 0 && !error && (
+      {dDate && formats.length > 0 && !error && (
         <div className="rounded-lg border border-slate-200 dark:border-neutral-700 overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-slate-100 dark:bg-neutral-800">
@@ -512,7 +512,7 @@ function DateInfoTab() {
   const debounced = useDebounce(date);
 
   useEffect(() => {
-    if (!debounced) { setInfo(null); return; }
+    if (!debounced) return;
     client.dateInfo({ date: debounced } as Parameters<typeof client.dateInfo>[0])
       .then(r => { setError(r.error); if (!r.error) setInfo(r); })
       .catch(e => setError(String(e)));
@@ -538,7 +538,7 @@ function DateInfoTab() {
 
       <ErrorMsg msg={error} />
 
-      {info && !error && (
+      {debounced && info && !error && (
         <div className="space-y-4">
           {/* Weekday highlight */}
           <div className={cn(

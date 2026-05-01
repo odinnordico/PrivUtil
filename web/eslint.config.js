@@ -19,13 +19,6 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
-    rules: {
-      // This rule (added in react-hooks v7 for the React Compiler) flags the intentional
-      // "clear output on empty input" early-return pattern used consistently across all
-      // debounced-API-call components. The pattern is correct and the one-extra-render
-      // cost is negligible in a dev-tool context. Disabling until components are refactored
-      // to use derived state or onChange-handler clearing.
-      'react-hooks/set-state-in-effect': 'off',
-    },
+    rules: {},
   },
 ])

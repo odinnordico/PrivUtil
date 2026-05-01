@@ -145,8 +145,8 @@ func (s *Server) SvgOptimize(_ context.Context, req *pb.SvgOptimizeRequest) (*pb
 	// Always trim
 	result = strings.TrimSpace(result)
 
-	origSize := int32(len(original))
-	optSize := int32(len(result))
+	origSize := int32(len(original)) // #nosec G115 -- SVG sizes are not realistically >2GiB
+	optSize := int32(len(result))   // #nosec G115
 	var pct float32
 	if origSize > 0 {
 		pct = float32(origSize-optSize) / float32(origSize) * 100
@@ -258,8 +258,8 @@ func parsePNG(data []byte) (width, height int32, fields []*pb.ExifField) {
 	// IHDR is always the first chunk at offset 8
 	// 8 bytes signature + 4 (length) + 4 (type) + data
 	if string(data[12:16]) == "IHDR" && len(data) >= 24 {
-		width = int32(binary.BigEndian.Uint32(data[16:20]))
-		height = int32(binary.BigEndian.Uint32(data[20:24]))
+		width = int32(binary.BigEndian.Uint32(data[16:20]))  // #nosec G115 -- PNG spec limits dimensions to ≤2^31-1
+		height = int32(binary.BigEndian.Uint32(data[20:24])) // #nosec G115
 		if len(data) >= 25 {
 			bitDepth := data[24]
 			fields = append(fields, &pb.ExifField{Label: "Bit Depth", Value: strconv.Itoa(int(bitDepth)), Group: "Image"})
@@ -360,8 +360,8 @@ func parseWebP(data []byte) (width, height int32, fields []*pb.ExifField) {
 			}
 		case "VP8X":
 			if len(chunkData) >= 10 {
-				width = int32(uint32(chunkData[4])|uint32(chunkData[5])<<8|uint32(chunkData[6])<<16) + 1
-				height = int32(uint32(chunkData[7])|uint32(chunkData[8])<<8|uint32(chunkData[9])<<16) + 1
+				width = int32(uint32(chunkData[4])|uint32(chunkData[5])<<8|uint32(chunkData[6])<<16) + 1  // #nosec G115 -- VP8X uses 24-bit values, max 16777216
+				height = int32(uint32(chunkData[7])|uint32(chunkData[8])<<8|uint32(chunkData[9])<<16) + 1 // #nosec G115
 				flags := chunkData[0]
 				var feats []string
 				if flags&0x02 != 0 {
@@ -427,12 +427,12 @@ func (s *Server) ExifRead(_ context.Context, req *pb.ExifReadRequest) (*pb.ExifR
 			// Dimensions from EXIF tags
 			if t, err2 := x.Get(goexif.PixelXDimension); err2 == nil {
 				if v, err3 := t.Int(0); err3 == nil {
-					res.Width = int32(v)
+					res.Width = int32(v) // #nosec G115 -- image pixel dimensions are not realistically >2^31
 				}
 			}
 			if t, err2 := x.Get(goexif.PixelYDimension); err2 == nil {
 				if v, err3 := t.Int(0); err3 == nil {
-					res.Height = int32(v)
+					res.Height = int32(v) // #nosec G115
 				}
 			}
 			// GPS
@@ -588,7 +588,7 @@ func (s *Server) FileToBase64(_ context.Context, req *pb.FileToBase64Request) (*
 		Encoded:  encoded,
 		DataUri:  dataURI,
 		MimeType: mimeType,
-		Size:     int32(len(req.Data)),
+		Size:     int32(len(req.Data)), // #nosec G115 -- file sizes are not realistically >2GiB in this context
 	}, nil
 }
 
@@ -661,6 +661,6 @@ func (s *Server) Base64ToFile(_ context.Context, req *pb.Base64ToFileRequest) (*
 		Data:     decoded,
 		MimeType: mimeType,
 		Filename: filename,
-		Size:     int32(len(decoded)),
+		Size:     int32(len(decoded)), // #nosec G115 -- file sizes are not realistically >2GiB in this context
 	}, nil
 }

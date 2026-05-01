@@ -107,7 +107,7 @@ function SlugifyTab() {
   const debounced = useDebounce(text);
 
   useEffect(() => {
-    if (!debounced.trim()) { setResult(''); setError(''); return; }
+    if (!debounced.trim()) return;
     client.slugify({ text: debounced, separator: separator || '-', uppercase, maxLen } as Parameters<typeof client.slugify>[0])
       .then(r => { setResult(r.result); setError(r.error); })
       .catch(e => setError(String(e)));
@@ -149,8 +149,8 @@ function SlugifyTab() {
           Uppercase
         </label>
       </div>
-      {error && <ErrorMsg msg={error} />}
-      {result && <ResultBlock value={result} id="slug" copied={copied} copy={copy} />}
+      {debounced.trim() && error && <ErrorMsg msg={error} />}
+      {debounced.trim() && result && <ResultBlock value={result} id="slug" copied={copied} copy={copy} />}
     </div>
   );
 }
@@ -170,7 +170,7 @@ function HiddenCharsTab() {
   const debounced = useDebounce(text);
 
   useEffect(() => {
-    if (!debounced) { setResult(null); setError(''); return; }
+    if (!debounced) return;
     client.hiddenChars({ text: debounced } as Parameters<typeof client.hiddenChars>[0])
       .then(r => {
         setError(r.error || '');
@@ -191,13 +191,13 @@ function HiddenCharsTab() {
         onChange={e => setText(e.target.value)}
         rows={4}
       />
-      {error && <ErrorMsg msg={error} />}
-      {result && !result.hasHidden && (
+      {debounced && error && <ErrorMsg msg={error} />}
+      {debounced && result && !result.hasHidden && (
         <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 font-medium">
           <Check className="w-4 h-4" /> No hidden characters found.
         </div>
       )}
-      {result?.hasHidden && (
+      {debounced && result?.hasHidden && (
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 font-medium">
             <EyeOff className="w-4 h-4" />
@@ -246,7 +246,7 @@ function TextReplacerTab() {
   const debounced = useDebounce(find);
 
   useEffect(() => {
-    if (!text || !debounced) { setResult(''); setCount(null); setError(''); return; }
+    if (!text || !debounced) return;
     client.textReplace({ text, find: debounced, replaceWith, useRegex, caseInsensitive } as Parameters<typeof client.textReplace>[0])
       .then(r => { setResult(r.result); setCount(r.count); setError(r.error); })
       .catch(e => setError(String(e)));
@@ -284,13 +284,13 @@ function TextReplacerTab() {
           Case insensitive
         </label>
       </div>
-      {error && <ErrorMsg msg={error} />}
-      {count !== null && !error && (
+      {text && debounced && error && <ErrorMsg msg={error} />}
+      {text && debounced && count !== null && !error && (
         <p className="text-xs text-slate-500 dark:text-slate-400">
           {count} replacement{count !== 1 ? 's' : ''} made
         </p>
       )}
-      {result && !error && (
+      {text && debounced && result && !error && (
         <div>
           <div className="flex items-center justify-between mb-1">
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Result</span>
@@ -316,7 +316,7 @@ function ObfuscatorTab() {
   const debounced = useDebounce(text);
 
   useEffect(() => {
-    if (!debounced.trim()) { setResult(''); setError(''); return; }
+    if (!debounced.trim()) return;
     client.stringObfuscate({ text: debounced, keepStart, keepEnd, maskChar: maskChar || '*' } as Parameters<typeof client.stringObfuscate>[0])
       .then(r => { setResult(r.result); setError(r.error); })
       .catch(e => setError(String(e)));
@@ -363,8 +363,8 @@ function ObfuscatorTab() {
           />
         </div>
       </div>
-      {error && <ErrorMsg msg={error} />}
-      {result && !error && <ResultBlock value={result} id="obfuscate" copied={copied} copy={copy} />}
+      {debounced.trim() && error && <ErrorMsg msg={error} />}
+      {debounced.trim() && result && !error && <ResultBlock value={result} id="obfuscate" copied={copied} copy={copy} />}
     </div>
   );
 }
@@ -380,7 +380,7 @@ function NumeronymTab() {
   const debounced = useDebounce(text);
 
   useEffect(() => {
-    if (!debounced.trim()) { setResult(''); setWords([]); setError(''); return; }
+    if (!debounced.trim()) return;
     client.numeronymGenerate({ text: debounced } as Parameters<typeof client.numeronymGenerate>[0])
       .then(r => {
         setError(r.error);
@@ -403,8 +403,8 @@ function NumeronymTab() {
         onChange={e => setText(e.target.value)}
         rows={3}
       />
-      {error && <ErrorMsg msg={error} />}
-      {result && !error && (
+      {debounced.trim() && error && <ErrorMsg msg={error} />}
+      {debounced.trim() && result && !error && (
         <div className="space-y-3">
           <ResultBlock label="Result" value={result} id="numeronym" copied={copied} copy={copy} />
           {words.length > 1 && (
@@ -444,7 +444,7 @@ function NatoTab() {
   const debounced = useDebounce(text);
 
   useEffect(() => {
-    if (!debounced.trim()) { setResult(''); setError(''); return; }
+    if (!debounced.trim()) return;
     client.natoAlphabet({ text: debounced, action } as Parameters<typeof client.natoAlphabet>[0])
       .then(r => { setResult(r.result); setError(r.error); })
       .catch(e => setError(String(e)));
@@ -478,8 +478,8 @@ function NatoTab() {
         onChange={e => setText(e.target.value)}
         rows={3}
       />
-      {error && <ErrorMsg msg={error} />}
-      {result && !error && <ResultBlock value={result} id="nato" copied={copied} copy={copy} />}
+      {debounced.trim() && error && <ErrorMsg msg={error} />}
+      {debounced.trim() && result && !error && <ResultBlock value={result} id="nato" copied={copied} copy={copy} />}
     </div>
   );
 }
@@ -513,7 +513,7 @@ function ListToolsTab() {
   const debounced = useDebounce(text);
 
   useEffect(() => {
-    if (!debounced.trim()) { setResult(''); setFreq([]); setError(''); return; }
+    if (!debounced.trim()) return;
     client.listProcess({ text: debounced, action, caseInsensitive } as Parameters<typeof client.listProcess>[0])
       .then(r => {
         setError(r.error);
@@ -557,8 +557,8 @@ function ListToolsTab() {
         onChange={e => setText(e.target.value)}
         rows={6}
       />
-      {error && <ErrorMsg msg={error} />}
-      {result && !error && (
+      {debounced.trim() && error && <ErrorMsg msg={error} />}
+      {debounced.trim() && result && !error && (
         <div className="space-y-3">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>Input: {inputCount} line{inputCount !== 1 ? 's' : ''} → Output: {outputCount} line{outputCount !== 1 ? 's' : ''}</span>

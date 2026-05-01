@@ -3,9 +3,9 @@ package api
 import (
 	"context"
 	"crypto/hmac"
-	"crypto/md5" //nolint:gosec
+	"crypto/md5"  // #nosec G501 -- user-selectable HMAC; weak hash is caller's choice
 	"crypto/rand"
-	"crypto/sha1" //nolint:gosec
+	"crypto/sha1" // #nosec G505 -- user-selectable HMAC; weak hash is caller's choice
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/base32"
@@ -116,6 +116,9 @@ func (s *Server) OtpGenerate(_ context.Context, req *pb.OtpRequest) (*pb.OtpResp
 	var validUntil, timeRemaining int64
 
 	if strings.ToLower(req.Type) == "hotp" {
+		if req.Counter < 0 {
+			return &pb.OtpResponse{Error: "counter must be non-negative"}, nil
+		}
 		code, err = hotpCode(secretBytes, uint64(req.Counter), digits, hashFn)
 		if err != nil {
 			return &pb.OtpResponse{Error: err.Error()}, nil
@@ -123,7 +126,7 @@ func (s *Server) OtpGenerate(_ context.Context, req *pb.OtpRequest) (*pb.OtpResp
 	} else {
 		// TOTP
 		counter := now.Unix() / period
-		code, err = hotpCode(secretBytes, uint64(counter), digits, hashFn)
+		code, err = hotpCode(secretBytes, uint64(counter), digits, hashFn) // #nosec G115 -- counter = Unix()/period, always non-negative
 		if err != nil {
 			return &pb.OtpResponse{Error: err.Error()}, nil
 		}
@@ -167,7 +170,7 @@ func (s *Server) OtpValidate(_ context.Context, req *pb.OtpValidateRequest) (*pb
 
 	counter := time.Now().Unix() / period
 	for delta := int64(-window); delta <= int64(window); delta++ {
-		code, err := hotpCode(secretBytes, uint64(counter+delta), 6, hashFn)
+		code, err := hotpCode(secretBytes, uint64(counter+delta), 6, hashFn) // #nosec G115 -- counter is large Unix time; delta is ±window (default 1)
 		if err != nil {
 			continue
 		}
@@ -300,7 +303,7 @@ func textDecode(encoded, format string) (string, error) {
 			return "", fmt.Errorf("invalid token %q for format %s", tok, format)
 		}
 		if n.IsInt64() && n.Int64() >= 0 && n.Int64() <= 255 {
-			buf[i] = byte(n.Int64())
+			buf[i] = byte(n.Int64()) // #nosec G115 -- validated 0..255 above
 		} else {
 			return "", fmt.Errorf("value %q out of byte range", tok)
 		}

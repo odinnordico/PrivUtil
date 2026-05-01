@@ -91,7 +91,7 @@ function MathTab() {
 
   useEffect(() => {
     const trimmed = debounced.trim();
-    if (!trimmed) { setResult(''); setError(''); setRawValue(null); return; }
+    if (!trimmed) return;
 
     const validVars = debouncedVars.filter(v => v.name.trim() && v.value.trim() !== '');
     const protoVars = validVars.map(v => ({ name: v.name.trim(), value: parseFloat(v.value) }))
@@ -186,8 +186,8 @@ function MathTab() {
       </div>
 
       {/* Result */}
-      {error && <ErrorMsg msg={error} />}
-      {result && !error && (
+      {debounced.trim() && error && <ErrorMsg msg={error} />}
+      {debounced.trim() && result && !error && (
         <div className="bg-slate-50 dark:bg-neutral-800 rounded-xl border border-slate-200 dark:border-neutral-700 p-4">
           <div className="flex items-center justify-between mb-1">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">Result</span>
@@ -257,9 +257,7 @@ function PercentTab() {
   useEffect(() => {
     const av = parseFloat(dA);
     const bv = parseFloat(dB);
-    if (dA === '' || dB === '' || isNaN(av) || isNaN(bv)) {
-      setResult(null); setError(''); return;
-    }
+    if (dA === '' || dB === '' || isNaN(av) || isNaN(bv)) return;
     client.percentageCalc({ mode, a: av, b: bv } as Parameters<typeof client.percentageCalc>[0])
       .then(r => {
         setError(r.error);
@@ -269,6 +267,7 @@ function PercentTab() {
   }, [mode, dA, dB]);
 
   const current = PCT_MODES.find(m => m.value === mode)!;
+  const hasValidInputs = dA !== '' && dB !== '' && !isNaN(parseFloat(dA)) && !isNaN(parseFloat(dB));
 
   return (
     <div className="space-y-4">
@@ -318,9 +317,9 @@ function PercentTab() {
         </div>
       </div>
 
-      {error && <ErrorMsg msg={error} />}
+      {hasValidInputs && error && <ErrorMsg msg={error} />}
 
-      {result && !error && (
+      {hasValidInputs && result && !error && (
         <div className="bg-slate-50 dark:bg-neutral-800 rounded-xl border border-slate-200 dark:border-neutral-700 p-4 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">Result</span>
@@ -380,7 +379,7 @@ function TempTab() {
 
   useEffect(() => {
     const v = parseFloat(debounced);
-    if (debounced === '' || isNaN(v)) { setTemps(null); setError(''); return; }
+    if (debounced === '' || isNaN(v)) return;
     client.tempConvert({ value: v, fromUnit } as Parameters<typeof client.tempConvert>[0])
       .then(r => {
         setError(r.error);
@@ -388,6 +387,8 @@ function TempTab() {
       })
       .catch(e => setError(String(e)));
   }, [debounced, fromUnit]);
+
+  const hasValue = debounced !== '' && !isNaN(parseFloat(debounced));
 
   return (
     <div className="space-y-4">
@@ -416,9 +417,9 @@ function TempTab() {
         </div>
       </div>
 
-      {error && <ErrorMsg msg={error} />}
+      {hasValue && error && <ErrorMsg msg={error} />}
 
-      {temps && !error && (
+      {hasValue && temps && !error && (
         <div className="flex flex-col sm:flex-row gap-3">
           <TempCard label="Celsius" symbol="°C" value={temps.celsius} id="temp-c" copied={copied} copy={copy} />
           <TempCard label="Fahrenheit" symbol="°F" value={temps.fahrenheit} id="temp-f" copied={copied} copy={copy} />
@@ -508,7 +509,7 @@ function UnitTab() {
 
   useEffect(() => {
     const v = parseFloat(debounced);
-    if (debounced === '' || isNaN(v)) { setResults([]); setError(''); return; }
+    if (debounced === '' || isNaN(v)) return;
     client.unitConvert({
       value: v,
       fromUnit,
@@ -525,6 +526,7 @@ function UnitTab() {
     !search || r.unit.toLowerCase().includes(search.toLowerCase()) ||
     r.label.toLowerCase().includes(search.toLowerCase())
   );
+  const hasValue = debounced !== '' && !isNaN(parseFloat(debounced));
 
   return (
     <div className="space-y-4">
@@ -576,9 +578,9 @@ function UnitTab() {
         </div>
       </div>
 
-      {error && <ErrorMsg msg={error} />}
+      {hasValue && error && <ErrorMsg msg={error} />}
 
-      {results.length > 0 && !error && (
+      {hasValue && results.length > 0 && !error && (
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <input

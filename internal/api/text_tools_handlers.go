@@ -59,7 +59,7 @@ func (s *Server) Slugify(_ context.Context, req *pb.SlugifyRequest) (*pb.Slugify
 		result = strings.Trim(result, sep)
 	}
 
-	if req.MaxLen > 0 && int32(len(result)) > req.MaxLen {
+	if req.MaxLen > 0 && int32(len(result)) > req.MaxLen { // #nosec G115 -- slug length never exceeds MaxInt32
 		result = result[:req.MaxLen]
 		if sep != "" {
 			result = strings.TrimRight(result, sep)
@@ -75,18 +75,18 @@ var hiddenCharNames = map[rune]string{
 	' ':      "NO-BREAK SPACE",
 	'­':      "SOFT HYPHEN",
 	'͏':      "COMBINING GRAPHEME JOINER",
-	'؜':      "ARABIC LETTER MARK",
+	'\u061C':      "ARABIC LETTER MARK",
 	'᠎':      "MONGOLIAN VOWEL SEPARATOR",
 	'​':      "ZERO WIDTH SPACE",
 	'‌':      "ZERO WIDTH NON-JOINER",
 	'‍':      "ZERO WIDTH JOINER",
-	'‎':      "LEFT-TO-RIGHT MARK",
-	'‏':      "RIGHT-TO-LEFT MARK",
-	'‪':      "LEFT-TO-RIGHT EMBEDDING",
-	'‫':      "RIGHT-TO-LEFT EMBEDDING",
-	'‬':      "POP DIRECTIONAL FORMATTING",
-	'‭':      "LEFT-TO-RIGHT OVERRIDE",
-	'‮':      "RIGHT-TO-LEFT OVERRIDE",
+	'\u200E':      "LEFT-TO-RIGHT MARK",
+	'\u200F':      "RIGHT-TO-LEFT MARK",
+	'\u202A':      "LEFT-TO-RIGHT EMBEDDING",
+	'\u202B':      "RIGHT-TO-LEFT EMBEDDING",
+	'\u202C':      "POP DIRECTIONAL FORMATTING",
+	'\u202D':      "LEFT-TO-RIGHT OVERRIDE",
+	'\u202E':      "RIGHT-TO-LEFT OVERRIDE",
 	' ':      "NARROW NO-BREAK SPACE",
 	'⁠':      "WORD JOINER",
 	'⁡':      "FUNCTION APPLICATION",

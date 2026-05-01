@@ -158,6 +158,28 @@ function HmacTab() {
 
 // ─── OTP ──────────────────────────────────────────────────────────────────────
 
+function TimerDisplay({ initial, period }: { initial: number; period: number }) {
+  const [timeLeft, setTimeLeft] = useState(initial);
+  useEffect(() => {
+    const id = setInterval(() => setTimeLeft(t => Math.max(0, t - 1)), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <>
+      <div className="relative h-2 bg-slate-200 dark:bg-neutral-700 rounded-full overflow-hidden">
+        <div
+          className={cn(
+            'absolute left-0 top-0 h-full rounded-full transition-all duration-1000',
+            timeLeft > 10 ? 'bg-kawa-500' : timeLeft > 5 ? 'bg-amber-400' : 'bg-red-500',
+          )}
+          style={{ width: `${(timeLeft / period) * 100}%` }}
+        />
+      </div>
+      <div className="text-2xl font-mono font-bold text-slate-700 dark:text-slate-200 mt-1">{timeLeft}s</div>
+    </>
+  );
+}
+
 function OtpTab() {
   const [secret, setSecret] = useState('');
   const [type, setType] = useState<'totp' | 'hotp'>('totp');
@@ -173,15 +195,6 @@ function OtpTab() {
   const [validateResult, setValidateResult] = useState<boolean | null>(null);
   const [error, setError] = useState('');
   const { copied, copy } = useCopy();
-  const [timeLeft, setTimeLeft] = useState(0);
-
-  // Countdown timer
-  useEffect(() => {
-    if (!result?.timeRemaining) return;
-    setTimeLeft(Number(result.timeRemaining));
-    const id = setInterval(() => setTimeLeft(t => Math.max(0, t - 1)), 1000);
-    return () => clearInterval(id);
-  }, [result?.timeRemaining]);
 
   const generate = useCallback(async (opts: {
     secret: string; type: string; digits: number; period: number; algo: string;
@@ -361,16 +374,7 @@ function OtpTab() {
             {type === 'totp' && (
               <div className="flex-1">
                 <div className="text-xs text-slate-500 dark:text-slate-400 mb-1.5">Expires in</div>
-                <div className="relative h-2 bg-slate-200 dark:bg-neutral-700 rounded-full overflow-hidden">
-                  <div
-                    className={cn(
-                      'absolute left-0 top-0 h-full rounded-full transition-all duration-1000',
-                      timeLeft > 10 ? 'bg-kawa-500' : timeLeft > 5 ? 'bg-amber-400' : 'bg-red-500',
-                    )}
-                    style={{ width: `${(timeLeft / period) * 100}%` }}
-                  />
-                </div>
-                <div className="text-2xl font-mono font-bold text-slate-700 dark:text-slate-200 mt-1">{timeLeft}s</div>
+                <TimerDisplay key={result.timeRemaining} initial={result.timeRemaining} period={period} />
               </div>
             )}
           </div>

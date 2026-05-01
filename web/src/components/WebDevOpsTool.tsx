@@ -81,7 +81,7 @@ function UrlParserTab() {
   const { copied, copy } = useCopy();
 
   useEffect(() => {
-    if (!debouncedUrl.trim()) { setResult(null); return; }
+    if (!debouncedUrl.trim()) return;
     client.urlParse({ url: debouncedUrl } as Parameters<typeof client.urlParse>[0]).then(res => {
       setResult({
         scheme: res.scheme, username: res.username, password: res.password,
@@ -125,11 +125,11 @@ function UrlParserTab() {
         </div>
       </div>
 
-      {result?.error && (
+      {debouncedUrl.trim() && result?.error && (
         <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 text-sm text-red-700 dark:text-red-300">{result.error}</div>
       )}
 
-      {result?.isValid && (
+      {debouncedUrl.trim() && result?.isValid && (
         <div className="space-y-3">
           <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-neutral-700">
             <table className="w-full text-sm">
@@ -216,7 +216,7 @@ function UserAgentTab() {
   const debouncedUa = useDebounce(ua, 300);
 
   useEffect(() => {
-    if (!debouncedUa.trim()) { setResult(null); setError(''); return; }
+    if (!debouncedUa.trim()) return;
     client.userAgentParse({ userAgent: debouncedUa } as Parameters<typeof client.userAgentParse>[0])
       .then(res => {
         if (res.error) { setError(res.error); setResult(null); return; }
@@ -252,9 +252,9 @@ function UserAgentTab() {
         </div>
       </div>
 
-      {error && <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 text-sm text-red-700 dark:text-red-300">{error}</div>}
+      {debouncedUa.trim() && error && <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 text-sm text-red-700 dark:text-red-300">{error}</div>}
 
-      {result && (
+      {debouncedUa.trim() && result && (
         <div className="space-y-3">
           {/* Summary cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
