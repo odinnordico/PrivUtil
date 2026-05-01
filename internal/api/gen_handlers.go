@@ -41,12 +41,12 @@ func (s *Server) GenerateUuid(ctx context.Context, req *pb.UuidRequest) (*pb.Uui
 		case "v3":
 			// Version 3: Name-based UUID using MD5 hashing
 			// Using specified namespace with unique data per iteration
-			data := []byte(fmt.Sprintf("privutil.uuid.v3.%d.%d", i, uuid.New().ID()))
+			data := fmt.Appendf(nil, "privutil.uuid.v3.%d.%d", i, uuid.New().ID())
 			u = uuid.NewMD5(namespace, data)
 		case "v5":
 			// Version 5: Name-based UUID using SHA1 hashing
 			// Using specified namespace with unique data per iteration
-			data := []byte(fmt.Sprintf("privutil.uuid.v5.%d.%d", i, uuid.New().ID()))
+			data := fmt.Appendf(nil, "privutil.uuid.v5.%d.%d", i, uuid.New().ID())
 			u = uuid.NewSHA1(namespace, data)
 		case "v6":
 			// Version 6: Time-ordered UUID
@@ -58,7 +58,7 @@ func (s *Server) GenerateUuid(ctx context.Context, req *pb.UuidRequest) (*pb.Uui
 			// Version 8: Custom UUID (using SHA256 hash with custom data for uniqueness)
 			// V8 is vendor-specific, so we create unique UUIDs using NewHash
 			h := sha256.New()
-			data := []byte(fmt.Sprintf("privutil.uuid.v8.%d", i))
+			data := fmt.Appendf(nil, "privutil.uuid.v8.%d", i)
 			u = uuid.NewHash(h, namespace, data, 8)
 		default:
 			// Default to Version 4: Random UUID

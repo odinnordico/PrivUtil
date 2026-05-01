@@ -82,12 +82,12 @@ func TestSvgOptimize_AggressivePreset(t *testing.T) {
 
 func TestSvgOptimize_CustomPreset(t *testing.T) {
 	res, err := mediaSrv.SvgOptimize(mediaCtx, &pb.SvgOptimizeRequest{
-		Svg:             sampleSVG,
-		Preset:          "custom",
-		RemoveComments:  true,
-		RemoveXmlDecl:   false,
-		RemoveDoctype:   false,
-		RemoveMetadata:  false,
+		Svg:                sampleSVG,
+		Preset:             "custom",
+		RemoveComments:     true,
+		RemoveXmlDecl:      false,
+		RemoveDoctype:      false,
+		RemoveMetadata:     false,
 		CollapseWhitespace: false,
 	})
 	if err != nil {
@@ -121,8 +121,8 @@ func TestSvgOptimize_EmptyGroupsRemoved(t *testing.T) {
 func TestSvgOptimize_CollapseWhitespace(t *testing.T) {
 	svg := "<svg>\n  \n  <circle r=\"5\"/>\n  \n</svg>"
 	res, err := mediaSrv.SvgOptimize(mediaCtx, &pb.SvgOptimizeRequest{
-		Svg:    svg,
-		Preset: "custom",
+		Svg:                svg,
+		Preset:             "custom",
 		CollapseWhitespace: true,
 	})
 	if err != nil {
@@ -193,8 +193,8 @@ var minimalPNGBytes = []byte{
 	0x49, 0x48, 0x44, 0x52, // "IHDR"
 	0x00, 0x00, 0x00, 0x01, // width = 1
 	0x00, 0x00, 0x00, 0x01, // height = 1
-	0x08, 0x02,             // bit depth 8, color type 2 (RGB)
-	0x00, 0x00, 0x00,       // compression, filter, interlace
+	0x08, 0x02, // bit depth 8, color type 2 (RGB)
+	0x00, 0x00, 0x00, // compression, filter, interlace
 	0x90, 0x77, 0x53, 0xDE, // CRC
 	0x00, 0x00, 0x00, 0x0C, // IDAT length
 	0x49, 0x44, 0x41, 0x54, // "IDAT"

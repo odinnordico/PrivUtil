@@ -100,7 +100,7 @@ func (s *Server) IpCalc(ctx context.Context, req *pb.IpRequest) (*pb.IpResponse,
 
 	ipLen := len(ipnet.Mask)
 	lastIP := make(net.IP, ipLen)
-	for i := 0; i < ipLen; i++ {
+	for i := range ipLen {
 		lastIP[i] = network[i] | ^ipnet.Mask[i]
 	}
 

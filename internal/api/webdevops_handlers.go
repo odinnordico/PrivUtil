@@ -493,7 +493,7 @@ func (s *Server) MimeLookup(_ context.Context, req *pb.MimeLookupRequest) (*pb.M
 }
 
 func containsWord(s, word string) bool {
-	for _, part := range strings.Split(s, ",") {
+	for part := range strings.SplitSeq(s, ",") {
 		if strings.TrimSpace(part) == word {
 			return true
 		}
@@ -606,30 +606,30 @@ func parseDockerRun(tokens []string) (*dockerConfig, error) {
 		"--volume": true, "-v": true,
 		"--env": true, "-e": true,
 		"--env-file": true,
-		"--restart": true,
-		"--network": true, "--net": true,
+		"--restart":  true,
+		"--network":  true, "--net": true,
 		"--hostname": true, "-h": true,
 		"--user": true, "-u": true,
 		"--workdir": true, "-w": true,
 		"--entrypoint": true,
-		"--memory": true, "-m": true,
-		"--cpus": true,
+		"--memory":     true, "-m": true,
+		"--cpus":       true,
 		"--cpu-shares": true,
-		"--label": true, "-l": true,
-		"--add-host": true,
-		"--link": true,
-		"--cap-add": true,
-		"--cap-drop": true,
-		"--device": true,
-		"--dns": true,
-		"--dns-search": true,
-		"--shm-size": true,
-		"--tmpfs": true,
+		"--label":      true, "-l": true,
+		"--add-host":     true,
+		"--link":         true,
+		"--cap-add":      true,
+		"--cap-drop":     true,
+		"--device":       true,
+		"--dns":          true,
+		"--dns-search":   true,
+		"--shm-size":     true,
+		"--tmpfs":        true,
 		"--security-opt": true,
-		"--log-driver": true,
-		"--log-opt": true,
-		"--platform": true,
-		"--pull": true,
+		"--log-driver":   true,
+		"--log-opt":      true,
+		"--platform":     true,
+		"--pull":         true,
 	}
 
 	imageFound := false

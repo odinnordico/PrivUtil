@@ -42,39 +42,7 @@ export function ConverterTool() {
   const [converting, setConverting] = useState(false);
   const [copied, setCopied]         = useState(false);
   const debounce = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const csvActive = source === DataFormat.CSV || target === DataFormat.CSV;
-
-  const convert = useCallback(async (
-    data: string,
-    src: DataFormat,
-    tgt: DataFormat,
-    delim: string,
-    noHdr: boolean,
-  ) => {
-    if (!data.trim()) { setOutput(''); setError(null); return; }
-    setConverting(true);
-    try {
-      const resp = await client.convert({
-        data,
-        sourceFormat: src,
-        targetFormat: tgt,
-        csvDelimiter: delim,
-        csvNoHeader: noHdr,
-      } as Parameters<typeof client.convert>[0]);
-      if (resp.error) {
-        setError(resp.error);
-        setOutput('');
-      } else {
-        setError(null);
-        setOutput(resp.data);
-      }
-    } catch {
-      setError('Conversion failed — is the server running?');
-    } finally {
-      setConverting(false);
-    }
-  }, []);
 
   const scheduleConvert = useCallback((
     data: string,
@@ -84,8 +52,31 @@ export function ConverterTool() {
     noHdr: boolean,
   ) => {
     if (debounce.current) clearTimeout(debounce.current);
-    debounce.current = setTimeout(() => convert(data, src, tgt, delim, noHdr), 300);
-  }, [convert]);
+    debounce.current = setTimeout(async () => {
+      if (!data.trim()) { setOutput(''); setError(null); return; }
+      setConverting(true);
+      try {
+        const resp = await client.convert({
+          data,
+          sourceFormat: src,
+          targetFormat: tgt,
+          csvDelimiter: delim,
+          csvNoHeader: noHdr,
+        } as Parameters<typeof client.convert>[0]);
+        if (resp.error) {
+          setError(resp.error);
+          setOutput('');
+        } else {
+          setError(null);
+          setOutput(resp.data);
+        }
+      } catch {
+        setError('Conversion failed — is the server running?');
+      } finally {
+        setConverting(false);
+      }
+    }, 300);
+  }, []);
 
   useEffect(() => () => { if (debounce.current) clearTimeout(debounce.current); }, []);
 

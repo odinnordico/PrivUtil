@@ -166,23 +166,24 @@ func (s *Server) CaseConvert(ctx context.Context, req *pb.CaseRequest) (*pb.Case
 		if len(words) == 0 {
 			return ""
 		}
-		res := strings.ToLower(words[0])
+		var res strings.Builder
+		res.WriteString(strings.ToLower(words[0]))
 		for _, w := range words[1:] {
 			if len(w) > 0 {
-				res += strings.ToUpper(w[:1]) + strings.ToLower(w[1:])
+				res.WriteString(strings.ToUpper(w[:1]) + strings.ToLower(w[1:]))
 			}
 		}
-		return res
+		return res.String()
 	}
 
 	toPascal := func(words []string) string {
-		var res string
+		var res strings.Builder
 		for _, w := range words {
 			if len(w) > 0 {
-				res += strings.ToUpper(w[:1]) + strings.ToLower(w[1:])
+				res.WriteString(strings.ToUpper(w[:1]) + strings.ToLower(w[1:]))
 			}
 		}
-		return res
+		return res.String()
 	}
 
 	toSnake := func(words []string) string {
@@ -243,4 +244,3 @@ func splitIntoWords(s string) []string {
 
 	return strings.Fields(s)
 }
-

@@ -13,16 +13,19 @@ var mathSrv = &Server{}
 // ─── Math expression evaluator ────────────────────────────────────────────────
 
 func TestMathEval_Arithmetic(t *testing.T) {
-	cases := []struct{ expr string; want float64 }{
-		{"2 + 3",         5},
-		{"10 - 4",        6},
-		{"3 * 4",        12},
-		{"15 / 3",        5},
-		{"10 % 3",        1},
-		{"2 ^ 10",     1024},
-		{"2 ^ 3 ^ 2",  512}, // right-assoc: 2^(3^2) = 2^9
-		{"-5 + 3",       -2},
-		{"(2 + 3) * 4",  20},
+	cases := []struct {
+		expr string
+		want float64
+	}{
+		{"2 + 3", 5},
+		{"10 - 4", 6},
+		{"3 * 4", 12},
+		{"15 / 3", 5},
+		{"10 % 3", 1},
+		{"2 ^ 10", 1024},
+		{"2 ^ 3 ^ 2", 512}, // right-assoc: 2^(3^2) = 2^9
+		{"-5 + 3", -2},
+		{"(2 + 3) * 4", 20},
 	}
 	for _, tc := range cases {
 		t.Run(tc.expr, func(t *testing.T) {
@@ -43,25 +46,29 @@ func TestMathEval_Arithmetic(t *testing.T) {
 }
 
 func TestMathEval_Functions(t *testing.T) {
-	cases := []struct{ expr string; want float64; tol float64 }{
-		{"sqrt(9)",         3,        1e-10},
-		{"abs(-5)",         5,        1e-10},
-		{"floor(3.7)",      3,        1e-10},
-		{"ceil(3.2)",       4,        1e-10},
-		{"round(3.5)",      4,        1e-10},
-		{"log(e)",          1,        1e-10},
-		{"log2(8)",         3,        1e-10},
-		{"log10(1000)",     3,        1e-10},
-		{"sin(0)",          0,        1e-10},
-		{"cos(0)",          1,        1e-10},
-		{"max(3, 7, 2)",    7,        1e-10},
-		{"min(3, 7, 2)",    2,        1e-10},
-		{"pow(2, 8)",     256,        1e-10},
-		{"factorial(5)",  120,        1e-10},
-		{"gcd(12, 8)",      4,        1e-10},
-		{"lcm(4, 6)",      12,        1e-10},
-		{"hypot(3, 4)",     5,        1e-10},
-		{"cbrt(27)",        3,        1e-10},
+	cases := []struct {
+		expr string
+		want float64
+		tol  float64
+	}{
+		{"sqrt(9)", 3, 1e-10},
+		{"abs(-5)", 5, 1e-10},
+		{"floor(3.7)", 3, 1e-10},
+		{"ceil(3.2)", 4, 1e-10},
+		{"round(3.5)", 4, 1e-10},
+		{"log(e)", 1, 1e-10},
+		{"log2(8)", 3, 1e-10},
+		{"log10(1000)", 3, 1e-10},
+		{"sin(0)", 0, 1e-10},
+		{"cos(0)", 1, 1e-10},
+		{"max(3, 7, 2)", 7, 1e-10},
+		{"min(3, 7, 2)", 2, 1e-10},
+		{"pow(2, 8)", 256, 1e-10},
+		{"factorial(5)", 120, 1e-10},
+		{"gcd(12, 8)", 4, 1e-10},
+		{"lcm(4, 6)", 12, 1e-10},
+		{"hypot(3, 4)", 5, 1e-10},
+		{"cbrt(27)", 3, 1e-10},
 	}
 	for _, tc := range cases {
 		t.Run(tc.expr, func(t *testing.T) {

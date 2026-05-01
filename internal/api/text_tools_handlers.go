@@ -72,38 +72,38 @@ func (s *Server) Slugify(_ context.Context, req *pb.SlugifyRequest) (*pb.Slugify
 // ─── Hidden character detector ────────────────────────────────────────────────
 
 var hiddenCharNames = map[rune]string{
-	' ': "NO-BREAK SPACE",
-	'­': "SOFT HYPHEN",
-	'͏': "COMBINING GRAPHEME JOINER",
-	'؜': "ARABIC LETTER MARK",
-	'᠎': "MONGOLIAN VOWEL SEPARATOR",
-	'​': "ZERO WIDTH SPACE",
-	'‌': "ZERO WIDTH NON-JOINER",
-	'‍': "ZERO WIDTH JOINER",
-	'‎': "LEFT-TO-RIGHT MARK",
-	'‏': "RIGHT-TO-LEFT MARK",
-	'‪': "LEFT-TO-RIGHT EMBEDDING",
-	'‫': "RIGHT-TO-LEFT EMBEDDING",
-	'‬': "POP DIRECTIONAL FORMATTING",
-	'‭': "LEFT-TO-RIGHT OVERRIDE",
-	'‮': "RIGHT-TO-LEFT OVERRIDE",
-	' ': "NARROW NO-BREAK SPACE",
-	'⁠': "WORD JOINER",
-	'⁡': "FUNCTION APPLICATION",
-	'⁢': "INVISIBLE TIMES",
-	'⁣': "INVISIBLE SEPARATOR",
-	'⁤': "INVISIBLE PLUS",
-	'⁪': "INHIBIT SYMMETRIC SWAPPING",
-	'⁫': "ACTIVATE SYMMETRIC SWAPPING",
-	'⁬': "INHIBIT ARABIC FORM SHAPING",
-	'⁭': "ACTIVATE ARABIC FORM SHAPING",
-	'⁮': "NATIONAL DIGIT SHAPES",
-	'⁯': "NOMINAL DIGIT SHAPES",
-	'　': "IDEOGRAPHIC SPACE",
+	' ':      "NO-BREAK SPACE",
+	'­':      "SOFT HYPHEN",
+	'͏':      "COMBINING GRAPHEME JOINER",
+	'؜':      "ARABIC LETTER MARK",
+	'᠎':      "MONGOLIAN VOWEL SEPARATOR",
+	'​':      "ZERO WIDTH SPACE",
+	'‌':      "ZERO WIDTH NON-JOINER",
+	'‍':      "ZERO WIDTH JOINER",
+	'‎':      "LEFT-TO-RIGHT MARK",
+	'‏':      "RIGHT-TO-LEFT MARK",
+	'‪':      "LEFT-TO-RIGHT EMBEDDING",
+	'‫':      "RIGHT-TO-LEFT EMBEDDING",
+	'‬':      "POP DIRECTIONAL FORMATTING",
+	'‭':      "LEFT-TO-RIGHT OVERRIDE",
+	'‮':      "RIGHT-TO-LEFT OVERRIDE",
+	' ':      "NARROW NO-BREAK SPACE",
+	'⁠':      "WORD JOINER",
+	'⁡':      "FUNCTION APPLICATION",
+	'⁢':      "INVISIBLE TIMES",
+	'⁣':      "INVISIBLE SEPARATOR",
+	'⁤':      "INVISIBLE PLUS",
+	'⁪':      "INHIBIT SYMMETRIC SWAPPING",
+	'⁫':      "ACTIVATE SYMMETRIC SWAPPING",
+	'⁬':      "INHIBIT ARABIC FORM SHAPING",
+	'⁭':      "ACTIVATE ARABIC FORM SHAPING",
+	'⁮':      "NATIONAL DIGIT SHAPES",
+	'⁯':      "NOMINAL DIGIT SHAPES",
+	'　':      "IDEOGRAPHIC SPACE",
 	'\uFEFF': "ZERO WIDTH NO-BREAK SPACE (BOM)",
-	'￹': "INTERLINEAR ANNOTATION ANCHOR",
-	'￺': "INTERLINEAR ANNOTATION SEPARATOR",
-	'￻': "INTERLINEAR ANNOTATION TERMINATOR",
+	'￹':      "INTERLINEAR ANNOTATION ANCHOR",
+	'￺':      "INTERLINEAR ANNOTATION SEPARATOR",
+	'￻':      "INTERLINEAR ANNOTATION TERMINATOR",
 }
 
 func (s *Server) HiddenChars(_ context.Context, req *pb.HiddenCharsRequest) (*pb.HiddenCharsResponse, error) {
@@ -341,7 +341,7 @@ func textToNato(text string) (string, error) {
 
 func natoToText(nato string) (string, error) {
 	var sb strings.Builder
-	for _, word := range strings.Fields(nato) {
+	for word := range strings.FieldsSeq(nato) {
 		r, ok := natoDecode[strings.ToLower(word)]
 		if !ok {
 			return "", fmt.Errorf("unknown NATO word %q", word)

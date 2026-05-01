@@ -8,7 +8,7 @@ import (
 	"math/big"
 	"net"
 	"regexp"
-	"sort"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -18,9 +18,9 @@ import (
 // ─── chmod ────────────────────────────────────────────────────────────────────
 
 var (
-	octalRe        = regexp.MustCompile(`^0?[0-7]{1,4}$`)
-	symbolic9Re    = regexp.MustCompile(`^[r-][w-][xsS-][r-][w-][xsS-][r-][w-][xtT-]$`)
-	symbolic10Re   = regexp.MustCompile(`^[-dlcbps][r-][w-][xsS-][r-][w-][xsS-][r-][w-][xtT-]$`)
+	octalRe      = regexp.MustCompile(`^0?[0-7]{1,4}$`)
+	symbolic9Re  = regexp.MustCompile(`^[r-][w-][xsS-][r-][w-][xsS-][r-][w-][xtT-]$`)
+	symbolic10Re = regexp.MustCompile(`^[-dlcbps][r-][w-][xsS-][r-][w-][xsS-][r-][w-][xtT-]$`)
 )
 
 func (s *Server) ChmodCalc(_ context.Context, req *pb.ChmodRequest) (*pb.ChmodResponse, error) {
@@ -88,7 +88,7 @@ func chmodFromSymbolic(s string) uint32 {
 
 func buildChmodResponse(mode uint32) *pb.ChmodResponse {
 	r := &pb.ChmodResponse{
-		Value:        int32(mode),      // #nosec G115
+		Value:        int32(mode), // #nosec G115
 		Octal:        fmt.Sprintf("%o", mode),
 		OwnerRead:    mode&0o400 != 0,
 		OwnerWrite:   mode&0o200 != 0,
@@ -198,9 +198,9 @@ func chmodPermDesc(who string, read, write, execute bool) string {
 // ─── IPv4 converter ───────────────────────────────────────────────────────────
 
 var (
-	binaryIPRe  = regexp.MustCompile(`^[01]{32}$`)             // exactly 32 binary digits
+	binaryIPRe  = regexp.MustCompile(`^[01]{32}$`)              // exactly 32 binary digits
 	binaryDotRe = regexp.MustCompile(`^[01]{8}(\.[01]{8}){3}$`) // exactly 8 bits per octet
-	hexNoPrefix = regexp.MustCompile(`(?i)^[0-9a-f]{8}$`)      // exactly 8 hex digits
+	hexNoPrefix = regexp.MustCompile(`(?i)^[0-9a-f]{8}$`)       // exactly 8 hex digits
 )
 
 func (s *Server) Ipv4Convert(_ context.Context, req *pb.Ipv4ConvertRequest) (*pb.Ipv4ConvertResponse, error) {
@@ -316,7 +316,7 @@ func (s *Server) Ipv4RangeExpand(_ context.Context, req *pb.Ipv4RangeRequest) (*
 	if total <= maxIPList {
 		addrs = make([]string, total)
 		buf := make(net.IP, 4)
-		for i := int64(0); i < total; i++ {
+		for i := range total {
 			binary.BigEndian.PutUint32(buf, startIP+uint32(i))
 			addrs[i] = buf.String()
 		}
@@ -406,7 +406,7 @@ func (s *Server) GeneratePort(_ context.Context, req *pb.PortRequest) (*pb.PortR
 			ports = append(ports, p)
 		}
 	}
-	sort.Slice(ports, func(i, j int) bool { return ports[i] < ports[j] })
+	slices.Sort(ports)
 	return &pb.PortResponse{Ports: ports}, nil
 }
 

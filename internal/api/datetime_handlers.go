@@ -223,7 +223,7 @@ func (s *Server) LeapYear(_ context.Context, req *pb.LeapYearRequest) (*pb.LeapY
 
 	// Comma-separated list (also handles single year)
 	if len(years) == 0 {
-		for _, part := range strings.Split(input, ",") {
+		for part := range strings.SplitSeq(input, ",") {
 			part = strings.TrimSpace(part)
 			if part == "" {
 				continue
@@ -309,28 +309,28 @@ func (s *Server) DateFormat(_ context.Context, req *pb.DateFormatRequest) (*pb.D
 	daysSinceEpoch := int(t.UTC().Sub(epoch).Hours() / 24)
 
 	formats := []*pb.DateFormatEntry{
-		{Label: "ISO 8601 date",          Result: t.Format("2006-01-02")},
-		{Label: "ISO 8601 datetime",      Result: t.UTC().Format(time.RFC3339)},
-		{Label: "RFC 2822",               Result: t.Format("Mon, 02 Jan 2006 15:04:05 -0700")},
-		{Label: "RFC 850 (obsolete)",     Result: t.Format("Monday, 02-Jan-06 15:04:05 MST")},
-		{Label: "Unix timestamp (s)",     Result: strconv.FormatInt(t.Unix(), 10)},
-		{Label: "Unix timestamp (ms)",    Result: strconv.FormatInt(t.UnixMilli(), 10)},
-		{Label: "Unix timestamp (µs)",    Result: strconv.FormatInt(t.UnixMicro(), 10)},
-		{Label: "Unix timestamp (ns)",    Result: strconv.FormatInt(t.UnixNano(), 10)},
-		{Label: "US long",                Result: t.Format("January 2, 2006")},
-		{Label: "US short",               Result: t.Format("Jan 2, 2006")},
-		{Label: "US numeric",             Result: t.Format("01/02/2006")},
-		{Label: "EU long",                Result: t.Format("2 January 2006")},
-		{Label: "EU short",               Result: t.Format("2 Jan 2006")},
-		{Label: "EU numeric",             Result: t.Format("02.01.2006")},
-		{Label: "Full weekday",           Result: t.Format("Monday, 2 January 2006")},
-		{Label: "With time (12h)",        Result: t.Format("January 2, 2006 3:04:05 PM")},
-		{Label: "With time (24h)",        Result: t.Format("2006-01-02 15:04:05")},
-		{Label: "SQL datetime",           Result: t.UTC().Format("2006-01-02 15:04:05")},
-		{Label: "ISO 8601 week date",     Result: fmt.Sprintf("%04d-W%02d-%d", isoWeekYear, isoWeek, int(t.Weekday()))},
-		{Label: "Ordinal date",           Result: fmt.Sprintf("%04d-%03d", t.Year(), t.YearDay())},
-		{Label: "Days since Unix epoch",  Result: strconv.Itoa(daysSinceEpoch)},
-		{Label: "Timezone",               Result: t.Format("MST (UTC-07:00)")},
+		{Label: "ISO 8601 date", Result: t.Format("2006-01-02")},
+		{Label: "ISO 8601 datetime", Result: t.UTC().Format(time.RFC3339)},
+		{Label: "RFC 2822", Result: t.Format("Mon, 02 Jan 2006 15:04:05 -0700")},
+		{Label: "RFC 850 (obsolete)", Result: t.Format("Monday, 02-Jan-06 15:04:05 MST")},
+		{Label: "Unix timestamp (s)", Result: strconv.FormatInt(t.Unix(), 10)},
+		{Label: "Unix timestamp (ms)", Result: strconv.FormatInt(t.UnixMilli(), 10)},
+		{Label: "Unix timestamp (µs)", Result: strconv.FormatInt(t.UnixMicro(), 10)},
+		{Label: "Unix timestamp (ns)", Result: strconv.FormatInt(t.UnixNano(), 10)},
+		{Label: "US long", Result: t.Format("January 2, 2006")},
+		{Label: "US short", Result: t.Format("Jan 2, 2006")},
+		{Label: "US numeric", Result: t.Format("01/02/2006")},
+		{Label: "EU long", Result: t.Format("2 January 2006")},
+		{Label: "EU short", Result: t.Format("2 Jan 2006")},
+		{Label: "EU numeric", Result: t.Format("02.01.2006")},
+		{Label: "Full weekday", Result: t.Format("Monday, 2 January 2006")},
+		{Label: "With time (12h)", Result: t.Format("January 2, 2006 3:04:05 PM")},
+		{Label: "With time (24h)", Result: t.Format("2006-01-02 15:04:05")},
+		{Label: "SQL datetime", Result: t.UTC().Format("2006-01-02 15:04:05")},
+		{Label: "ISO 8601 week date", Result: fmt.Sprintf("%04d-W%02d-%d", isoWeekYear, isoWeek, int(t.Weekday()))},
+		{Label: "Ordinal date", Result: fmt.Sprintf("%04d-%03d", t.Year(), t.YearDay())},
+		{Label: "Days since Unix epoch", Result: strconv.Itoa(daysSinceEpoch)},
+		{Label: "Timezone", Result: t.Format("MST (UTC-07:00)")},
 	}
 
 	return &pb.DateFormatResponse{Formats: formats}, nil
@@ -424,19 +424,19 @@ func (s *Server) DateInfo(_ context.Context, req *pb.DateInfoRequest) (*pb.DateI
 	daysSinceEpoch := int64(time.Date(year, month, day, 0, 0, 0, 0, time.UTC).Sub(epoch).Hours() / 24)
 
 	return &pb.DateInfoResponse{
-		Weekday:       weekday.String(),
-		IsWeekend:     isWeekend,
-		DayOfYear:     int32(doy),            // #nosec G115
-		DaysInYear:    int32(daysInYear),      // #nosec G115
-		DaysLeftYear:  int32(daysLeftYear),    // #nosec G115
-		IsoWeek:       int32(isoWeek),         // #nosec G115
-		IsoYear:       int32(isoYear),         // #nosec G115
-		Quarter:       quarter,
-		DaysInMonth:   int32(daysInMonth),     // #nosec G115
-		DaysLeftMonth: int32(daysLeftMonth),   // #nosec G115
-		UnixSec:       t.Unix(),
-		Zodiac:        zodiacSign(month, day),
-		Season:        season(month, day),
+		Weekday:        weekday.String(),
+		IsWeekend:      isWeekend,
+		DayOfYear:      int32(doy),          // #nosec G115
+		DaysInYear:     int32(daysInYear),   // #nosec G115
+		DaysLeftYear:   int32(daysLeftYear), // #nosec G115
+		IsoWeek:        int32(isoWeek),      // #nosec G115
+		IsoYear:        int32(isoYear),      // #nosec G115
+		Quarter:        quarter,
+		DaysInMonth:    int32(daysInMonth),   // #nosec G115
+		DaysLeftMonth:  int32(daysLeftMonth), // #nosec G115
+		UnixSec:        t.Unix(),
+		Zodiac:         zodiacSign(month, day),
+		Season:         season(month, day),
 		DaysSinceEpoch: daysSinceEpoch,
 	}, nil
 }

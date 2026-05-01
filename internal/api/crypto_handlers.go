@@ -3,7 +3,7 @@ package api
 import (
 	"context"
 	"crypto/hmac"
-	"crypto/md5"  //nolint:gosec
+	"crypto/md5" //nolint:gosec
 	"crypto/rand"
 	"crypto/sha1" //nolint:gosec
 	"crypto/sha256"
@@ -20,8 +20,8 @@ import (
 	"time"
 	"unicode/utf8"
 
-	ulidpkg "github.com/oklog/ulid/v2"
 	pb "github.com/odinnordico/privutil/proto"
+	ulidpkg "github.com/oklog/ulid/v2"
 )
 
 // ─── HMAC ─────────────────────────────────────────────────────────────────────
@@ -375,8 +375,8 @@ func morseToText(morse string) (string, error) {
 		if wi > 0 {
 			sb.WriteRune(' ')
 		}
-		codes := strings.Fields(word)
-		for _, code := range codes {
+		codes := strings.FieldsSeq(word)
+		for code := range codes {
 			r, ok := morseDec[code]
 			if !ok {
 				return "", fmt.Errorf("unknown Morse code %q", code)

@@ -37,9 +37,9 @@ const (
 )
 
 type token struct {
-	kind  tokKind
-	text  string
-	num   float64
+	kind tokKind
+	text string
+	num  float64
 }
 
 // tokenize converts an expression string into tokens.
@@ -764,8 +764,8 @@ func (s *Server) TempConvert(_ context.Context, req *pb.TempConvertRequest) (*pb
 // ─── Unit converter ───────────────────────────────────────────────────────────
 
 type unitDef struct {
-	unit  string
-	label string
+	unit   string
+	label  string
 	toBase float64 // multiply input by this to get the base unit
 }
 

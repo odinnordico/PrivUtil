@@ -78,7 +78,10 @@ func TestParseDate_Empty(t *testing.T) {
 // ─── isLeapYear ───────────────────────────────────────────────────────────────
 
 func TestIsLeapYear(t *testing.T) {
-	cases := []struct{ year int; want bool }{
+	cases := []struct {
+		year int
+		want bool
+	}{
 		{2024, true},  // div by 4
 		{2023, false}, // not div by 4
 		{1900, false}, // div by 100, not 400

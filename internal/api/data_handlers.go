@@ -309,8 +309,8 @@ func (s *Server) ValidateData(ctx context.Context, req *pb.ValidateRequest) (*pb
 					return &pb.ValidateResponse{
 						Valid:  false,
 						Error:  err.Error(),
-						Line:   int32(l),   // #nosec G115
-						Column: int32(c),   // #nosec G115
+						Line:   int32(l), // #nosec G115
+						Column: int32(c), // #nosec G115
 					}, nil
 				}
 				return &pb.ValidateResponse{Valid: false, Error: err.Error()}, nil

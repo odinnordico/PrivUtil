@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"strings"
 
-	goexif "github.com/rwcarlsen/goexif/exif"
 	pb "github.com/odinnordico/privutil/proto"
+	goexif "github.com/rwcarlsen/goexif/exif"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"slices"
 	"strings"
 	"testing"
 
@@ -112,12 +113,12 @@ func TestIpv4RangeExpand(t *testing.T) {
 	ctx := context.Background()
 
 	tests := []struct {
-		name       string
-		start      string
-		end        string
-		wantTotal  int64
-		wantCIDRs  []string
-		wantError  bool
+		name      string
+		start     string
+		end       string
+		wantTotal int64
+		wantCIDRs []string
+		wantError bool
 	}{
 		{
 			"single IP",
@@ -161,13 +162,7 @@ func TestIpv4RangeExpand(t *testing.T) {
 			}
 			if len(tt.wantCIDRs) > 0 {
 				for _, cidr := range tt.wantCIDRs {
-					found := false
-					for _, c := range resp.Cidrs {
-						if c == cidr {
-							found = true
-							break
-						}
-					}
+					found := slices.Contains(resp.Cidrs, cidr)
 					if !found {
 						t.Errorf("Ipv4RangeExpand() CIDRs %v missing %q", resp.Cidrs, cidr)
 					}
