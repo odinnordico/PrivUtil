@@ -328,11 +328,18 @@ export interface DiffResponse {
 
 export interface Base64Request {
   text: string;
+  /** binary input for file encode */
+  raw: Uint8Array;
 }
 
 export interface Base64Response {
+  /** base64 string (encode output) */
   text: string;
   error: string;
+  /** decoded binary (decode output) */
+  data: Uint8Array;
+  /** detected MIME type of decoded data */
+  mimeType: string;
 }
 
 export interface JsonFormatRequest {
@@ -1457,13 +1464,16 @@ export const DiffResponse: MessageFns<DiffResponse> = {
 };
 
 function createBaseBase64Request(): Base64Request {
-  return { text: "" };
+  return { text: "", raw: new Uint8Array(0) };
 }
 
 export const Base64Request: MessageFns<Base64Request> = {
   encode(message: Base64Request, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.text !== "") {
       writer.uint32(10).string(message.text);
+    }
+    if (message.raw.length !== 0) {
+      writer.uint32(26).bytes(message.raw);
     }
     return writer;
   },
@@ -1483,6 +1493,14 @@ export const Base64Request: MessageFns<Base64Request> = {
           message.text = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.raw = reader.bytes();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1493,13 +1511,19 @@ export const Base64Request: MessageFns<Base64Request> = {
   },
 
   fromJSON(object: any): Base64Request {
-    return { text: isSet(object.text) ? globalThis.String(object.text) : "" };
+    return {
+      text: isSet(object.text) ? globalThis.String(object.text) : "",
+      raw: isSet(object.raw) ? bytesFromBase64(object.raw) : new Uint8Array(0),
+    };
   },
 
   toJSON(message: Base64Request): unknown {
     const obj: any = {};
     if (message.text !== "") {
       obj.text = message.text;
+    }
+    if (message.raw.length !== 0) {
+      obj.raw = base64FromBytes(message.raw);
     }
     return obj;
   },
@@ -1510,12 +1534,13 @@ export const Base64Request: MessageFns<Base64Request> = {
   fromPartial<I extends Exact<DeepPartial<Base64Request>, I>>(object: I): Base64Request {
     const message = createBaseBase64Request();
     message.text = object.text ?? "";
+    message.raw = object.raw ?? new Uint8Array(0);
     return message;
   },
 };
 
 function createBaseBase64Response(): Base64Response {
-  return { text: "", error: "" };
+  return { text: "", error: "", data: new Uint8Array(0), mimeType: "" };
 }
 
 export const Base64Response: MessageFns<Base64Response> = {
@@ -1525,6 +1550,12 @@ export const Base64Response: MessageFns<Base64Response> = {
     }
     if (message.error !== "") {
       writer.uint32(18).string(message.error);
+    }
+    if (message.data.length !== 0) {
+      writer.uint32(26).bytes(message.data);
+    }
+    if (message.mimeType !== "") {
+      writer.uint32(34).string(message.mimeType);
     }
     return writer;
   },
@@ -1552,6 +1583,22 @@ export const Base64Response: MessageFns<Base64Response> = {
           message.error = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.data = reader.bytes();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.mimeType = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1565,6 +1612,12 @@ export const Base64Response: MessageFns<Base64Response> = {
     return {
       text: isSet(object.text) ? globalThis.String(object.text) : "",
       error: isSet(object.error) ? globalThis.String(object.error) : "",
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
+      mimeType: isSet(object.mimeType)
+        ? globalThis.String(object.mimeType)
+        : isSet(object.mime_type)
+        ? globalThis.String(object.mime_type)
+        : "",
     };
   },
 
@@ -1576,6 +1629,12 @@ export const Base64Response: MessageFns<Base64Response> = {
     if (message.error !== "") {
       obj.error = message.error;
     }
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
+    if (message.mimeType !== "") {
+      obj.mimeType = message.mimeType;
+    }
     return obj;
   },
 
@@ -1586,6 +1645,8 @@ export const Base64Response: MessageFns<Base64Response> = {
     const message = createBaseBase64Response();
     message.text = object.text ?? "";
     message.error = object.error ?? "";
+    message.data = object.data ?? new Uint8Array(0);
+    message.mimeType = object.mimeType ?? "";
     return message;
   },
 };

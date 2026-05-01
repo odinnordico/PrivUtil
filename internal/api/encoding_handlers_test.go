@@ -47,6 +47,10 @@ func TestBase64Decode(t *testing.T) {
 		{"simple", "aGVsbG8=", "hello", false},
 		{"empty", "", "", false},
 		{"invalid", "!!!invalid!!!", "", true},
+		// data URI prefix stripped automatically
+		{"data uri prefix", "data:text/plain;base64,aGVsbG8=", "hello", false},
+		// URL-safe base64 (- is the URL-safe equivalent of +)
+		{"url-safe", "aGVsbG8-", "hello>", false},
 	}
 
 	for _, tt := range tests {
@@ -58,10 +62,24 @@ func TestBase64Decode(t *testing.T) {
 			if tt.wantError && resp.Error == "" {
 				t.Error("Base64Decode() expected error in response")
 			}
-			if !tt.wantError && resp.Text != tt.want {
-				t.Errorf("Base64Decode() = %v, want %v", resp.Text, tt.want)
+			if !tt.wantError && string(resp.Data) != tt.want {
+				t.Errorf("Base64Decode() = %q, want %q", resp.Data, tt.want)
 			}
 		})
+	}
+}
+
+func TestBase64EncodeRaw(t *testing.T) {
+	s := NewServer()
+	ctx := context.Background()
+
+	raw := []byte{0x89, 0x50, 0x4E, 0x47} // PNG magic bytes
+	resp, err := s.Base64Encode(ctx, &pb.Base64Request{Raw: raw})
+	if err != nil {
+		t.Fatalf("Base64Encode() error = %v", err)
+	}
+	if resp.Text != "iVBORw==" {
+		t.Errorf("Base64Encode(raw) = %v, want iVBORw==", resp.Text)
 	}
 }
 

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"html"
 	"math/big"
+	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
@@ -18,22 +19,43 @@ import (
 )
 
 func (s *Server) Base64Encode(ctx context.Context, req *pb.Base64Request) (*pb.Base64Response, error) {
-	encoded := base64.StdEncoding.EncodeToString([]byte(req.Text))
-	return &pb.Base64Response{
-		Text: encoded,
-	}, nil
+	var src []byte
+	if len(req.Raw) > 0 {
+		src = req.Raw
+	} else {
+		src = []byte(req.Text)
+	}
+	return &pb.Base64Response{Text: base64.StdEncoding.EncodeToString(src)}, nil
 }
 
 func (s *Server) Base64Decode(ctx context.Context, req *pb.Base64Request) (*pb.Base64Response, error) {
-	decoded, err := base64.StdEncoding.DecodeString(req.Text)
-	if err != nil {
-		return &pb.Base64Response{
-			Error: fmt.Sprintf("Failed to decode: %v", err),
-		}, nil
+	input := strings.TrimSpace(req.Text)
+	// Strip data URI prefix (data:<mime>;base64,<data>)
+	if idx := strings.Index(input, ";base64,"); idx != -1 {
+		input = input[idx+8:]
 	}
-	return &pb.Base64Response{
-		Text: string(decoded),
-	}, nil
+	if input == "" {
+		return &pb.Base64Response{Data: []byte{}, MimeType: "application/octet-stream"}, nil
+	}
+	// Try all base64 variants: std, URL-safe, and without padding
+	var decoded []byte
+	var err error
+	for _, enc := range []*base64.Encoding{
+		base64.StdEncoding,
+		base64.URLEncoding,
+		base64.RawStdEncoding,
+		base64.RawURLEncoding,
+	} {
+		decoded, err = enc.DecodeString(input)
+		if err == nil {
+			break
+		}
+	}
+	if err != nil {
+		return &pb.Base64Response{Error: fmt.Sprintf("Failed to decode: %v", err)}, nil
+	}
+	mimeType := http.DetectContentType(decoded)
+	return &pb.Base64Response{Data: decoded, MimeType: mimeType}, nil
 }
 
 func (s *Server) UrlEncode(ctx context.Context, req *pb.TextRequest) (*pb.TextResponse, error) {

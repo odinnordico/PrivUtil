@@ -89,11 +89,14 @@ message DiffResponse {
 
 message Base64Request {
   string text = 1;
+  bytes  raw  = 3;  // binary input for file encode
 }
 
 message Base64Response {
-  string text = 1;
-  string error = 2;
+  string text      = 1;  // base64 string (encode output)
+  string error     = 2;
+  bytes  data      = 3;  // decoded binary (decode output)
+  string mime_type = 4;  // detected MIME type of decoded data
 }
 
 message JsonFormatRequest {
