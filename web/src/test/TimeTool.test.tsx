@@ -132,11 +132,15 @@ describe('TimeTool', () => {
 
     render(<TimeTool />);
 
+    // Wait for the initial mount-time conversion call.
+    await waitFor(() => expect(client.timeConvert).toHaveBeenCalledTimes(1));
+
     const nowButton = screen.getByText('Now');
     fireEvent.click(nowButton);
 
     await waitFor(() => {
-      expect(client.timeConvert).toHaveBeenCalledWith(
+      expect(client.timeConvert).toHaveBeenCalledTimes(2);
+      expect(client.timeConvert).toHaveBeenLastCalledWith(
         expect.objectContaining({ input: 'now' }),
       );
     });
