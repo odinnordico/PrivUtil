@@ -1,6 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-kawa-50: #f0fdf0;
+  --color-kawa-100: #dcfce7;
+  --color-kawa-200: #bbf7d0;
+  --color-kawa-300: #86efac;
+  --color-kawa-400: #4ade80;
+  --color-kawa-500: #76FF03;
+  --color-kawa-600: #65e600;
+  --color-kawa-700: #4bc600;
+  --color-kawa-800: #3ba300;
+  --color-kawa-900: #2d8000;
+  --color-kawa-950: #1a4d00;
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

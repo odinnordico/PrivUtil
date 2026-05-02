@@ -23,19 +23,20 @@ jobs:
           - goarch: arm64
             goos: windows
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
+
 
     - name: Use Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v6
       with:
         node-version: '22'
         cache: 'npm'
         cache-dependency-path: web/package-lock.json
 
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v6
       with:
-        go-version: '1.25'
+        go-version-file: 'go.mod'
         check-latest: true
     - name: Build and Archive
       run: |
@@ -54,7 +55,7 @@ jobs:
         fi
 
     - name: Upload to Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v3
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: ${{ env.ARTIFACT_PATH }}
