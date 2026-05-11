@@ -30,6 +30,7 @@ const DateTimeTool       = lazy(() => import('./components/DateTimeTool').then(m
 const WebDevOpsTool      = lazy(() => import('./components/WebDevOpsTool').then(m => ({ default: m.WebDevOpsTool })));
 const MediaTool          = lazy(() => import('./components/MediaTool').then(m => ({ default: m.MediaTool })));
 const Dashboard          = lazy(() => import('./components/Dashboard').then(m => ({ default: m.Dashboard })));
+const HtmlMarkdownViewer = lazy(() => import('./components/HtmlMarkdownViewer').then(m => ({ default: m.HtmlMarkdownViewer })));
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
           <Route path="datetime"     element={<Suspense><DateTimeTool /></Suspense>} />
           <Route path="webdevops"    element={<Suspense><WebDevOpsTool /></Suspense>} />
           <Route path="media"        element={<Suspense><MediaTool /></Suspense>} />
+          <Route path="viewer"       element={<Suspense><HtmlMarkdownViewer /></Suspense>} />
           <Route path="*"         element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

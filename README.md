@@ -37,6 +37,7 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 | **Number Base Converter** | Decimal ↔ Hex ↔ Binary ↔ Octal ↔ Base64 |
 | **IP Calculator** | IPv4/IPv6 subnet, network/broadcast/hosts |
 | **Markdown ↔ HTML** | Bidirectional conversion |
+| **HTML/MD Viewer** | Render HTML or Markdown in a sandboxed iframe with strict CSP, file upload (.html/.md), opt-in images |
 
 ### Generators
 

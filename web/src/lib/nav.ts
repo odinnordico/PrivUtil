@@ -27,6 +27,7 @@ import {
   Calendar,
   Globe,
   ImageIcon,
+  Eye,
   type LucideIcon
 } from 'lucide-react';
 
@@ -205,5 +206,11 @@ export const navItems: ToolItem[] = [
     icon: FileCode,
     path: '/markdown',
     description: 'Convert between Markdown and HTML'
+  },
+  {
+    name: 'HTML/MD Viewer',
+    icon: Eye,
+    path: '/viewer',
+    description: 'Safely render HTML or Markdown in a sandboxed iframe with file upload and CSP guardrails'
   },
 ];
