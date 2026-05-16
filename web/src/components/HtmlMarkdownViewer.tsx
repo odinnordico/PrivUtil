@@ -18,6 +18,8 @@ import {
   RefreshCw,
   Code2,
   AlertTriangle,
+  Maximize2,
+  X,
 } from 'lucide-react';
 import { client } from '../lib/client';
 import { cn } from '../lib/utils';
@@ -66,9 +68,9 @@ function inferModeFromFile(name: string): Mode | null {
   return null;
 }
 
-function buildSrcDoc(bodyHtml: string, allowImages: boolean): string {
+function buildSrcDoc(bodyHtml: string, allowImages: boolean, enableMermaid: boolean): string {
   const imgSrc = allowImages ? "img-src data: https: http:;" : "img-src 'none';";
-  const csp = [
+  const cspParts = [
     "default-src 'none'",
     "style-src 'unsafe-inline'",
     imgSrc,
@@ -76,7 +78,19 @@ function buildSrcDoc(bodyHtml: string, allowImages: boolean): string {
     "base-uri 'none'",
     "form-action 'none'",
     "frame-ancestors 'none'",
-  ].join('; ');
+  ];
+  if (enableMermaid) {
+    cspParts.push("script-src https://cdn.jsdelivr.net 'unsafe-inline'");
+  }
+  const csp = cspParts.join('; ');
+
+  const mermaidScripts = enableMermaid ? `
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'default' });
+</script>` : '';
+
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -90,12 +104,15 @@ function buildSrcDoc(bodyHtml: string, allowImages: boolean): string {
   pre { white-space: pre-wrap; word-break: break-word; background: rgba(127,127,127,0.12); padding: 12px; border-radius: 6px; overflow-x: auto; }
   code { background: rgba(127,127,127,0.15); padding: 1px 4px; border-radius: 4px; }
   blockquote { border-left: 4px solid rgba(127,127,127,0.4); margin: 0; padding: 4px 12px; color: inherit; opacity: 0.85; }
-  table { border-collapse: collapse; }
-  th, td { border: 1px solid rgba(127,127,127,0.4); padding: 4px 8px; }
+  table { border-collapse: collapse; width: auto; margin: 12px 0; }
+  th, td { border: 1px solid rgba(127,127,127,0.35); padding: 6px 12px; text-align: left; }
+  th { background: rgba(127,127,127,0.12); font-weight: 600; }
+  tr:nth-child(even) td { background: rgba(127,127,127,0.05); }
+  pre.mermaid { background: transparent; padding: 0; }
 </style>
 </head>
 <body>
-${bodyHtml}
+${bodyHtml}${mermaidScripts}
 </body>
 </html>`;
 }
@@ -105,11 +122,13 @@ export function HtmlMarkdownViewer() {
   const [input, setInput] = useState<string>(SAMPLE_MD);
   const [renderedHtml, setRenderedHtml] = useState<string>('');
   const [allowImages, setAllowImages] = useState(false);
+  const [enableMermaid, setEnableMermaid] = useState(false);
   const [showSource, setShowSource] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [maximized, setMaximized] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const reqIdRef = useRef(0);
 
@@ -153,7 +172,17 @@ export function HtmlMarkdownViewer() {
     return () => window.clearTimeout(t);
   }, [input, mode, convert]);
 
-  const srcDoc = useMemo(() => buildSrcDoc(renderedHtml, allowImages), [renderedHtml, allowImages]);
+  useEffect(() => {
+    if (!maximized) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMaximized(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [maximized]);
+
+  const srcDoc = useMemo(
+    () => buildSrcDoc(renderedHtml, allowImages, enableMermaid),
+    [renderedHtml, allowImages, enableMermaid],
+  );
 
   const handleFile = useCallback(async (file: File) => {
     setError(null);
@@ -217,7 +246,7 @@ export function HtmlMarkdownViewer() {
         </h2>
         <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
           <ShieldCheck className="w-4 h-4 text-emerald-500" />
-          Sandboxed iframe • CSP enforced • {allowImages ? 'images allowed' : 'images blocked'}
+          Sandboxed iframe • CSP enforced • {allowImages ? 'images allowed' : 'images blocked'} • {enableMermaid ? 'scripts allowed (mermaid)' : 'scripts blocked'}
         </div>
       </div>
 
@@ -307,6 +336,15 @@ export function HtmlMarkdownViewer() {
             <label className="flex items-center gap-1.5 cursor-pointer select-none">
               <input
                 type="checkbox"
+                checked={enableMermaid}
+                onChange={(e) => setEnableMermaid(e.target.checked)}
+                className="accent-kawa-500"
+              />
+              Mermaid diagrams
+            </label>
+            <label className="flex items-center gap-1.5 cursor-pointer select-none">
+              <input
+                type="checkbox"
                 checked={showSource}
                 onChange={(e) => setShowSource(e.target.checked)}
                 className="accent-kawa-500"
@@ -343,16 +381,25 @@ export function HtmlMarkdownViewer() {
             />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase flex items-center gap-2">
-              Preview
-              <span className="inline-flex items-center gap-1 text-[10px] font-medium normal-case text-emerald-600 dark:text-emerald-400">
-                <ShieldAlert className="w-3 h-3" /> sandboxed
-              </span>
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase flex items-center gap-2">
+                Preview
+                <span className="inline-flex items-center gap-1 text-[10px] font-medium normal-case text-emerald-600 dark:text-emerald-400">
+                  <ShieldAlert className="w-3 h-3" /> sandboxed
+                </span>
+              </label>
+              <button
+                onClick={() => setMaximized(true)}
+                disabled={!renderedHtml}
+                title="Maximise preview"
+                className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 disabled:opacity-30 transition-colors">
+                <Maximize2 className="w-4 h-4" />
+              </button>
+            </div>
             <iframe
-              key={allowImages ? 'imgs' : 'no-imgs'}
+              key={`${allowImages}-${enableMermaid}`}
               title="Rendered preview"
-              sandbox=""
+              sandbox={enableMermaid ? 'allow-scripts' : ''}
               srcDoc={srcDoc}
               referrerPolicy="no-referrer"
               className="w-full h-[28rem] rounded border border-slate-300 dark:border-neutral-700 bg-white"
@@ -374,12 +421,41 @@ export function HtmlMarkdownViewer() {
         )}
       </div>
 
+      {maximized && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col bg-black/80 backdrop-blur-sm"
+          onClick={(e) => { if (e.target === e.currentTarget) setMaximized(false); }}>
+          <div className="flex items-center justify-between px-4 py-2 bg-neutral-900 border-b border-neutral-700 shrink-0">
+            <span className="text-sm font-semibold text-white flex items-center gap-2">
+              <Eye className="w-4 h-4 text-kawa-400" /> Preview
+              <span className="text-[10px] font-medium text-emerald-400 flex items-center gap-1">
+                <ShieldAlert className="w-3 h-3" /> sandboxed
+              </span>
+            </span>
+            <button
+              onClick={() => setMaximized(false)}
+              title="Close (Esc)"
+              className="text-neutral-400 hover:text-white transition-colors">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <iframe
+            key={`${allowImages}-${enableMermaid}-max`}
+            title="Rendered preview (maximised)"
+            sandbox={enableMermaid ? 'allow-scripts' : ''}
+            srcDoc={srcDoc}
+            referrerPolicy="no-referrer"
+            className="flex-1 w-full bg-white"
+          />
+        </div>
+      )}
+
       <div className="rounded-lg border border-slate-200 dark:border-neutral-700 bg-slate-50 dark:bg-neutral-800/50 p-4 text-xs text-slate-600 dark:text-slate-400 space-y-1">
         <p className="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
           <ShieldCheck className="w-4 h-4 text-emerald-500" /> Security guardrails
         </p>
         <ul className="list-disc list-inside space-y-0.5">
-          <li>Preview runs inside an <code>iframe</code> with the most restrictive <code>sandbox=""</code> attribute — JavaScript, forms, popups, plugins and top-level navigation are disabled.</li>
+          <li>Preview runs inside an <code>iframe</code> with a strict <code>sandbox</code> attribute — forms, popups, plugins and top-level navigation are always disabled. Scripts are blocked unless <em>Mermaid diagrams</em> is enabled.</li>
           <li>A strict Content-Security-Policy <code>meta</code> tag blocks scripts, objects, frames and external fetches; only inline styles and (optionally) images are permitted.</li>
           <li>File uploads are limited to {fmtBytes(MAX_INPUT_BYTES)} and to <code>.html</code>, <code>.htm</code>, <code>.md</code>, <code>.markdown</code>, <code>.txt</code>.</li>
           <li>Markdown is rendered server-side with goldmark, then handed to the same sandboxed iframe — never injected into the parent page.</li>

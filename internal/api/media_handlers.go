@@ -146,7 +146,7 @@ func (s *Server) SvgOptimize(_ context.Context, req *pb.SvgOptimizeRequest) (*pb
 	result = strings.TrimSpace(result)
 
 	origSize := int32(len(original)) // #nosec G115 -- SVG sizes are not realistically >2GiB
-	optSize := int32(len(result))   // #nosec G115
+	optSize := int32(len(result))    // #nosec G115
 	var pct float32
 	if origSize > 0 {
 		pct = float32(origSize-optSize) / float32(origSize) * 100

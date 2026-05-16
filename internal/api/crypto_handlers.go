@@ -3,7 +3,7 @@ package api
 import (
 	"context"
 	"crypto/hmac"
-	"crypto/md5"  // #nosec G501 -- user-selectable HMAC; weak hash is caller's choice
+	"crypto/md5" // #nosec G501 -- user-selectable HMAC; weak hash is caller's choice
 	"crypto/rand"
 	"crypto/sha1" // #nosec G505 -- user-selectable HMAC; weak hash is caller's choice
 	"crypto/sha256"

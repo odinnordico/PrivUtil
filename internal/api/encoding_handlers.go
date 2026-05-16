@@ -16,6 +16,8 @@ import (
 	htmltomarkdown "github.com/JohannesKaufmann/html-to-markdown/v2"
 	pb "github.com/odinnordico/privutil/proto"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
+	"go.abhg.dev/goldmark/mermaid"
 )
 
 func (s *Server) Base64Encode(ctx context.Context, req *pb.Base64Request) (*pb.Base64Response, error) {
@@ -227,9 +229,21 @@ func (s *Server) BaseConvert(ctx context.Context, req *pb.BaseConvertRequest) (*
 	}, nil
 }
 
+var mdParser = goldmark.New(
+	goldmark.WithExtensions(
+		extension.GFM, // Table + Strikethrough + Linkify
+		extension.TaskList,
+		extension.Typographer,
+		&mermaid.Extender{
+			RenderMode: mermaid.RenderModeClient,
+			NoScript:   true, // frontend injects mermaid.js
+		},
+	),
+)
+
 func (s *Server) MarkdownToHtml(ctx context.Context, req *pb.TextRequest) (*pb.TextResponse, error) {
 	var buf bytes.Buffer
-	if err := goldmark.Convert([]byte(req.Text), &buf); err != nil {
+	if err := mdParser.Convert([]byte(req.Text), &buf); err != nil {
 		return &pb.TextResponse{Text: "Error: " + err.Error()}, nil
 	}
 	return &pb.TextResponse{Text: buf.String()}, nil
