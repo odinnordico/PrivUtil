@@ -16,7 +16,7 @@ export function SimilarityTool() {
   };
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto">
+    <div className="space-y-6">
       <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
         <GitCompareArrows className="w-6 h-6 text-orange-400" />
         Similarity Counter
@@ -27,13 +27,13 @@ export function SimilarityTool() {
           value={text1}
           onChange={e => setText1(e.target.value)}
           placeholder="First text..."
-          className="w-full h-32 bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
+          className="w-full h-32 bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-sm resize-y focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
         />
         <textarea 
           value={text2}
           onChange={e => setText2(e.target.value)}
           placeholder="Second text..."
-          className="w-full h-32 bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
+          className="w-full h-32 bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-sm resize-y focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
         />
       </div>
 

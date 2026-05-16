@@ -626,7 +626,7 @@ function DecodeSubTab() {
           onChange={e => setEncoded(e.target.value)}
           rows={7}
           placeholder="Paste base64 string or data:image/png;base64,... URI here"
-          className={cn('bg-slate-900 text-slate-100 rounded-xl p-3 text-xs font-mono w-full resize-none leading-relaxed border-0 outline-none focus:ring-2 focus:ring-kawa-500')}
+          className={cn('bg-slate-900 text-slate-100 rounded-xl p-3 text-xs font-mono w-full resize-y leading-relaxed border-0 outline-none focus:ring-2 focus:ring-kawa-500')}
         />
       </div>
 
@@ -698,7 +698,7 @@ function Base64FileTab() {
 export function MediaTool() {
   const [activeTab, setActiveTab] = useState<TabId>('svg');
   return (
-    <div className="max-w-5xl mx-auto p-4 space-y-4">
+    <div className="space-y-4">
       <div>
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Media Tools</h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm">SVG optimizer, image metadata (EXIF), Base64 ↔ file converter</p>

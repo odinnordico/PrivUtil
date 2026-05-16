@@ -602,7 +602,7 @@ export function TextStringTool() {
   const [activeTab, setActiveTab] = useState<TabId>('slugify');
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
           <Shuffle className="w-6 h-6 text-kawa-500" />

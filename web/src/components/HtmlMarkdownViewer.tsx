@@ -377,7 +377,7 @@ export function HtmlMarkdownViewer() {
               onChange={(e) => setInput(e.target.value)}
               placeholder={mode === 'markdown' ? '# Heading\n\nSome **markdown** text…' : '<h1>Hello</h1>\n<p>Some HTML…</p>'}
               spellCheck={false}
-              className="w-full h-[28rem] bg-white dark:bg-black/30 p-3 rounded font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
+              className="w-full h-[28rem] bg-white dark:bg-black/30 p-3 rounded font-mono text-sm resize-y focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
             />
           </div>
           <div className="space-y-1">

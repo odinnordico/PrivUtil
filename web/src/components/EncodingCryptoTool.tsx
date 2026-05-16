@@ -122,7 +122,7 @@ function HmacTab() {
             value={message}
             onChange={e => handleChange(e.target.value, secret, algo)}
             placeholder="Enter your message"
-            className={cn(inputClass, 'resize-none')}
+            className={cn(inputClass, 'resize-y')}
           />
         </div>
         <div>
@@ -132,7 +132,7 @@ function HmacTab() {
             value={secret}
             onChange={e => handleChange(message, e.target.value, algo)}
             placeholder="Enter your secret"
-            className={cn(inputClass, 'resize-none')}
+            className={cn(inputClass, 'resize-y')}
           />
         </div>
       </div>

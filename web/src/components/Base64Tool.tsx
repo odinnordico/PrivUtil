@@ -178,7 +178,7 @@ export function Base64Tool() {
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6">
       <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Base64 Encoder/Decoder</h2>
 
       {/* Mode tabs */}

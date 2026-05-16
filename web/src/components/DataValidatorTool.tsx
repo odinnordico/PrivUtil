@@ -127,7 +127,7 @@ export function DataValidatorTool() {
       <div className="space-y-2">
         <textarea
           className={cn(
-            'w-full h-[480px] bg-white dark:bg-neutral-800 p-4 rounded-lg border-2 text-slate-900 dark:text-neutral-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-kawa-500/50 resize-none shadow-sm transition-colors duration-200',
+            'w-full h-[480px] bg-white dark:bg-neutral-800 p-4 rounded-lg border-2 text-slate-900 dark:text-neutral-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-kawa-500/50 resize-y shadow-sm transition-colors duration-200',
             borderClass
           )}
           value={input}

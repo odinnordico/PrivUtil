@@ -40,7 +40,7 @@ export function CertTool() {
             value={pem} 
             onChange={e => parse(e.target.value)} 
             placeholder="-----BEGIN CERTIFICATE-----..." 
-            className="w-full h-[500px] bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-xs resize-none focus:outline-none border border-slate-300 dark:border-gray-700 focus:border-kawa-500 text-slate-900 dark:text-gray-300 shadow-inner"
+            className="w-full h-[500px] bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-xs resize-y focus:outline-none border border-slate-300 dark:border-gray-700 focus:border-kawa-500 text-slate-900 dark:text-gray-300 shadow-inner"
           />
         </div>
 

@@ -61,7 +61,7 @@ export function TextTool() {
           <span>Bytes: {stats.bytes}</span>
         </div>
         <textarea 
-          className="w-full h-[600px] bg-white dark:bg-neutral-800 p-4 rounded-lg border border-slate-300 dark:border-neutral-700 text-slate-900 dark:text-neutral-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-kawa-500/50 shadow-sm"
+          className="w-full h-[600px] bg-white dark:bg-neutral-800 p-4 rounded-lg border border-slate-300 dark:border-neutral-700 text-slate-900 dark:text-neutral-100 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-kawa-500/50 resize-y shadow-sm"
           value={input}
           onChange={e => setInput(e.target.value)}
           placeholder="Paste text here to inspect or manipulate..."

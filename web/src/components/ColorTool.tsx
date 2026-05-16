@@ -25,7 +25,7 @@ export function ColorTool() {
   };
 
   return (
-    <div className="space-y-6 max-w-xl mx-auto">
+    <div className="space-y-6 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold text-white flex items-center gap-2">
         <Palette className="w-6 h-6 text-purple-400" /> 
         Color Converter

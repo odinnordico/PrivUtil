@@ -113,7 +113,7 @@ function UrlParserTab() {
           onChange={e => setUrl(e.target.value)}
           rows={2}
           placeholder="https://example.com/path?key=value#fragment"
-          className={cn(inputClass, 'font-mono resize-none')}
+          className={cn(inputClass, 'font-mono resize-y')}
         />
         <div className="flex flex-wrap gap-1 mt-1.5">
           {SAMPLE_URLS.map((s, i) => (
@@ -240,7 +240,7 @@ function UserAgentTab() {
           onChange={e => setUa(e.target.value)}
           rows={3}
           placeholder="Mozilla/5.0 ..."
-          className={cn(inputClass, 'font-mono resize-none text-xs')}
+          className={cn(inputClass, 'font-mono resize-y text-xs')}
         />
         <div className="flex flex-wrap gap-1 mt-1.5">
           {SAMPLE_UAS.map((s, i) => (
@@ -508,7 +508,7 @@ function DockerTab() {
           onChange={e => setCmd(e.target.value)}
           rows={4}
           placeholder="docker run -d --name myapp -p 8080:80 nginx:latest"
-          className={cn(inputClass, 'font-mono resize-none text-xs')}
+          className={cn(inputClass, 'font-mono resize-y text-xs')}
         />
         <div className="flex flex-wrap gap-1 mt-1.5">
           {DOCKER_EXAMPLES.map((ex, i) => (
@@ -674,7 +674,7 @@ export function WebDevOpsTool() {
   const [activeTab, setActiveTab] = useState<TabId>('url');
 
   return (
-    <div className="max-w-5xl mx-auto p-4 space-y-4">
+    <div className="space-y-4">
       <div>
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Web & DevOps</h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm">URL parser, User-Agent detector, HTTP status codes, MIME types, Docker → Compose, Git cheat sheet</p>

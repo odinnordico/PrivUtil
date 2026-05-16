@@ -48,7 +48,7 @@ function CaseConverter() {
         value={text}
         onChange={e => convert(e.target.value)}
         placeholder="Type variable name to convert..."
-        className="w-full h-32 bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-pink-500 text-slate-900 dark:text-neutral-100 shadow-inner"
+        className="w-full h-32 bg-white dark:bg-black/30 p-4 rounded-lg font-mono text-sm resize-y focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-pink-500 text-slate-900 dark:text-neutral-100 shadow-inner"
       />
       
       {res && (

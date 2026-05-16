@@ -51,7 +51,7 @@ function JwtDebugger() {
         value={token} 
         onChange={e => decode(e.target.value)} 
         placeholder="Paste JWT here..." 
-        className="w-full h-24 bg-white dark:bg-black/30 p-4 rounded font-mono text-sm resize-none focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
+        className="w-full h-24 bg-white dark:bg-black/30 p-4 rounded font-mono text-sm resize-y focus:outline-none border border-slate-300 dark:border-neutral-700 focus:border-kawa-500 text-slate-900 dark:text-neutral-100 shadow-inner"
       />
       {res?.error ? (
         <div className="text-red-400 bg-red-900/20 p-3 rounded">{res.error}</div>
