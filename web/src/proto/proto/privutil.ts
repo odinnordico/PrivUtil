@@ -1323,6 +1323,35 @@ export interface Base64ToFileResponse {
   error: string;
 }
 
+export interface TokenCountRequest {
+  text: string;
+  /** optional: strategy id filter (empty = return all) */
+  strategy: string;
+}
+
+export interface TokenStrategy {
+  /** strategy id */
+  name: string;
+  /** human-friendly name */
+  label: string;
+  count: number;
+  /** first N tokens as preview (capped at 200) */
+  sample: string[];
+  /** true = exact BPE tokenization, false = heuristic estimate */
+  exact: boolean;
+  /** underlying encoding used (e.g. "o200k_base") */
+  encoding: string;
+  /** grouping: "openai", "anthropic", "meta", "google", "mistral", "classic" */
+  group: string;
+}
+
+export interface TokenCountResponse {
+  strategies: TokenStrategy[];
+  charCount: number;
+  byteCount: number;
+  error: string;
+}
+
 function createBaseDiffRequest(): DiffRequest {
   return { text1: "", text2: "" };
 }
@@ -15589,6 +15618,356 @@ export const Base64ToFileResponse: MessageFns<Base64ToFileResponse> = {
   },
 };
 
+function createBaseTokenCountRequest(): TokenCountRequest {
+  return { text: "", strategy: "" };
+}
+
+export const TokenCountRequest: MessageFns<TokenCountRequest> = {
+  encode(message: TokenCountRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.text !== "") {
+      writer.uint32(10).string(message.text);
+    }
+    if (message.strategy !== "") {
+      writer.uint32(18).string(message.strategy);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TokenCountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTokenCountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.text = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.strategy = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TokenCountRequest {
+    return {
+      text: isSet(object.text) ? globalThis.String(object.text) : "",
+      strategy: isSet(object.strategy) ? globalThis.String(object.strategy) : "",
+    };
+  },
+
+  toJSON(message: TokenCountRequest): unknown {
+    const obj: any = {};
+    if (message.text !== "") {
+      obj.text = message.text;
+    }
+    if (message.strategy !== "") {
+      obj.strategy = message.strategy;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TokenCountRequest>, I>>(base?: I): TokenCountRequest {
+    return TokenCountRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TokenCountRequest>, I>>(object: I): TokenCountRequest {
+    const message = createBaseTokenCountRequest();
+    message.text = object.text ?? "";
+    message.strategy = object.strategy ?? "";
+    return message;
+  },
+};
+
+function createBaseTokenStrategy(): TokenStrategy {
+  return { name: "", label: "", count: 0, sample: [], exact: false, encoding: "", group: "" };
+}
+
+export const TokenStrategy: MessageFns<TokenStrategy> = {
+  encode(message: TokenStrategy, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.label !== "") {
+      writer.uint32(18).string(message.label);
+    }
+    if (message.count !== 0) {
+      writer.uint32(24).int32(message.count);
+    }
+    for (const v of message.sample) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.exact !== false) {
+      writer.uint32(40).bool(message.exact);
+    }
+    if (message.encoding !== "") {
+      writer.uint32(50).string(message.encoding);
+    }
+    if (message.group !== "") {
+      writer.uint32(58).string(message.group);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TokenStrategy {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTokenStrategy();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.label = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.count = reader.int32();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.sample.push(reader.string());
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.exact = reader.bool();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.encoding = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.group = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TokenStrategy {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      label: isSet(object.label) ? globalThis.String(object.label) : "",
+      count: isSet(object.count) ? globalThis.Number(object.count) : 0,
+      sample: globalThis.Array.isArray(object?.sample) ? object.sample.map((e: any) => globalThis.String(e)) : [],
+      exact: isSet(object.exact) ? globalThis.Boolean(object.exact) : false,
+      encoding: isSet(object.encoding) ? globalThis.String(object.encoding) : "",
+      group: isSet(object.group) ? globalThis.String(object.group) : "",
+    };
+  },
+
+  toJSON(message: TokenStrategy): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.label !== "") {
+      obj.label = message.label;
+    }
+    if (message.count !== 0) {
+      obj.count = Math.round(message.count);
+    }
+    if (message.sample?.length) {
+      obj.sample = message.sample;
+    }
+    if (message.exact !== false) {
+      obj.exact = message.exact;
+    }
+    if (message.encoding !== "") {
+      obj.encoding = message.encoding;
+    }
+    if (message.group !== "") {
+      obj.group = message.group;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TokenStrategy>, I>>(base?: I): TokenStrategy {
+    return TokenStrategy.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TokenStrategy>, I>>(object: I): TokenStrategy {
+    const message = createBaseTokenStrategy();
+    message.name = object.name ?? "";
+    message.label = object.label ?? "";
+    message.count = object.count ?? 0;
+    message.sample = object.sample?.map((e) => e) || [];
+    message.exact = object.exact ?? false;
+    message.encoding = object.encoding ?? "";
+    message.group = object.group ?? "";
+    return message;
+  },
+};
+
+function createBaseTokenCountResponse(): TokenCountResponse {
+  return { strategies: [], charCount: 0, byteCount: 0, error: "" };
+}
+
+export const TokenCountResponse: MessageFns<TokenCountResponse> = {
+  encode(message: TokenCountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.strategies) {
+      TokenStrategy.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.charCount !== 0) {
+      writer.uint32(16).int32(message.charCount);
+    }
+    if (message.byteCount !== 0) {
+      writer.uint32(24).int32(message.byteCount);
+    }
+    if (message.error !== "") {
+      writer.uint32(34).string(message.error);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TokenCountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTokenCountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.strategies.push(TokenStrategy.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.charCount = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.byteCount = reader.int32();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.error = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TokenCountResponse {
+    return {
+      strategies: globalThis.Array.isArray(object?.strategies)
+        ? object.strategies.map((e: any) => TokenStrategy.fromJSON(e))
+        : [],
+      charCount: isSet(object.charCount)
+        ? globalThis.Number(object.charCount)
+        : isSet(object.char_count)
+        ? globalThis.Number(object.char_count)
+        : 0,
+      byteCount: isSet(object.byteCount)
+        ? globalThis.Number(object.byteCount)
+        : isSet(object.byte_count)
+        ? globalThis.Number(object.byte_count)
+        : 0,
+      error: isSet(object.error) ? globalThis.String(object.error) : "",
+    };
+  },
+
+  toJSON(message: TokenCountResponse): unknown {
+    const obj: any = {};
+    if (message.strategies?.length) {
+      obj.strategies = message.strategies.map((e) => TokenStrategy.toJSON(e));
+    }
+    if (message.charCount !== 0) {
+      obj.charCount = Math.round(message.charCount);
+    }
+    if (message.byteCount !== 0) {
+      obj.byteCount = Math.round(message.byteCount);
+    }
+    if (message.error !== "") {
+      obj.error = message.error;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TokenCountResponse>, I>>(base?: I): TokenCountResponse {
+    return TokenCountResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TokenCountResponse>, I>>(object: I): TokenCountResponse {
+    const message = createBaseTokenCountResponse();
+    message.strategies = object.strategies?.map((e) => TokenStrategy.fromPartial(e)) || [];
+    message.charCount = object.charCount ?? 0;
+    message.byteCount = object.byteCount ?? 0;
+    message.error = object.error ?? "";
+    return message;
+  },
+};
+
 export type PrivUtilServiceDefinition = typeof PrivUtilServiceDefinition;
 export const PrivUtilServiceDefinition = {
   name: "PrivUtilService",
@@ -16162,6 +16541,14 @@ export const PrivUtilServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    tokenCount: {
+      name: "TokenCount",
+      requestType: TokenCountRequest as typeof TokenCountRequest,
+      requestStream: false,
+      responseType: TokenCountResponse as typeof TokenCountResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -16321,6 +16708,10 @@ export interface PrivUtilServiceImplementation<CallContextExt = {}> {
     request: Base64ToFileRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<Base64ToFileResponse>>;
+  tokenCount(
+    request: TokenCountRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<TokenCountResponse>>;
 }
 
 export interface PrivUtilServiceClient<CallOptionsExt = {}> {
@@ -16482,6 +16873,10 @@ export interface PrivUtilServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<Base64ToFileRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<Base64ToFileResponse>;
+  tokenCount(
+    request: DeepPartial<TokenCountRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<TokenCountResponse>;
 }
 
 function bytesFromBase64(b64: string): Uint8Array {

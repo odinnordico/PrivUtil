@@ -19,7 +19,11 @@ require (
 
 require github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
 
-require go.abhg.dev/goldmark/mermaid v0.6.0 // indirect
+require (
+	github.com/dlclark/regexp2 v1.10.0 // indirect
+	github.com/pkoukk/tiktoken-go v0.1.8 // indirect
+	go.abhg.dev/goldmark/mermaid v0.6.0 // indirect
+)
 
 require (
 	github.com/JohannesKaufmann/dom v0.2.0 // indirect

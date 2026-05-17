@@ -90,6 +90,7 @@ const (
 	PrivUtilService_ExifRead_FullMethodName           = "/privutil.PrivUtilService/ExifRead"
 	PrivUtilService_FileToBase64_FullMethodName       = "/privutil.PrivUtilService/FileToBase64"
 	PrivUtilService_Base64ToFile_FullMethodName       = "/privutil.PrivUtilService/Base64ToFile"
+	PrivUtilService_TokenCount_FullMethodName         = "/privutil.PrivUtilService/TokenCount"
 )
 
 // PrivUtilServiceClient is the client API for PrivUtilService service.
@@ -167,6 +168,7 @@ type PrivUtilServiceClient interface {
 	ExifRead(ctx context.Context, in *ExifReadRequest, opts ...grpc.CallOption) (*ExifReadResponse, error)
 	FileToBase64(ctx context.Context, in *FileToBase64Request, opts ...grpc.CallOption) (*FileToBase64Response, error)
 	Base64ToFile(ctx context.Context, in *Base64ToFileRequest, opts ...grpc.CallOption) (*Base64ToFileResponse, error)
+	TokenCount(ctx context.Context, in *TokenCountRequest, opts ...grpc.CallOption) (*TokenCountResponse, error)
 }
 
 type privUtilServiceClient struct {
@@ -887,6 +889,16 @@ func (c *privUtilServiceClient) Base64ToFile(ctx context.Context, in *Base64ToFi
 	return out, nil
 }
 
+func (c *privUtilServiceClient) TokenCount(ctx context.Context, in *TokenCountRequest, opts ...grpc.CallOption) (*TokenCountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TokenCountResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_TokenCount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PrivUtilServiceServer is the server API for PrivUtilService service.
 // All implementations must embed UnimplementedPrivUtilServiceServer
 // for forward compatibility
@@ -962,6 +974,7 @@ type PrivUtilServiceServer interface {
 	ExifRead(context.Context, *ExifReadRequest) (*ExifReadResponse, error)
 	FileToBase64(context.Context, *FileToBase64Request) (*FileToBase64Response, error)
 	Base64ToFile(context.Context, *Base64ToFileRequest) (*Base64ToFileResponse, error)
+	TokenCount(context.Context, *TokenCountRequest) (*TokenCountResponse, error)
 	mustEmbedUnimplementedPrivUtilServiceServer()
 }
 
@@ -1181,6 +1194,9 @@ func (UnimplementedPrivUtilServiceServer) FileToBase64(context.Context, *FileToB
 }
 func (UnimplementedPrivUtilServiceServer) Base64ToFile(context.Context, *Base64ToFileRequest) (*Base64ToFileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Base64ToFile not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) TokenCount(context.Context, *TokenCountRequest) (*TokenCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TokenCount not implemented")
 }
 func (UnimplementedPrivUtilServiceServer) mustEmbedUnimplementedPrivUtilServiceServer() {}
 
@@ -2473,6 +2489,24 @@ func _PrivUtilService_Base64ToFile_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PrivUtilService_TokenCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TokenCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).TokenCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_TokenCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).TokenCount(ctx, req.(*TokenCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PrivUtilService_ServiceDesc is the grpc.ServiceDesc for PrivUtilService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2763,6 +2797,10 @@ var PrivUtilService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Base64ToFile",
 			Handler:    _PrivUtilService_Base64ToFile_Handler,
+		},
+		{
+			MethodName: "TokenCount",
+			Handler:    _PrivUtilService_TokenCount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

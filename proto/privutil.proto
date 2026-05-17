@@ -76,6 +76,7 @@ service PrivUtilService {
   rpc ExifRead(ExifReadRequest) returns (ExifReadResponse) {}
   rpc FileToBase64(FileToBase64Request) returns (FileToBase64Response) {}
   rpc Base64ToFile(Base64ToFileRequest) returns (Base64ToFileResponse) {}
+  rpc TokenCount(TokenCountRequest) returns (TokenCountResponse) {}
 }
 
 message DiffRequest {
@@ -1016,4 +1017,26 @@ message Base64ToFileResponse {
   string filename  = 3;
   int32  size      = 4;
   string error     = 5;
+}
+
+// ── Token Counter ─────────────────────────────────────────────────────────────
+
+message TokenCountRequest {
+  string text     = 1;
+  string strategy = 2;  // optional: strategy id filter (empty = return all)
+}
+message TokenStrategy {
+  string          name     = 1;  // strategy id
+  string          label    = 2;  // human-friendly name
+  int32           count    = 3;
+  repeated string sample   = 4;  // first N tokens as preview (capped at 200)
+  bool            exact    = 5;  // true = exact BPE tokenization, false = heuristic estimate
+  string          encoding = 6;  // underlying encoding used (e.g. "o200k_base")
+  string          group    = 7;  // grouping: "openai", "anthropic", "meta", "google", "mistral", "classic"
+}
+message TokenCountResponse {
+  repeated TokenStrategy strategies  = 1;
+  int32                  char_count  = 2;
+  int32                  byte_count  = 3;
+  string                 error       = 4;
 }

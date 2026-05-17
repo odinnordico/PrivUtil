@@ -28,6 +28,7 @@ import {
   Globe,
   ImageIcon,
   Eye,
+  Coins,
   type LucideIcon
 } from 'lucide-react';
 
@@ -212,5 +213,11 @@ export const navItems: ToolItem[] = [
     icon: Eye,
     path: '/viewer',
     description: 'Safely render HTML or Markdown in a sandboxed iframe with file upload and CSP guardrails'
+  },
+  {
+    name: 'Token Counter',
+    icon: Coins,
+    path: '/tokens',
+    description: 'Count tokens for GPT-4o, Claude, Llama, Gemini, Mistral and classic tokenizers with side-by-side comparison'
   },
 ];

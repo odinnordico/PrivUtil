@@ -31,6 +31,7 @@ const WebDevOpsTool      = lazy(() => import('./components/WebDevOpsTool').then(
 const MediaTool          = lazy(() => import('./components/MediaTool').then(m => ({ default: m.MediaTool })));
 const Dashboard          = lazy(() => import('./components/Dashboard').then(m => ({ default: m.Dashboard })));
 const HtmlMarkdownViewer = lazy(() => import('./components/HtmlMarkdownViewer').then(m => ({ default: m.HtmlMarkdownViewer })));
+const TokenCounterTool   = lazy(() => import('./components/TokenCounterTool').then(m => ({ default: m.TokenCounterTool })));
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
           <Route path="webdevops"    element={<Suspense><WebDevOpsTool /></Suspense>} />
           <Route path="media"        element={<Suspense><MediaTool /></Suspense>} />
           <Route path="viewer"       element={<Suspense><HtmlMarkdownViewer /></Suspense>} />
+          <Route path="tokens"      element={<Suspense><TokenCounterTool /></Suspense>} />
           <Route path="*"         element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
