@@ -3,7 +3,7 @@ module github.com/odinnordico/privutil
 go 1.26
 
 require (
-	github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.0
+	github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.1
 	github.com/brianvoe/gofakeit/v6 v6.28.0
 	github.com/clbanning/mxj/v2 v2.7.0
 	github.com/google/uuid v1.6.0
@@ -17,13 +17,13 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-require github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
-
 require (
-	github.com/dlclark/regexp2 v1.10.0 // indirect
-	github.com/pkoukk/tiktoken-go v0.1.8 // indirect
-	go.abhg.dev/goldmark/mermaid v0.6.0 // indirect
+	github.com/pkoukk/tiktoken-go v0.1.8
+	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
+	go.abhg.dev/goldmark/mermaid v0.6.0
 )
+
+require github.com/dlclark/regexp2 v1.10.0 // indirect
 
 require (
 	github.com/JohannesKaufmann/dom v0.2.0 // indirect
