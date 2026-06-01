@@ -17,13 +17,13 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-require github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
-
 require (
-	github.com/dlclark/regexp2 v1.10.0 // indirect
-	github.com/pkoukk/tiktoken-go v0.1.8 // indirect
-	go.abhg.dev/goldmark/mermaid v0.6.0 // indirect
+	github.com/pkoukk/tiktoken-go v0.1.8
+	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
+	go.abhg.dev/goldmark/mermaid v0.6.0
 )
+
+require github.com/dlclark/regexp2 v1.10.0 // indirect
 
 require (
 	github.com/JohannesKaufmann/dom v0.2.0 // indirect
@@ -34,7 +34,7 @@ require (
 	github.com/rs/cors v1.11.1 // indirect
 	golang.org/x/net v0.53.0 // indirect
 	golang.org/x/sys v0.43.0 // indirect
-	golang.org/x/text v0.36.0
+	golang.org/x/text v0.37.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260427160629-7cedc36a6bc4 // indirect
 	nhooyr.io/websocket v1.8.17 // indirect
 )
