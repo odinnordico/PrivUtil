@@ -22,6 +22,8 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 | **Diff Utility** | Visual text comparison with syntax highlighting |
 | **Text Tools** | Sort, dedupe, reverse, trim, inspect line count/word count/bytes |
 | **Text Similarity** | Levenshtein distance and similarity percentage |
+| **Spell & Grammar Checker** | Fully offline spelling and grammar/punctuation checking; English and Latin American Spanish; embedded ~50k-word dictionaries; inline wavy underlines with one-click fixes |
+| **Token Counter** | Offline LLM token counter; exact BPE for OpenAI (o200k_base/cl100k_base), heuristic estimates for Claude/Llama 3/Gemini/Mistral, plus classic tokenizers; char/byte counts, token preview, side-by-side comparison |
 
 ### Formatters & Converters
 
