@@ -91,6 +91,8 @@ const (
 	PrivUtilService_FileToBase64_FullMethodName       = "/privutil.PrivUtilService/FileToBase64"
 	PrivUtilService_Base64ToFile_FullMethodName       = "/privutil.PrivUtilService/Base64ToFile"
 	PrivUtilService_TokenCount_FullMethodName         = "/privutil.PrivUtilService/TokenCount"
+	PrivUtilService_SpellCheck_FullMethodName         = "/privutil.PrivUtilService/SpellCheck"
+	PrivUtilService_SpellLanguages_FullMethodName     = "/privutil.PrivUtilService/SpellLanguages"
 )
 
 // PrivUtilServiceClient is the client API for PrivUtilService service.
@@ -169,6 +171,8 @@ type PrivUtilServiceClient interface {
 	FileToBase64(ctx context.Context, in *FileToBase64Request, opts ...grpc.CallOption) (*FileToBase64Response, error)
 	Base64ToFile(ctx context.Context, in *Base64ToFileRequest, opts ...grpc.CallOption) (*Base64ToFileResponse, error)
 	TokenCount(ctx context.Context, in *TokenCountRequest, opts ...grpc.CallOption) (*TokenCountResponse, error)
+	SpellCheck(ctx context.Context, in *SpellCheckRequest, opts ...grpc.CallOption) (*SpellCheckResponse, error)
+	SpellLanguages(ctx context.Context, in *SpellLanguagesRequest, opts ...grpc.CallOption) (*SpellLanguagesResponse, error)
 }
 
 type privUtilServiceClient struct {
@@ -899,6 +903,26 @@ func (c *privUtilServiceClient) TokenCount(ctx context.Context, in *TokenCountRe
 	return out, nil
 }
 
+func (c *privUtilServiceClient) SpellCheck(ctx context.Context, in *SpellCheckRequest, opts ...grpc.CallOption) (*SpellCheckResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SpellCheckResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_SpellCheck_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *privUtilServiceClient) SpellLanguages(ctx context.Context, in *SpellLanguagesRequest, opts ...grpc.CallOption) (*SpellLanguagesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SpellLanguagesResponse)
+	err := c.cc.Invoke(ctx, PrivUtilService_SpellLanguages_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PrivUtilServiceServer is the server API for PrivUtilService service.
 // All implementations must embed UnimplementedPrivUtilServiceServer
 // for forward compatibility
@@ -975,6 +999,8 @@ type PrivUtilServiceServer interface {
 	FileToBase64(context.Context, *FileToBase64Request) (*FileToBase64Response, error)
 	Base64ToFile(context.Context, *Base64ToFileRequest) (*Base64ToFileResponse, error)
 	TokenCount(context.Context, *TokenCountRequest) (*TokenCountResponse, error)
+	SpellCheck(context.Context, *SpellCheckRequest) (*SpellCheckResponse, error)
+	SpellLanguages(context.Context, *SpellLanguagesRequest) (*SpellLanguagesResponse, error)
 	mustEmbedUnimplementedPrivUtilServiceServer()
 }
 
@@ -1197,6 +1223,12 @@ func (UnimplementedPrivUtilServiceServer) Base64ToFile(context.Context, *Base64T
 }
 func (UnimplementedPrivUtilServiceServer) TokenCount(context.Context, *TokenCountRequest) (*TokenCountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TokenCount not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) SpellCheck(context.Context, *SpellCheckRequest) (*SpellCheckResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SpellCheck not implemented")
+}
+func (UnimplementedPrivUtilServiceServer) SpellLanguages(context.Context, *SpellLanguagesRequest) (*SpellLanguagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SpellLanguages not implemented")
 }
 func (UnimplementedPrivUtilServiceServer) mustEmbedUnimplementedPrivUtilServiceServer() {}
 
@@ -2507,6 +2539,42 @@ func _PrivUtilService_TokenCount_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PrivUtilService_SpellCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SpellCheckRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).SpellCheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_SpellCheck_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).SpellCheck(ctx, req.(*SpellCheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PrivUtilService_SpellLanguages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SpellLanguagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PrivUtilServiceServer).SpellLanguages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PrivUtilService_SpellLanguages_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PrivUtilServiceServer).SpellLanguages(ctx, req.(*SpellLanguagesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PrivUtilService_ServiceDesc is the grpc.ServiceDesc for PrivUtilService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2801,6 +2869,14 @@ var PrivUtilService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TokenCount",
 			Handler:    _PrivUtilService_TokenCount_Handler,
+		},
+		{
+			MethodName: "SpellCheck",
+			Handler:    _PrivUtilService_SpellCheck_Handler,
+		},
+		{
+			MethodName: "SpellLanguages",
+			Handler:    _PrivUtilService_SpellLanguages_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -32,6 +32,7 @@ const MediaTool          = lazy(() => import('./components/MediaTool').then(m =>
 const Dashboard          = lazy(() => import('./components/Dashboard').then(m => ({ default: m.Dashboard })));
 const HtmlMarkdownViewer = lazy(() => import('./components/HtmlMarkdownViewer').then(m => ({ default: m.HtmlMarkdownViewer })));
 const TokenCounterTool   = lazy(() => import('./components/TokenCounterTool').then(m => ({ default: m.TokenCounterTool })));
+const SpellCheckTool     = lazy(() => import('./components/SpellCheckTool').then(m => ({ default: m.SpellCheckTool })));
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
           <Route path="media"        element={<Suspense><MediaTool /></Suspense>} />
           <Route path="viewer"       element={<Suspense><HtmlMarkdownViewer /></Suspense>} />
           <Route path="tokens"      element={<Suspense><TokenCounterTool /></Suspense>} />
+          <Route path="spell"       element={<Suspense><SpellCheckTool /></Suspense>} />
           <Route path="*"         element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

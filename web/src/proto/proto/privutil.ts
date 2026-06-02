@@ -1352,6 +1352,55 @@ export interface TokenCountResponse {
   error: string;
 }
 
+export interface SpellCheckRequest {
+  text: string;
+  /** language code, e.g. "en", "es" (default "en") */
+  language: string;
+}
+
+export interface SpellIssue {
+  /** stable id for this issue within the response */
+  id: string;
+  /** rune offset of the flagged span in text */
+  offset: number;
+  /** rune length of the flagged span */
+  length: number;
+  /** the flagged substring */
+  text: string;
+  /** "spelling" | "grammar" | "punctuation" | "style" */
+  type: string;
+  /** rule identifier */
+  rule: string;
+  /** human-readable description of the issue */
+  message: string;
+  /** suggested corrections (may be empty) */
+  replacements: string[];
+  /** surrounding text snippet */
+  context: string;
+  /** rune offset of the flagged span within context */
+  contextOffset: number;
+}
+
+export interface SpellCheckResponse {
+  issues: SpellIssue[];
+  /** resolved language code */
+  language: string;
+  wordCount: number;
+  error: string;
+}
+
+export interface SpellLanguagesRequest {
+}
+
+export interface SpellLanguage {
+  code: string;
+  label: string;
+}
+
+export interface SpellLanguagesResponse {
+  languages: SpellLanguage[];
+}
+
 function createBaseDiffRequest(): DiffRequest {
   return { text1: "", text2: "" };
 }
@@ -15968,6 +16017,596 @@ export const TokenCountResponse: MessageFns<TokenCountResponse> = {
   },
 };
 
+function createBaseSpellCheckRequest(): SpellCheckRequest {
+  return { text: "", language: "" };
+}
+
+export const SpellCheckRequest: MessageFns<SpellCheckRequest> = {
+  encode(message: SpellCheckRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.text !== "") {
+      writer.uint32(10).string(message.text);
+    }
+    if (message.language !== "") {
+      writer.uint32(18).string(message.language);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SpellCheckRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpellCheckRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.text = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.language = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SpellCheckRequest {
+    return {
+      text: isSet(object.text) ? globalThis.String(object.text) : "",
+      language: isSet(object.language) ? globalThis.String(object.language) : "",
+    };
+  },
+
+  toJSON(message: SpellCheckRequest): unknown {
+    const obj: any = {};
+    if (message.text !== "") {
+      obj.text = message.text;
+    }
+    if (message.language !== "") {
+      obj.language = message.language;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SpellCheckRequest>, I>>(base?: I): SpellCheckRequest {
+    return SpellCheckRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SpellCheckRequest>, I>>(object: I): SpellCheckRequest {
+    const message = createBaseSpellCheckRequest();
+    message.text = object.text ?? "";
+    message.language = object.language ?? "";
+    return message;
+  },
+};
+
+function createBaseSpellIssue(): SpellIssue {
+  return {
+    id: "",
+    offset: 0,
+    length: 0,
+    text: "",
+    type: "",
+    rule: "",
+    message: "",
+    replacements: [],
+    context: "",
+    contextOffset: 0,
+  };
+}
+
+export const SpellIssue: MessageFns<SpellIssue> = {
+  encode(message: SpellIssue, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.offset !== 0) {
+      writer.uint32(16).int32(message.offset);
+    }
+    if (message.length !== 0) {
+      writer.uint32(24).int32(message.length);
+    }
+    if (message.text !== "") {
+      writer.uint32(34).string(message.text);
+    }
+    if (message.type !== "") {
+      writer.uint32(42).string(message.type);
+    }
+    if (message.rule !== "") {
+      writer.uint32(50).string(message.rule);
+    }
+    if (message.message !== "") {
+      writer.uint32(58).string(message.message);
+    }
+    for (const v of message.replacements) {
+      writer.uint32(66).string(v!);
+    }
+    if (message.context !== "") {
+      writer.uint32(74).string(message.context);
+    }
+    if (message.contextOffset !== 0) {
+      writer.uint32(80).int32(message.contextOffset);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SpellIssue {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpellIssue();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.offset = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.length = reader.int32();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.text = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.rule = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.replacements.push(reader.string());
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.context = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 80) {
+            break;
+          }
+
+          message.contextOffset = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SpellIssue {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      offset: isSet(object.offset) ? globalThis.Number(object.offset) : 0,
+      length: isSet(object.length) ? globalThis.Number(object.length) : 0,
+      text: isSet(object.text) ? globalThis.String(object.text) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      rule: isSet(object.rule) ? globalThis.String(object.rule) : "",
+      message: isSet(object.message) ? globalThis.String(object.message) : "",
+      replacements: globalThis.Array.isArray(object?.replacements)
+        ? object.replacements.map((e: any) => globalThis.String(e))
+        : [],
+      context: isSet(object.context) ? globalThis.String(object.context) : "",
+      contextOffset: isSet(object.contextOffset)
+        ? globalThis.Number(object.contextOffset)
+        : isSet(object.context_offset)
+        ? globalThis.Number(object.context_offset)
+        : 0,
+    };
+  },
+
+  toJSON(message: SpellIssue): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.offset !== 0) {
+      obj.offset = Math.round(message.offset);
+    }
+    if (message.length !== 0) {
+      obj.length = Math.round(message.length);
+    }
+    if (message.text !== "") {
+      obj.text = message.text;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.rule !== "") {
+      obj.rule = message.rule;
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
+    if (message.replacements?.length) {
+      obj.replacements = message.replacements;
+    }
+    if (message.context !== "") {
+      obj.context = message.context;
+    }
+    if (message.contextOffset !== 0) {
+      obj.contextOffset = Math.round(message.contextOffset);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SpellIssue>, I>>(base?: I): SpellIssue {
+    return SpellIssue.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SpellIssue>, I>>(object: I): SpellIssue {
+    const message = createBaseSpellIssue();
+    message.id = object.id ?? "";
+    message.offset = object.offset ?? 0;
+    message.length = object.length ?? 0;
+    message.text = object.text ?? "";
+    message.type = object.type ?? "";
+    message.rule = object.rule ?? "";
+    message.message = object.message ?? "";
+    message.replacements = object.replacements?.map((e) => e) || [];
+    message.context = object.context ?? "";
+    message.contextOffset = object.contextOffset ?? 0;
+    return message;
+  },
+};
+
+function createBaseSpellCheckResponse(): SpellCheckResponse {
+  return { issues: [], language: "", wordCount: 0, error: "" };
+}
+
+export const SpellCheckResponse: MessageFns<SpellCheckResponse> = {
+  encode(message: SpellCheckResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.issues) {
+      SpellIssue.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.language !== "") {
+      writer.uint32(18).string(message.language);
+    }
+    if (message.wordCount !== 0) {
+      writer.uint32(24).int32(message.wordCount);
+    }
+    if (message.error !== "") {
+      writer.uint32(34).string(message.error);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SpellCheckResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpellCheckResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.issues.push(SpellIssue.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.language = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.wordCount = reader.int32();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.error = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SpellCheckResponse {
+    return {
+      issues: globalThis.Array.isArray(object?.issues) ? object.issues.map((e: any) => SpellIssue.fromJSON(e)) : [],
+      language: isSet(object.language) ? globalThis.String(object.language) : "",
+      wordCount: isSet(object.wordCount)
+        ? globalThis.Number(object.wordCount)
+        : isSet(object.word_count)
+        ? globalThis.Number(object.word_count)
+        : 0,
+      error: isSet(object.error) ? globalThis.String(object.error) : "",
+    };
+  },
+
+  toJSON(message: SpellCheckResponse): unknown {
+    const obj: any = {};
+    if (message.issues?.length) {
+      obj.issues = message.issues.map((e) => SpellIssue.toJSON(e));
+    }
+    if (message.language !== "") {
+      obj.language = message.language;
+    }
+    if (message.wordCount !== 0) {
+      obj.wordCount = Math.round(message.wordCount);
+    }
+    if (message.error !== "") {
+      obj.error = message.error;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SpellCheckResponse>, I>>(base?: I): SpellCheckResponse {
+    return SpellCheckResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SpellCheckResponse>, I>>(object: I): SpellCheckResponse {
+    const message = createBaseSpellCheckResponse();
+    message.issues = object.issues?.map((e) => SpellIssue.fromPartial(e)) || [];
+    message.language = object.language ?? "";
+    message.wordCount = object.wordCount ?? 0;
+    message.error = object.error ?? "";
+    return message;
+  },
+};
+
+function createBaseSpellLanguagesRequest(): SpellLanguagesRequest {
+  return {};
+}
+
+export const SpellLanguagesRequest: MessageFns<SpellLanguagesRequest> = {
+  encode(_: SpellLanguagesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SpellLanguagesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpellLanguagesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): SpellLanguagesRequest {
+    return {};
+  },
+
+  toJSON(_: SpellLanguagesRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SpellLanguagesRequest>, I>>(base?: I): SpellLanguagesRequest {
+    return SpellLanguagesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SpellLanguagesRequest>, I>>(_: I): SpellLanguagesRequest {
+    const message = createBaseSpellLanguagesRequest();
+    return message;
+  },
+};
+
+function createBaseSpellLanguage(): SpellLanguage {
+  return { code: "", label: "" };
+}
+
+export const SpellLanguage: MessageFns<SpellLanguage> = {
+  encode(message: SpellLanguage, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.code !== "") {
+      writer.uint32(10).string(message.code);
+    }
+    if (message.label !== "") {
+      writer.uint32(18).string(message.label);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SpellLanguage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpellLanguage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.code = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.label = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SpellLanguage {
+    return {
+      code: isSet(object.code) ? globalThis.String(object.code) : "",
+      label: isSet(object.label) ? globalThis.String(object.label) : "",
+    };
+  },
+
+  toJSON(message: SpellLanguage): unknown {
+    const obj: any = {};
+    if (message.code !== "") {
+      obj.code = message.code;
+    }
+    if (message.label !== "") {
+      obj.label = message.label;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SpellLanguage>, I>>(base?: I): SpellLanguage {
+    return SpellLanguage.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SpellLanguage>, I>>(object: I): SpellLanguage {
+    const message = createBaseSpellLanguage();
+    message.code = object.code ?? "";
+    message.label = object.label ?? "";
+    return message;
+  },
+};
+
+function createBaseSpellLanguagesResponse(): SpellLanguagesResponse {
+  return { languages: [] };
+}
+
+export const SpellLanguagesResponse: MessageFns<SpellLanguagesResponse> = {
+  encode(message: SpellLanguagesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.languages) {
+      SpellLanguage.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SpellLanguagesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpellLanguagesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.languages.push(SpellLanguage.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SpellLanguagesResponse {
+    return {
+      languages: globalThis.Array.isArray(object?.languages)
+        ? object.languages.map((e: any) => SpellLanguage.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SpellLanguagesResponse): unknown {
+    const obj: any = {};
+    if (message.languages?.length) {
+      obj.languages = message.languages.map((e) => SpellLanguage.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SpellLanguagesResponse>, I>>(base?: I): SpellLanguagesResponse {
+    return SpellLanguagesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SpellLanguagesResponse>, I>>(object: I): SpellLanguagesResponse {
+    const message = createBaseSpellLanguagesResponse();
+    message.languages = object.languages?.map((e) => SpellLanguage.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 export type PrivUtilServiceDefinition = typeof PrivUtilServiceDefinition;
 export const PrivUtilServiceDefinition = {
   name: "PrivUtilService",
@@ -16549,6 +17188,22 @@ export const PrivUtilServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    spellCheck: {
+      name: "SpellCheck",
+      requestType: SpellCheckRequest as typeof SpellCheckRequest,
+      requestStream: false,
+      responseType: SpellCheckResponse as typeof SpellCheckResponse,
+      responseStream: false,
+      options: {},
+    },
+    spellLanguages: {
+      name: "SpellLanguages",
+      requestType: SpellLanguagesRequest as typeof SpellLanguagesRequest,
+      requestStream: false,
+      responseType: SpellLanguagesResponse as typeof SpellLanguagesResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -16712,6 +17367,14 @@ export interface PrivUtilServiceImplementation<CallContextExt = {}> {
     request: TokenCountRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<TokenCountResponse>>;
+  spellCheck(
+    request: SpellCheckRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<SpellCheckResponse>>;
+  spellLanguages(
+    request: SpellLanguagesRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<SpellLanguagesResponse>>;
 }
 
 export interface PrivUtilServiceClient<CallOptionsExt = {}> {
@@ -16877,6 +17540,14 @@ export interface PrivUtilServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<TokenCountRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<TokenCountResponse>;
+  spellCheck(
+    request: DeepPartial<SpellCheckRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<SpellCheckResponse>;
+  spellLanguages(
+    request: DeepPartial<SpellLanguagesRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<SpellLanguagesResponse>;
 }
 
 function bytesFromBase64(b64: string): Uint8Array {

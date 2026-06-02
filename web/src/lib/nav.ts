@@ -29,6 +29,7 @@ import {
   ImageIcon,
   Eye,
   Coins,
+  SpellCheck,
   type LucideIcon
 } from 'lucide-react';
 
@@ -219,5 +220,11 @@ export const navItems: ToolItem[] = [
     icon: Coins,
     path: '/tokens',
     description: 'Count tokens for GPT-4o, Claude, Llama, Gemini, Mistral and classic tokenizers with side-by-side comparison'
+  },
+  {
+    name: 'Spell & Grammar',
+    icon: SpellCheck,
+    path: '/spell',
+    description: 'Offline spell- and grammar-checking for English and Spanish with inline fixes and a suggestions panel'
   },
 ];

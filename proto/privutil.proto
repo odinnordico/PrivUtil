@@ -77,6 +77,8 @@ service PrivUtilService {
   rpc FileToBase64(FileToBase64Request) returns (FileToBase64Response) {}
   rpc Base64ToFile(Base64ToFileRequest) returns (Base64ToFileResponse) {}
   rpc TokenCount(TokenCountRequest) returns (TokenCountResponse) {}
+  rpc SpellCheck(SpellCheckRequest) returns (SpellCheckResponse) {}
+  rpc SpellLanguages(SpellLanguagesRequest) returns (SpellLanguagesResponse) {}
 }
 
 message DiffRequest {
@@ -1039,4 +1041,37 @@ message TokenCountResponse {
   int32                  char_count  = 2;
   int32                  byte_count  = 3;
   string                 error       = 4;
+}
+
+// ── Spell & Grammar Checker ───────────────────────────────────────────────────
+
+message SpellCheckRequest {
+  string text     = 1;
+  string language = 2;  // language code, e.g. "en", "es" (default "en")
+}
+message SpellIssue {
+  string          id             = 1;   // stable id for this issue within the response
+  int32           offset         = 2;   // rune offset of the flagged span in text
+  int32           length         = 3;   // rune length of the flagged span
+  string          text           = 4;   // the flagged substring
+  string          type           = 5;   // "spelling" | "grammar" | "punctuation" | "style"
+  string          rule           = 6;   // rule identifier
+  string          message        = 7;   // human-readable description of the issue
+  repeated string replacements   = 8;   // suggested corrections (may be empty)
+  string          context        = 9;   // surrounding text snippet
+  int32           context_offset = 10;  // rune offset of the flagged span within context
+}
+message SpellCheckResponse {
+  repeated SpellIssue issues     = 1;
+  string              language   = 2;   // resolved language code
+  int32               word_count = 3;
+  string              error      = 4;
+}
+message SpellLanguagesRequest {}
+message SpellLanguage {
+  string code  = 1;
+  string label = 2;
+}
+message SpellLanguagesResponse {
+  repeated SpellLanguage languages = 1;
 }

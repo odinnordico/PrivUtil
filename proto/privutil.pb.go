@@ -9425,6 +9425,374 @@ func (x *TokenCountResponse) GetError() string {
 	return ""
 }
 
+type SpellCheckRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Text          string                 `protobuf:"bytes,1,opt,name=text,proto3" json:"text,omitempty"`
+	Language      string                 `protobuf:"bytes,2,opt,name=language,proto3" json:"language,omitempty"` // language code, e.g. "en", "es" (default "en")
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpellCheckRequest) Reset() {
+	*x = SpellCheckRequest{}
+	mi := &file_proto_privutil_proto_msgTypes[146]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpellCheckRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpellCheckRequest) ProtoMessage() {}
+
+func (x *SpellCheckRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_privutil_proto_msgTypes[146]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpellCheckRequest.ProtoReflect.Descriptor instead.
+func (*SpellCheckRequest) Descriptor() ([]byte, []int) {
+	return file_proto_privutil_proto_rawDescGZIP(), []int{146}
+}
+
+func (x *SpellCheckRequest) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+func (x *SpellCheckRequest) GetLanguage() string {
+	if x != nil {
+		return x.Language
+	}
+	return ""
+}
+
+type SpellIssue struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                                              // stable id for this issue within the response
+	Offset        int32                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`                                     // rune offset of the flagged span in text
+	Length        int32                  `protobuf:"varint,3,opt,name=length,proto3" json:"length,omitempty"`                                     // rune length of the flagged span
+	Text          string                 `protobuf:"bytes,4,opt,name=text,proto3" json:"text,omitempty"`                                          // the flagged substring
+	Type          string                 `protobuf:"bytes,5,opt,name=type,proto3" json:"type,omitempty"`                                          // "spelling" | "grammar" | "punctuation" | "style"
+	Rule          string                 `protobuf:"bytes,6,opt,name=rule,proto3" json:"rule,omitempty"`                                          // rule identifier
+	Message       string                 `protobuf:"bytes,7,opt,name=message,proto3" json:"message,omitempty"`                                    // human-readable description of the issue
+	Replacements  []string               `protobuf:"bytes,8,rep,name=replacements,proto3" json:"replacements,omitempty"`                          // suggested corrections (may be empty)
+	Context       string                 `protobuf:"bytes,9,opt,name=context,proto3" json:"context,omitempty"`                                    // surrounding text snippet
+	ContextOffset int32                  `protobuf:"varint,10,opt,name=context_offset,json=contextOffset,proto3" json:"context_offset,omitempty"` // rune offset of the flagged span within context
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpellIssue) Reset() {
+	*x = SpellIssue{}
+	mi := &file_proto_privutil_proto_msgTypes[147]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpellIssue) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpellIssue) ProtoMessage() {}
+
+func (x *SpellIssue) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_privutil_proto_msgTypes[147]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpellIssue.ProtoReflect.Descriptor instead.
+func (*SpellIssue) Descriptor() ([]byte, []int) {
+	return file_proto_privutil_proto_rawDescGZIP(), []int{147}
+}
+
+func (x *SpellIssue) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SpellIssue) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
+}
+
+func (x *SpellIssue) GetLength() int32 {
+	if x != nil {
+		return x.Length
+	}
+	return 0
+}
+
+func (x *SpellIssue) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+func (x *SpellIssue) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *SpellIssue) GetRule() string {
+	if x != nil {
+		return x.Rule
+	}
+	return ""
+}
+
+func (x *SpellIssue) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *SpellIssue) GetReplacements() []string {
+	if x != nil {
+		return x.Replacements
+	}
+	return nil
+}
+
+func (x *SpellIssue) GetContext() string {
+	if x != nil {
+		return x.Context
+	}
+	return ""
+}
+
+func (x *SpellIssue) GetContextOffset() int32 {
+	if x != nil {
+		return x.ContextOffset
+	}
+	return 0
+}
+
+type SpellCheckResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Issues        []*SpellIssue          `protobuf:"bytes,1,rep,name=issues,proto3" json:"issues,omitempty"`
+	Language      string                 `protobuf:"bytes,2,opt,name=language,proto3" json:"language,omitempty"` // resolved language code
+	WordCount     int32                  `protobuf:"varint,3,opt,name=word_count,json=wordCount,proto3" json:"word_count,omitempty"`
+	Error         string                 `protobuf:"bytes,4,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpellCheckResponse) Reset() {
+	*x = SpellCheckResponse{}
+	mi := &file_proto_privutil_proto_msgTypes[148]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpellCheckResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpellCheckResponse) ProtoMessage() {}
+
+func (x *SpellCheckResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_privutil_proto_msgTypes[148]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpellCheckResponse.ProtoReflect.Descriptor instead.
+func (*SpellCheckResponse) Descriptor() ([]byte, []int) {
+	return file_proto_privutil_proto_rawDescGZIP(), []int{148}
+}
+
+func (x *SpellCheckResponse) GetIssues() []*SpellIssue {
+	if x != nil {
+		return x.Issues
+	}
+	return nil
+}
+
+func (x *SpellCheckResponse) GetLanguage() string {
+	if x != nil {
+		return x.Language
+	}
+	return ""
+}
+
+func (x *SpellCheckResponse) GetWordCount() int32 {
+	if x != nil {
+		return x.WordCount
+	}
+	return 0
+}
+
+func (x *SpellCheckResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type SpellLanguagesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpellLanguagesRequest) Reset() {
+	*x = SpellLanguagesRequest{}
+	mi := &file_proto_privutil_proto_msgTypes[149]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpellLanguagesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpellLanguagesRequest) ProtoMessage() {}
+
+func (x *SpellLanguagesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_privutil_proto_msgTypes[149]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpellLanguagesRequest.ProtoReflect.Descriptor instead.
+func (*SpellLanguagesRequest) Descriptor() ([]byte, []int) {
+	return file_proto_privutil_proto_rawDescGZIP(), []int{149}
+}
+
+type SpellLanguage struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Label         string                 `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpellLanguage) Reset() {
+	*x = SpellLanguage{}
+	mi := &file_proto_privutil_proto_msgTypes[150]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpellLanguage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpellLanguage) ProtoMessage() {}
+
+func (x *SpellLanguage) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_privutil_proto_msgTypes[150]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpellLanguage.ProtoReflect.Descriptor instead.
+func (*SpellLanguage) Descriptor() ([]byte, []int) {
+	return file_proto_privutil_proto_rawDescGZIP(), []int{150}
+}
+
+func (x *SpellLanguage) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *SpellLanguage) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+type SpellLanguagesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Languages     []*SpellLanguage       `protobuf:"bytes,1,rep,name=languages,proto3" json:"languages,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SpellLanguagesResponse) Reset() {
+	*x = SpellLanguagesResponse{}
+	mi := &file_proto_privutil_proto_msgTypes[151]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SpellLanguagesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SpellLanguagesResponse) ProtoMessage() {}
+
+func (x *SpellLanguagesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_privutil_proto_msgTypes[151]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SpellLanguagesResponse.ProtoReflect.Descriptor instead.
+func (*SpellLanguagesResponse) Descriptor() ([]byte, []int) {
+	return file_proto_privutil_proto_rawDescGZIP(), []int{151}
+}
+
+func (x *SpellLanguagesResponse) GetLanguages() []*SpellLanguage {
+	if x != nil {
+		return x.Languages
+	}
+	return nil
+}
+
 var File_proto_privutil_proto protoreflect.FileDescriptor
 
 const file_proto_privutil_proto_rawDesc = "" +
@@ -10119,7 +10487,35 @@ const file_proto_privutil_proto_rawDesc = "" +
 	"char_count\x18\x02 \x01(\x05R\tcharCount\x12\x1d\n" +
 	"\n" +
 	"byte_count\x18\x03 \x01(\x05R\tbyteCount\x12\x14\n" +
-	"\x05error\x18\x04 \x01(\tR\x05error*<\n" +
+	"\x05error\x18\x04 \x01(\tR\x05error\"C\n" +
+	"\x11SpellCheckRequest\x12\x12\n" +
+	"\x04text\x18\x01 \x01(\tR\x04text\x12\x1a\n" +
+	"\blanguage\x18\x02 \x01(\tR\blanguage\"\x87\x02\n" +
+	"\n" +
+	"SpellIssue\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
+	"\x06offset\x18\x02 \x01(\x05R\x06offset\x12\x16\n" +
+	"\x06length\x18\x03 \x01(\x05R\x06length\x12\x12\n" +
+	"\x04text\x18\x04 \x01(\tR\x04text\x12\x12\n" +
+	"\x04type\x18\x05 \x01(\tR\x04type\x12\x12\n" +
+	"\x04rule\x18\x06 \x01(\tR\x04rule\x12\x18\n" +
+	"\amessage\x18\a \x01(\tR\amessage\x12\"\n" +
+	"\freplacements\x18\b \x03(\tR\freplacements\x12\x18\n" +
+	"\acontext\x18\t \x01(\tR\acontext\x12%\n" +
+	"\x0econtext_offset\x18\n" +
+	" \x01(\x05R\rcontextOffset\"\x93\x01\n" +
+	"\x12SpellCheckResponse\x12,\n" +
+	"\x06issues\x18\x01 \x03(\v2\x14.privutil.SpellIssueR\x06issues\x12\x1a\n" +
+	"\blanguage\x18\x02 \x01(\tR\blanguage\x12\x1d\n" +
+	"\n" +
+	"word_count\x18\x03 \x01(\x05R\twordCount\x12\x14\n" +
+	"\x05error\x18\x04 \x01(\tR\x05error\"\x17\n" +
+	"\x15SpellLanguagesRequest\"9\n" +
+	"\rSpellLanguage\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x12\x14\n" +
+	"\x05label\x18\x02 \x01(\tR\x05label\"O\n" +
+	"\x16SpellLanguagesResponse\x125\n" +
+	"\tlanguages\x18\x01 \x03(\v2\x17.privutil.SpellLanguageR\tlanguages*<\n" +
 	"\n" +
 	"DataFormat\x12\b\n" +
 	"\x04JSON\x10\x00\x12\b\n" +
@@ -10166,7 +10562,7 @@ const file_proto_privutil_proto_rawDesc = "" +
 	"\tUNIT_AREA\x10\x03\x12\x0f\n" +
 	"\vUNIT_VOLUME\x10\x04\x12\x0e\n" +
 	"\n" +
-	"UNIT_SPEED\x10\x052\x9e(\n" +
+	"UNIT_SPEED\x10\x052\xc0)\n" +
 	"\x0fPrivUtilService\x127\n" +
 	"\x04Diff\x12\x15.privutil.DiffRequest\x1a\x16.privutil.DiffResponse\"\x00\x12C\n" +
 	"\fBase64Encode\x12\x17.privutil.Base64Request\x1a\x18.privutil.Base64Response\"\x00\x12C\n" +
@@ -10246,7 +10642,10 @@ const file_proto_privutil_proto_rawDesc = "" +
 	"\fFileToBase64\x12\x1d.privutil.FileToBase64Request\x1a\x1e.privutil.FileToBase64Response\"\x00\x12O\n" +
 	"\fBase64ToFile\x12\x1d.privutil.Base64ToFileRequest\x1a\x1e.privutil.Base64ToFileResponse\"\x00\x12I\n" +
 	"\n" +
-	"TokenCount\x12\x1b.privutil.TokenCountRequest\x1a\x1c.privutil.TokenCountResponse\"\x00B'Z%github.com/odinnordico/privutil/protob\x06proto3"
+	"TokenCount\x12\x1b.privutil.TokenCountRequest\x1a\x1c.privutil.TokenCountResponse\"\x00\x12I\n" +
+	"\n" +
+	"SpellCheck\x12\x1b.privutil.SpellCheckRequest\x1a\x1c.privutil.SpellCheckResponse\"\x00\x12U\n" +
+	"\x0eSpellLanguages\x12\x1f.privutil.SpellLanguagesRequest\x1a .privutil.SpellLanguagesResponse\"\x00B'Z%github.com/odinnordico/privutil/protob\x06proto3"
 
 var (
 	file_proto_privutil_proto_rawDescOnce sync.Once
@@ -10261,7 +10660,7 @@ func file_proto_privutil_proto_rawDescGZIP() []byte {
 }
 
 var file_proto_privutil_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_proto_privutil_proto_msgTypes = make([]protoimpl.MessageInfo, 146)
+var file_proto_privutil_proto_msgTypes = make([]protoimpl.MessageInfo, 152)
 var file_proto_privutil_proto_goTypes = []any{
 	(DataFormat)(0),                    // 0: privutil.DataFormat
 	(TextAction)(0),                    // 1: privutil.TextAction
@@ -10414,6 +10813,12 @@ var file_proto_privutil_proto_goTypes = []any{
 	(*TokenCountRequest)(nil),          // 148: privutil.TokenCountRequest
 	(*TokenStrategy)(nil),              // 149: privutil.TokenStrategy
 	(*TokenCountResponse)(nil),         // 150: privutil.TokenCountResponse
+	(*SpellCheckRequest)(nil),          // 151: privutil.SpellCheckRequest
+	(*SpellIssue)(nil),                 // 152: privutil.SpellIssue
+	(*SpellCheckResponse)(nil),         // 153: privutil.SpellCheckResponse
+	(*SpellLanguagesRequest)(nil),      // 154: privutil.SpellLanguagesRequest
+	(*SpellLanguage)(nil),              // 155: privutil.SpellLanguage
+	(*SpellLanguagesResponse)(nil),     // 156: privutil.SpellLanguagesResponse
 }
 var file_proto_privutil_proto_depIdxs = []int32{
 	0,   // 0: privutil.ConvertRequest.source_format:type_name -> privutil.DataFormat
@@ -10437,155 +10842,161 @@ var file_proto_privutil_proto_depIdxs = []int32{
 	137, // 18: privutil.GitCheatSheetResponse.categories:type_name -> privutil.GitCmdCategory
 	142, // 19: privutil.ExifReadResponse.fields:type_name -> privutil.ExifField
 	149, // 20: privutil.TokenCountResponse.strategies:type_name -> privutil.TokenStrategy
-	5,   // 21: privutil.PrivUtilService.Diff:input_type -> privutil.DiffRequest
-	7,   // 22: privutil.PrivUtilService.Base64Encode:input_type -> privutil.Base64Request
-	7,   // 23: privutil.PrivUtilService.Base64Decode:input_type -> privutil.Base64Request
-	9,   // 24: privutil.PrivUtilService.JsonFormat:input_type -> privutil.JsonFormatRequest
-	11,  // 25: privutil.PrivUtilService.Convert:input_type -> privutil.ConvertRequest
-	13,  // 26: privutil.PrivUtilService.ValidateData:input_type -> privutil.ValidateRequest
-	15,  // 27: privutil.PrivUtilService.GenerateUuid:input_type -> privutil.UuidRequest
-	17,  // 28: privutil.PrivUtilService.GenerateLorem:input_type -> privutil.LoremRequest
-	19,  // 29: privutil.PrivUtilService.CalculateHash:input_type -> privutil.HashRequest
-	47,  // 30: privutil.PrivUtilService.TextInspect:input_type -> privutil.TextInspectRequest
-	49,  // 31: privutil.PrivUtilService.TextManipulate:input_type -> privutil.TextManipulateRequest
-	21,  // 32: privutil.PrivUtilService.UrlEncode:input_type -> privutil.TextRequest
-	21,  // 33: privutil.PrivUtilService.UrlDecode:input_type -> privutil.TextRequest
-	21,  // 34: privutil.PrivUtilService.HtmlEncode:input_type -> privutil.TextRequest
-	21,  // 35: privutil.PrivUtilService.HtmlDecode:input_type -> privutil.TextRequest
-	23,  // 36: privutil.PrivUtilService.TimeConvert:input_type -> privutil.TimeRequest
-	25,  // 37: privutil.PrivUtilService.JwtDecode:input_type -> privutil.JwtRequest
-	27,  // 38: privutil.PrivUtilService.RegexTest:input_type -> privutil.RegexRequest
-	29,  // 39: privutil.PrivUtilService.JsonToGo:input_type -> privutil.JsonToGoRequest
-	31,  // 40: privutil.PrivUtilService.CronExplain:input_type -> privutil.CronRequest
-	33,  // 41: privutil.PrivUtilService.CertParse:input_type -> privutil.CertRequest
-	35,  // 42: privutil.PrivUtilService.ColorConvert:input_type -> privutil.ColorRequest
-	37,  // 43: privutil.PrivUtilService.CaseConvert:input_type -> privutil.CaseRequest
-	39,  // 44: privutil.PrivUtilService.StringEscape:input_type -> privutil.EscapeRequest
-	41,  // 45: privutil.PrivUtilService.TextSimilarity:input_type -> privutil.SimilarityRequest
-	43,  // 46: privutil.PrivUtilService.SqlFormat:input_type -> privutil.SqlRequest
-	45,  // 47: privutil.PrivUtilService.IpCalc:input_type -> privutil.IpRequest
-	51,  // 48: privutil.PrivUtilService.GeneratePassword:input_type -> privutil.PasswordRequest
-	53,  // 49: privutil.PrivUtilService.GenerateRsaKeyPair:input_type -> privutil.RsaKeyRequest
-	55,  // 50: privutil.PrivUtilService.BaseConvert:input_type -> privutil.BaseConvertRequest
-	21,  // 51: privutil.PrivUtilService.MarkdownToHtml:input_type -> privutil.TextRequest
-	21,  // 52: privutil.PrivUtilService.HtmlToMarkdown:input_type -> privutil.TextRequest
-	67,  // 53: privutil.PrivUtilService.HmacGenerate:input_type -> privutil.HmacRequest
-	69,  // 54: privutil.PrivUtilService.OtpGenerate:input_type -> privutil.OtpRequest
-	71,  // 55: privutil.PrivUtilService.OtpValidate:input_type -> privutil.OtpValidateRequest
-	73,  // 56: privutil.PrivUtilService.UlidGenerate:input_type -> privutil.UlidRequest
-	75,  // 57: privutil.PrivUtilService.CaesarCipher:input_type -> privutil.CaesarRequest
-	77,  // 58: privutil.PrivUtilService.TextEncode:input_type -> privutil.TextEncodeRequest
-	79,  // 59: privutil.PrivUtilService.MorseCode:input_type -> privutil.MorseRequest
-	81,  // 60: privutil.PrivUtilService.BasicAuthGenerate:input_type -> privutil.BasicAuthRequest
-	57,  // 61: privutil.PrivUtilService.ChmodCalc:input_type -> privutil.ChmodRequest
-	59,  // 62: privutil.PrivUtilService.Ipv4Convert:input_type -> privutil.Ipv4ConvertRequest
-	61,  // 63: privutil.PrivUtilService.Ipv4RangeExpand:input_type -> privutil.Ipv4RangeRequest
-	63,  // 64: privutil.PrivUtilService.GeneratePort:input_type -> privutil.PortRequest
-	65,  // 65: privutil.PrivUtilService.GenerateMac:input_type -> privutil.MacRequest
-	83,  // 66: privutil.PrivUtilService.Slugify:input_type -> privutil.SlugifyRequest
-	85,  // 67: privutil.PrivUtilService.HiddenChars:input_type -> privutil.HiddenCharsRequest
-	88,  // 68: privutil.PrivUtilService.TextReplace:input_type -> privutil.TextReplaceRequest
-	90,  // 69: privutil.PrivUtilService.StringObfuscate:input_type -> privutil.StringObfuscateRequest
-	92,  // 70: privutil.PrivUtilService.NumeronymGenerate:input_type -> privutil.NumeronymRequest
-	94,  // 71: privutil.PrivUtilService.NatoAlphabet:input_type -> privutil.NatoRequest
-	96,  // 72: privutil.PrivUtilService.ListProcess:input_type -> privutil.ListRequest
-	100, // 73: privutil.PrivUtilService.MathEval:input_type -> privutil.MathEvalRequest
-	102, // 74: privutil.PrivUtilService.PercentageCalc:input_type -> privutil.PercentageRequest
-	104, // 75: privutil.PrivUtilService.TempConvert:input_type -> privutil.TempConvertRequest
-	106, // 76: privutil.PrivUtilService.UnitConvert:input_type -> privutil.UnitConvertRequest
-	109, // 77: privutil.PrivUtilService.DateDiff:input_type -> privutil.DateDiffRequest
-	111, // 78: privutil.PrivUtilService.LeapYear:input_type -> privutil.LeapYearRequest
-	114, // 79: privutil.PrivUtilService.DateAdd:input_type -> privutil.DateAddRequest
-	116, // 80: privutil.PrivUtilService.DateFormat:input_type -> privutil.DateFormatRequest
-	119, // 81: privutil.PrivUtilService.DateInfo:input_type -> privutil.DateInfoRequest
-	122, // 82: privutil.PrivUtilService.UrlParse:input_type -> privutil.UrlParseRequest
-	124, // 83: privutil.PrivUtilService.UserAgentParse:input_type -> privutil.UserAgentParseRequest
-	127, // 84: privutil.PrivUtilService.HttpStatusSearch:input_type -> privutil.HttpStatusSearchRequest
-	130, // 85: privutil.PrivUtilService.MimeLookup:input_type -> privutil.MimeLookupRequest
-	133, // 86: privutil.PrivUtilService.DockerRunToCompose:input_type -> privutil.DockerRunToComposeRequest
-	135, // 87: privutil.PrivUtilService.GitCheatSheet:input_type -> privutil.GitCheatSheetRequest
-	139, // 88: privutil.PrivUtilService.SvgOptimize:input_type -> privutil.SvgOptimizeRequest
-	141, // 89: privutil.PrivUtilService.ExifRead:input_type -> privutil.ExifReadRequest
-	144, // 90: privutil.PrivUtilService.FileToBase64:input_type -> privutil.FileToBase64Request
-	146, // 91: privutil.PrivUtilService.Base64ToFile:input_type -> privutil.Base64ToFileRequest
-	148, // 92: privutil.PrivUtilService.TokenCount:input_type -> privutil.TokenCountRequest
-	6,   // 93: privutil.PrivUtilService.Diff:output_type -> privutil.DiffResponse
-	8,   // 94: privutil.PrivUtilService.Base64Encode:output_type -> privutil.Base64Response
-	8,   // 95: privutil.PrivUtilService.Base64Decode:output_type -> privutil.Base64Response
-	10,  // 96: privutil.PrivUtilService.JsonFormat:output_type -> privutil.JsonFormatResponse
-	12,  // 97: privutil.PrivUtilService.Convert:output_type -> privutil.ConvertResponse
-	14,  // 98: privutil.PrivUtilService.ValidateData:output_type -> privutil.ValidateResponse
-	16,  // 99: privutil.PrivUtilService.GenerateUuid:output_type -> privutil.UuidResponse
-	18,  // 100: privutil.PrivUtilService.GenerateLorem:output_type -> privutil.LoremResponse
-	20,  // 101: privutil.PrivUtilService.CalculateHash:output_type -> privutil.HashResponse
-	48,  // 102: privutil.PrivUtilService.TextInspect:output_type -> privutil.TextInspectResponse
-	50,  // 103: privutil.PrivUtilService.TextManipulate:output_type -> privutil.TextManipulateResponse
-	22,  // 104: privutil.PrivUtilService.UrlEncode:output_type -> privutil.TextResponse
-	22,  // 105: privutil.PrivUtilService.UrlDecode:output_type -> privutil.TextResponse
-	22,  // 106: privutil.PrivUtilService.HtmlEncode:output_type -> privutil.TextResponse
-	22,  // 107: privutil.PrivUtilService.HtmlDecode:output_type -> privutil.TextResponse
-	24,  // 108: privutil.PrivUtilService.TimeConvert:output_type -> privutil.TimeResponse
-	26,  // 109: privutil.PrivUtilService.JwtDecode:output_type -> privutil.JwtResponse
-	28,  // 110: privutil.PrivUtilService.RegexTest:output_type -> privutil.RegexResponse
-	30,  // 111: privutil.PrivUtilService.JsonToGo:output_type -> privutil.JsonToGoResponse
-	32,  // 112: privutil.PrivUtilService.CronExplain:output_type -> privutil.CronResponse
-	34,  // 113: privutil.PrivUtilService.CertParse:output_type -> privutil.CertResponse
-	36,  // 114: privutil.PrivUtilService.ColorConvert:output_type -> privutil.ColorResponse
-	38,  // 115: privutil.PrivUtilService.CaseConvert:output_type -> privutil.CaseResponse
-	40,  // 116: privutil.PrivUtilService.StringEscape:output_type -> privutil.EscapeResponse
-	42,  // 117: privutil.PrivUtilService.TextSimilarity:output_type -> privutil.SimilarityResponse
-	44,  // 118: privutil.PrivUtilService.SqlFormat:output_type -> privutil.SqlResponse
-	46,  // 119: privutil.PrivUtilService.IpCalc:output_type -> privutil.IpResponse
-	52,  // 120: privutil.PrivUtilService.GeneratePassword:output_type -> privutil.PasswordResponse
-	54,  // 121: privutil.PrivUtilService.GenerateRsaKeyPair:output_type -> privutil.RsaKeyResponse
-	56,  // 122: privutil.PrivUtilService.BaseConvert:output_type -> privutil.BaseConvertResponse
-	22,  // 123: privutil.PrivUtilService.MarkdownToHtml:output_type -> privutil.TextResponse
-	22,  // 124: privutil.PrivUtilService.HtmlToMarkdown:output_type -> privutil.TextResponse
-	68,  // 125: privutil.PrivUtilService.HmacGenerate:output_type -> privutil.HmacResponse
-	70,  // 126: privutil.PrivUtilService.OtpGenerate:output_type -> privutil.OtpResponse
-	72,  // 127: privutil.PrivUtilService.OtpValidate:output_type -> privutil.OtpValidateResponse
-	74,  // 128: privutil.PrivUtilService.UlidGenerate:output_type -> privutil.UlidResponse
-	76,  // 129: privutil.PrivUtilService.CaesarCipher:output_type -> privutil.CaesarResponse
-	78,  // 130: privutil.PrivUtilService.TextEncode:output_type -> privutil.TextEncodeResponse
-	80,  // 131: privutil.PrivUtilService.MorseCode:output_type -> privutil.MorseResponse
-	82,  // 132: privutil.PrivUtilService.BasicAuthGenerate:output_type -> privutil.BasicAuthResponse
-	58,  // 133: privutil.PrivUtilService.ChmodCalc:output_type -> privutil.ChmodResponse
-	60,  // 134: privutil.PrivUtilService.Ipv4Convert:output_type -> privutil.Ipv4ConvertResponse
-	62,  // 135: privutil.PrivUtilService.Ipv4RangeExpand:output_type -> privutil.Ipv4RangeResponse
-	64,  // 136: privutil.PrivUtilService.GeneratePort:output_type -> privutil.PortResponse
-	66,  // 137: privutil.PrivUtilService.GenerateMac:output_type -> privutil.MacResponse
-	84,  // 138: privutil.PrivUtilService.Slugify:output_type -> privutil.SlugifyResponse
-	87,  // 139: privutil.PrivUtilService.HiddenChars:output_type -> privutil.HiddenCharsResponse
-	89,  // 140: privutil.PrivUtilService.TextReplace:output_type -> privutil.TextReplaceResponse
-	91,  // 141: privutil.PrivUtilService.StringObfuscate:output_type -> privutil.StringObfuscateResponse
-	93,  // 142: privutil.PrivUtilService.NumeronymGenerate:output_type -> privutil.NumeronymResponse
-	95,  // 143: privutil.PrivUtilService.NatoAlphabet:output_type -> privutil.NatoResponse
-	98,  // 144: privutil.PrivUtilService.ListProcess:output_type -> privutil.ListResponse
-	101, // 145: privutil.PrivUtilService.MathEval:output_type -> privutil.MathEvalResponse
-	103, // 146: privutil.PrivUtilService.PercentageCalc:output_type -> privutil.PercentageResponse
-	105, // 147: privutil.PrivUtilService.TempConvert:output_type -> privutil.TempConvertResponse
-	108, // 148: privutil.PrivUtilService.UnitConvert:output_type -> privutil.UnitConvertResponse
-	110, // 149: privutil.PrivUtilService.DateDiff:output_type -> privutil.DateDiffResponse
-	113, // 150: privutil.PrivUtilService.LeapYear:output_type -> privutil.LeapYearResponse
-	115, // 151: privutil.PrivUtilService.DateAdd:output_type -> privutil.DateAddResponse
-	118, // 152: privutil.PrivUtilService.DateFormat:output_type -> privutil.DateFormatResponse
-	120, // 153: privutil.PrivUtilService.DateInfo:output_type -> privutil.DateInfoResponse
-	123, // 154: privutil.PrivUtilService.UrlParse:output_type -> privutil.UrlParseResponse
-	126, // 155: privutil.PrivUtilService.UserAgentParse:output_type -> privutil.UserAgentParseResponse
-	129, // 156: privutil.PrivUtilService.HttpStatusSearch:output_type -> privutil.HttpStatusSearchResponse
-	132, // 157: privutil.PrivUtilService.MimeLookup:output_type -> privutil.MimeLookupResponse
-	134, // 158: privutil.PrivUtilService.DockerRunToCompose:output_type -> privutil.DockerRunToComposeResponse
-	138, // 159: privutil.PrivUtilService.GitCheatSheet:output_type -> privutil.GitCheatSheetResponse
-	140, // 160: privutil.PrivUtilService.SvgOptimize:output_type -> privutil.SvgOptimizeResponse
-	143, // 161: privutil.PrivUtilService.ExifRead:output_type -> privutil.ExifReadResponse
-	145, // 162: privutil.PrivUtilService.FileToBase64:output_type -> privutil.FileToBase64Response
-	147, // 163: privutil.PrivUtilService.Base64ToFile:output_type -> privutil.Base64ToFileResponse
-	150, // 164: privutil.PrivUtilService.TokenCount:output_type -> privutil.TokenCountResponse
-	93,  // [93:165] is the sub-list for method output_type
-	21,  // [21:93] is the sub-list for method input_type
-	21,  // [21:21] is the sub-list for extension type_name
-	21,  // [21:21] is the sub-list for extension extendee
-	0,   // [0:21] is the sub-list for field type_name
+	152, // 21: privutil.SpellCheckResponse.issues:type_name -> privutil.SpellIssue
+	155, // 22: privutil.SpellLanguagesResponse.languages:type_name -> privutil.SpellLanguage
+	5,   // 23: privutil.PrivUtilService.Diff:input_type -> privutil.DiffRequest
+	7,   // 24: privutil.PrivUtilService.Base64Encode:input_type -> privutil.Base64Request
+	7,   // 25: privutil.PrivUtilService.Base64Decode:input_type -> privutil.Base64Request
+	9,   // 26: privutil.PrivUtilService.JsonFormat:input_type -> privutil.JsonFormatRequest
+	11,  // 27: privutil.PrivUtilService.Convert:input_type -> privutil.ConvertRequest
+	13,  // 28: privutil.PrivUtilService.ValidateData:input_type -> privutil.ValidateRequest
+	15,  // 29: privutil.PrivUtilService.GenerateUuid:input_type -> privutil.UuidRequest
+	17,  // 30: privutil.PrivUtilService.GenerateLorem:input_type -> privutil.LoremRequest
+	19,  // 31: privutil.PrivUtilService.CalculateHash:input_type -> privutil.HashRequest
+	47,  // 32: privutil.PrivUtilService.TextInspect:input_type -> privutil.TextInspectRequest
+	49,  // 33: privutil.PrivUtilService.TextManipulate:input_type -> privutil.TextManipulateRequest
+	21,  // 34: privutil.PrivUtilService.UrlEncode:input_type -> privutil.TextRequest
+	21,  // 35: privutil.PrivUtilService.UrlDecode:input_type -> privutil.TextRequest
+	21,  // 36: privutil.PrivUtilService.HtmlEncode:input_type -> privutil.TextRequest
+	21,  // 37: privutil.PrivUtilService.HtmlDecode:input_type -> privutil.TextRequest
+	23,  // 38: privutil.PrivUtilService.TimeConvert:input_type -> privutil.TimeRequest
+	25,  // 39: privutil.PrivUtilService.JwtDecode:input_type -> privutil.JwtRequest
+	27,  // 40: privutil.PrivUtilService.RegexTest:input_type -> privutil.RegexRequest
+	29,  // 41: privutil.PrivUtilService.JsonToGo:input_type -> privutil.JsonToGoRequest
+	31,  // 42: privutil.PrivUtilService.CronExplain:input_type -> privutil.CronRequest
+	33,  // 43: privutil.PrivUtilService.CertParse:input_type -> privutil.CertRequest
+	35,  // 44: privutil.PrivUtilService.ColorConvert:input_type -> privutil.ColorRequest
+	37,  // 45: privutil.PrivUtilService.CaseConvert:input_type -> privutil.CaseRequest
+	39,  // 46: privutil.PrivUtilService.StringEscape:input_type -> privutil.EscapeRequest
+	41,  // 47: privutil.PrivUtilService.TextSimilarity:input_type -> privutil.SimilarityRequest
+	43,  // 48: privutil.PrivUtilService.SqlFormat:input_type -> privutil.SqlRequest
+	45,  // 49: privutil.PrivUtilService.IpCalc:input_type -> privutil.IpRequest
+	51,  // 50: privutil.PrivUtilService.GeneratePassword:input_type -> privutil.PasswordRequest
+	53,  // 51: privutil.PrivUtilService.GenerateRsaKeyPair:input_type -> privutil.RsaKeyRequest
+	55,  // 52: privutil.PrivUtilService.BaseConvert:input_type -> privutil.BaseConvertRequest
+	21,  // 53: privutil.PrivUtilService.MarkdownToHtml:input_type -> privutil.TextRequest
+	21,  // 54: privutil.PrivUtilService.HtmlToMarkdown:input_type -> privutil.TextRequest
+	67,  // 55: privutil.PrivUtilService.HmacGenerate:input_type -> privutil.HmacRequest
+	69,  // 56: privutil.PrivUtilService.OtpGenerate:input_type -> privutil.OtpRequest
+	71,  // 57: privutil.PrivUtilService.OtpValidate:input_type -> privutil.OtpValidateRequest
+	73,  // 58: privutil.PrivUtilService.UlidGenerate:input_type -> privutil.UlidRequest
+	75,  // 59: privutil.PrivUtilService.CaesarCipher:input_type -> privutil.CaesarRequest
+	77,  // 60: privutil.PrivUtilService.TextEncode:input_type -> privutil.TextEncodeRequest
+	79,  // 61: privutil.PrivUtilService.MorseCode:input_type -> privutil.MorseRequest
+	81,  // 62: privutil.PrivUtilService.BasicAuthGenerate:input_type -> privutil.BasicAuthRequest
+	57,  // 63: privutil.PrivUtilService.ChmodCalc:input_type -> privutil.ChmodRequest
+	59,  // 64: privutil.PrivUtilService.Ipv4Convert:input_type -> privutil.Ipv4ConvertRequest
+	61,  // 65: privutil.PrivUtilService.Ipv4RangeExpand:input_type -> privutil.Ipv4RangeRequest
+	63,  // 66: privutil.PrivUtilService.GeneratePort:input_type -> privutil.PortRequest
+	65,  // 67: privutil.PrivUtilService.GenerateMac:input_type -> privutil.MacRequest
+	83,  // 68: privutil.PrivUtilService.Slugify:input_type -> privutil.SlugifyRequest
+	85,  // 69: privutil.PrivUtilService.HiddenChars:input_type -> privutil.HiddenCharsRequest
+	88,  // 70: privutil.PrivUtilService.TextReplace:input_type -> privutil.TextReplaceRequest
+	90,  // 71: privutil.PrivUtilService.StringObfuscate:input_type -> privutil.StringObfuscateRequest
+	92,  // 72: privutil.PrivUtilService.NumeronymGenerate:input_type -> privutil.NumeronymRequest
+	94,  // 73: privutil.PrivUtilService.NatoAlphabet:input_type -> privutil.NatoRequest
+	96,  // 74: privutil.PrivUtilService.ListProcess:input_type -> privutil.ListRequest
+	100, // 75: privutil.PrivUtilService.MathEval:input_type -> privutil.MathEvalRequest
+	102, // 76: privutil.PrivUtilService.PercentageCalc:input_type -> privutil.PercentageRequest
+	104, // 77: privutil.PrivUtilService.TempConvert:input_type -> privutil.TempConvertRequest
+	106, // 78: privutil.PrivUtilService.UnitConvert:input_type -> privutil.UnitConvertRequest
+	109, // 79: privutil.PrivUtilService.DateDiff:input_type -> privutil.DateDiffRequest
+	111, // 80: privutil.PrivUtilService.LeapYear:input_type -> privutil.LeapYearRequest
+	114, // 81: privutil.PrivUtilService.DateAdd:input_type -> privutil.DateAddRequest
+	116, // 82: privutil.PrivUtilService.DateFormat:input_type -> privutil.DateFormatRequest
+	119, // 83: privutil.PrivUtilService.DateInfo:input_type -> privutil.DateInfoRequest
+	122, // 84: privutil.PrivUtilService.UrlParse:input_type -> privutil.UrlParseRequest
+	124, // 85: privutil.PrivUtilService.UserAgentParse:input_type -> privutil.UserAgentParseRequest
+	127, // 86: privutil.PrivUtilService.HttpStatusSearch:input_type -> privutil.HttpStatusSearchRequest
+	130, // 87: privutil.PrivUtilService.MimeLookup:input_type -> privutil.MimeLookupRequest
+	133, // 88: privutil.PrivUtilService.DockerRunToCompose:input_type -> privutil.DockerRunToComposeRequest
+	135, // 89: privutil.PrivUtilService.GitCheatSheet:input_type -> privutil.GitCheatSheetRequest
+	139, // 90: privutil.PrivUtilService.SvgOptimize:input_type -> privutil.SvgOptimizeRequest
+	141, // 91: privutil.PrivUtilService.ExifRead:input_type -> privutil.ExifReadRequest
+	144, // 92: privutil.PrivUtilService.FileToBase64:input_type -> privutil.FileToBase64Request
+	146, // 93: privutil.PrivUtilService.Base64ToFile:input_type -> privutil.Base64ToFileRequest
+	148, // 94: privutil.PrivUtilService.TokenCount:input_type -> privutil.TokenCountRequest
+	151, // 95: privutil.PrivUtilService.SpellCheck:input_type -> privutil.SpellCheckRequest
+	154, // 96: privutil.PrivUtilService.SpellLanguages:input_type -> privutil.SpellLanguagesRequest
+	6,   // 97: privutil.PrivUtilService.Diff:output_type -> privutil.DiffResponse
+	8,   // 98: privutil.PrivUtilService.Base64Encode:output_type -> privutil.Base64Response
+	8,   // 99: privutil.PrivUtilService.Base64Decode:output_type -> privutil.Base64Response
+	10,  // 100: privutil.PrivUtilService.JsonFormat:output_type -> privutil.JsonFormatResponse
+	12,  // 101: privutil.PrivUtilService.Convert:output_type -> privutil.ConvertResponse
+	14,  // 102: privutil.PrivUtilService.ValidateData:output_type -> privutil.ValidateResponse
+	16,  // 103: privutil.PrivUtilService.GenerateUuid:output_type -> privutil.UuidResponse
+	18,  // 104: privutil.PrivUtilService.GenerateLorem:output_type -> privutil.LoremResponse
+	20,  // 105: privutil.PrivUtilService.CalculateHash:output_type -> privutil.HashResponse
+	48,  // 106: privutil.PrivUtilService.TextInspect:output_type -> privutil.TextInspectResponse
+	50,  // 107: privutil.PrivUtilService.TextManipulate:output_type -> privutil.TextManipulateResponse
+	22,  // 108: privutil.PrivUtilService.UrlEncode:output_type -> privutil.TextResponse
+	22,  // 109: privutil.PrivUtilService.UrlDecode:output_type -> privutil.TextResponse
+	22,  // 110: privutil.PrivUtilService.HtmlEncode:output_type -> privutil.TextResponse
+	22,  // 111: privutil.PrivUtilService.HtmlDecode:output_type -> privutil.TextResponse
+	24,  // 112: privutil.PrivUtilService.TimeConvert:output_type -> privutil.TimeResponse
+	26,  // 113: privutil.PrivUtilService.JwtDecode:output_type -> privutil.JwtResponse
+	28,  // 114: privutil.PrivUtilService.RegexTest:output_type -> privutil.RegexResponse
+	30,  // 115: privutil.PrivUtilService.JsonToGo:output_type -> privutil.JsonToGoResponse
+	32,  // 116: privutil.PrivUtilService.CronExplain:output_type -> privutil.CronResponse
+	34,  // 117: privutil.PrivUtilService.CertParse:output_type -> privutil.CertResponse
+	36,  // 118: privutil.PrivUtilService.ColorConvert:output_type -> privutil.ColorResponse
+	38,  // 119: privutil.PrivUtilService.CaseConvert:output_type -> privutil.CaseResponse
+	40,  // 120: privutil.PrivUtilService.StringEscape:output_type -> privutil.EscapeResponse
+	42,  // 121: privutil.PrivUtilService.TextSimilarity:output_type -> privutil.SimilarityResponse
+	44,  // 122: privutil.PrivUtilService.SqlFormat:output_type -> privutil.SqlResponse
+	46,  // 123: privutil.PrivUtilService.IpCalc:output_type -> privutil.IpResponse
+	52,  // 124: privutil.PrivUtilService.GeneratePassword:output_type -> privutil.PasswordResponse
+	54,  // 125: privutil.PrivUtilService.GenerateRsaKeyPair:output_type -> privutil.RsaKeyResponse
+	56,  // 126: privutil.PrivUtilService.BaseConvert:output_type -> privutil.BaseConvertResponse
+	22,  // 127: privutil.PrivUtilService.MarkdownToHtml:output_type -> privutil.TextResponse
+	22,  // 128: privutil.PrivUtilService.HtmlToMarkdown:output_type -> privutil.TextResponse
+	68,  // 129: privutil.PrivUtilService.HmacGenerate:output_type -> privutil.HmacResponse
+	70,  // 130: privutil.PrivUtilService.OtpGenerate:output_type -> privutil.OtpResponse
+	72,  // 131: privutil.PrivUtilService.OtpValidate:output_type -> privutil.OtpValidateResponse
+	74,  // 132: privutil.PrivUtilService.UlidGenerate:output_type -> privutil.UlidResponse
+	76,  // 133: privutil.PrivUtilService.CaesarCipher:output_type -> privutil.CaesarResponse
+	78,  // 134: privutil.PrivUtilService.TextEncode:output_type -> privutil.TextEncodeResponse
+	80,  // 135: privutil.PrivUtilService.MorseCode:output_type -> privutil.MorseResponse
+	82,  // 136: privutil.PrivUtilService.BasicAuthGenerate:output_type -> privutil.BasicAuthResponse
+	58,  // 137: privutil.PrivUtilService.ChmodCalc:output_type -> privutil.ChmodResponse
+	60,  // 138: privutil.PrivUtilService.Ipv4Convert:output_type -> privutil.Ipv4ConvertResponse
+	62,  // 139: privutil.PrivUtilService.Ipv4RangeExpand:output_type -> privutil.Ipv4RangeResponse
+	64,  // 140: privutil.PrivUtilService.GeneratePort:output_type -> privutil.PortResponse
+	66,  // 141: privutil.PrivUtilService.GenerateMac:output_type -> privutil.MacResponse
+	84,  // 142: privutil.PrivUtilService.Slugify:output_type -> privutil.SlugifyResponse
+	87,  // 143: privutil.PrivUtilService.HiddenChars:output_type -> privutil.HiddenCharsResponse
+	89,  // 144: privutil.PrivUtilService.TextReplace:output_type -> privutil.TextReplaceResponse
+	91,  // 145: privutil.PrivUtilService.StringObfuscate:output_type -> privutil.StringObfuscateResponse
+	93,  // 146: privutil.PrivUtilService.NumeronymGenerate:output_type -> privutil.NumeronymResponse
+	95,  // 147: privutil.PrivUtilService.NatoAlphabet:output_type -> privutil.NatoResponse
+	98,  // 148: privutil.PrivUtilService.ListProcess:output_type -> privutil.ListResponse
+	101, // 149: privutil.PrivUtilService.MathEval:output_type -> privutil.MathEvalResponse
+	103, // 150: privutil.PrivUtilService.PercentageCalc:output_type -> privutil.PercentageResponse
+	105, // 151: privutil.PrivUtilService.TempConvert:output_type -> privutil.TempConvertResponse
+	108, // 152: privutil.PrivUtilService.UnitConvert:output_type -> privutil.UnitConvertResponse
+	110, // 153: privutil.PrivUtilService.DateDiff:output_type -> privutil.DateDiffResponse
+	113, // 154: privutil.PrivUtilService.LeapYear:output_type -> privutil.LeapYearResponse
+	115, // 155: privutil.PrivUtilService.DateAdd:output_type -> privutil.DateAddResponse
+	118, // 156: privutil.PrivUtilService.DateFormat:output_type -> privutil.DateFormatResponse
+	120, // 157: privutil.PrivUtilService.DateInfo:output_type -> privutil.DateInfoResponse
+	123, // 158: privutil.PrivUtilService.UrlParse:output_type -> privutil.UrlParseResponse
+	126, // 159: privutil.PrivUtilService.UserAgentParse:output_type -> privutil.UserAgentParseResponse
+	129, // 160: privutil.PrivUtilService.HttpStatusSearch:output_type -> privutil.HttpStatusSearchResponse
+	132, // 161: privutil.PrivUtilService.MimeLookup:output_type -> privutil.MimeLookupResponse
+	134, // 162: privutil.PrivUtilService.DockerRunToCompose:output_type -> privutil.DockerRunToComposeResponse
+	138, // 163: privutil.PrivUtilService.GitCheatSheet:output_type -> privutil.GitCheatSheetResponse
+	140, // 164: privutil.PrivUtilService.SvgOptimize:output_type -> privutil.SvgOptimizeResponse
+	143, // 165: privutil.PrivUtilService.ExifRead:output_type -> privutil.ExifReadResponse
+	145, // 166: privutil.PrivUtilService.FileToBase64:output_type -> privutil.FileToBase64Response
+	147, // 167: privutil.PrivUtilService.Base64ToFile:output_type -> privutil.Base64ToFileResponse
+	150, // 168: privutil.PrivUtilService.TokenCount:output_type -> privutil.TokenCountResponse
+	153, // 169: privutil.PrivUtilService.SpellCheck:output_type -> privutil.SpellCheckResponse
+	156, // 170: privutil.PrivUtilService.SpellLanguages:output_type -> privutil.SpellLanguagesResponse
+	97,  // [97:171] is the sub-list for method output_type
+	23,  // [23:97] is the sub-list for method input_type
+	23,  // [23:23] is the sub-list for extension type_name
+	23,  // [23:23] is the sub-list for extension extendee
+	0,   // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_proto_privutil_proto_init() }
@@ -10600,7 +11011,7 @@ func file_proto_privutil_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_privutil_proto_rawDesc), len(file_proto_privutil_proto_rawDesc)),
 			NumEnums:      5,
-			NumMessages:   146,
+			NumMessages:   152,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
