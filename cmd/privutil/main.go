@@ -8,11 +8,11 @@ import (
 	"log"
 	"os"
 
-	"google.golang.org/grpc"
+	connect "connectrpc.com/connect"
 
 	"github.com/odinnordico/privutil/internal/api"
 	"github.com/odinnordico/privutil/internal/server"
-	pb "github.com/odinnordico/privutil/proto"
+	protoconnect "github.com/odinnordico/privutil/proto/protoconnect"
 )
 
 // Version info (set via ldflags during build)
@@ -55,13 +55,16 @@ func main() {
 		log.Fatalf("Unsupported log level %q: use debug or info", *logLevel)
 	}
 
-	// Create gRPC server
-	grpcServer := grpc.NewServer()
-	pb.RegisterPrivUtilServiceServer(grpcServer, api.NewServer())
+	// Build the connect handler over the existing handlers, with panic recovery.
+	connectSrv := api.NewConnectServer(api.NewServer())
+	rpcPath, rpcHandler := protoconnect.NewPrivUtilServiceHandler(
+		connectSrv,
+		connect.WithInterceptors(api.RecoveryInterceptor()),
+	)
 
 	// Create and start HTTP server
 	addr := *host + ":" + *port
-	srv := server.New(addr, grpcServer)
+	srv := server.New(addr, rpcPath, rpcHandler)
 
 	log.Printf("Starting PrivUtil on %s...", addr)
 	if err := srv.Start(); err != nil {

@@ -155,6 +155,26 @@ docker pull ghcr.io/odinnordico/privutil:latest
 docker run --rm -p 8090:8090 ghcr.io/odinnordico/privutil:latest
 ```
 
+To keep the container running and auto-restart it if it ever exits, add a restart policy:
+
+```bash
+docker run -d --restart=unless-stopped -p 8090:8090 ghcr.io/odinnordico/privutil:latest
+```
+
+### Running as a service (auto-restart)
+
+To run PrivUtil under systemd with automatic restart on failure, use the provided
+unit at [`deploy/privutil.service`](deploy/privutil.service):
+
+```bash
+sudo cp privutil /usr/local/bin/privutil
+sudo cp deploy/privutil.service /etc/systemd/system/privutil.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now privutil
+```
+
+The unit sets `Restart=on-failure`, so the process is relaunched within ~1s if it exits unexpectedly.
+
 ### Download from Releases
 
 Download the latest binary for your platform from the [Releases](https://github.com/odinnordico/privutil/releases) page.

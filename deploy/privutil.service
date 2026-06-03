@@ -1,0 +1,25 @@
+[Unit]
+Description=PrivUtil - offline developer utility suite
+After=network.target
+
+[Service]
+Type=simple
+# Adjust to wherever you installed the privutil binary.
+ExecStart=/usr/local/bin/privutil
+Environment=PORT=8090
+Environment=HOST=127.0.0.1
+
+# Automatically restart the process if it exits non-zero (e.g. a fatal runtime
+# crash). RestartSec keeps the downtime to ~1s.
+Restart=on-failure
+RestartSec=1s
+
+# Basic hardening — PrivUtil needs no privileges and writes nothing to disk.
+DynamicUser=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

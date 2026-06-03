@@ -15,8 +15,10 @@ all: build
 
 # Generate Protocol Buffers
 proto:
-	# Backend Protobuf
-	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/privutil.proto
+	# Backend Protobuf (messages + connect-go service bindings)
+	protoc --go_out=. --go_opt=paths=source_relative \
+		--connect-go_out=. --connect-go_opt=paths=source_relative \
+		proto/privutil.proto
 	# Frontend Protobuf
 	cd web && npm install && \
 	protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto \
