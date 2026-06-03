@@ -11,19 +11,19 @@ require (
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/sergi/go-diff v1.4.0
 	github.com/yuin/goldmark v1.8.2
-	golang.org/x/crypto v0.50.0
+	golang.org/x/crypto v0.52.0
 	google.golang.org/grpc v1.80.0
 	google.golang.org/protobuf v1.36.11
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-require github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
-
 require (
-	github.com/dlclark/regexp2 v1.10.0 // indirect
-	github.com/pkoukk/tiktoken-go v0.1.8 // indirect
-	go.abhg.dev/goldmark/mermaid v0.6.0 // indirect
+	github.com/pkoukk/tiktoken-go v0.1.8
+	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
+	go.abhg.dev/goldmark/mermaid v0.6.0
 )
+
+require github.com/dlclark/regexp2 v1.10.0 // indirect
 
 require (
 	github.com/JohannesKaufmann/dom v0.2.0 // indirect
@@ -32,9 +32,9 @@ require (
 	github.com/oklog/ulid/v2 v2.1.1
 	github.com/pelletier/go-toml/v2 v2.3.0
 	github.com/rs/cors v1.11.1 // indirect
-	golang.org/x/net v0.53.0 // indirect
-	golang.org/x/sys v0.43.0 // indirect
-	golang.org/x/text v0.36.0
+	golang.org/x/net v0.54.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/text v0.37.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260427160629-7cedc36a6bc4 // indirect
 	nhooyr.io/websocket v1.8.17 // indirect
 )
