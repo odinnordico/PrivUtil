@@ -5,13 +5,11 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"google.golang.org/grpc"
 )
 
 func TestNew(t *testing.T) {
-	grpcServer := grpc.NewServer()
-	srv := New(":8090", grpcServer)
+	rpcHandler := http.NewServeMux()
+	srv := New(":8090", "/privutil.PrivUtilService/", rpcHandler)
 
 	if srv == nil {
 		t.Fatal("New() returned nil")
@@ -19,8 +17,11 @@ func TestNew(t *testing.T) {
 	if srv.addr != ":8090" {
 		t.Errorf("New() addr = %v, want :8090", srv.addr)
 	}
-	if srv.grpcServer != grpcServer {
-		t.Error("New() grpcServer not set correctly")
+	if srv.rpcPath != "/privutil.PrivUtilService/" {
+		t.Errorf("New() rpcPath = %v, want /privutil.PrivUtilService/", srv.rpcPath)
+	}
+	if srv.rpcHandler == nil {
+		t.Error("New() rpcHandler not set correctly")
 	}
 }
 
@@ -37,7 +38,7 @@ func testHandler(t *testing.T) http.Handler {
 	if err != nil {
 		t.Fatalf("fs.Sub: %v", err)
 	}
-	return New(":0", grpc.NewServer()).newHandler(distFS)
+	return New(":0", "/privutil.PrivUtilService/", http.NewServeMux()).newHandler(distFS)
 }
 
 func TestServerHandlerStaticFiles(t *testing.T) {

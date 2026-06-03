@@ -13,8 +13,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	"google.golang.org/grpc"
+	connectcors "connectrpc.com/cors"
+	"github.com/rs/cors"
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 )
 
 //go:embed dist/*
@@ -22,28 +24,36 @@ var staticFiles embed.FS
 
 type Server struct {
 	addr       string
-	grpcServer *grpc.Server
+	rpcPath    string
+	rpcHandler http.Handler
 }
 
-func New(addr string, grpcServer *grpc.Server) *Server {
+// New builds an HTTP server that routes connect RPC requests under rpcPath to
+// rpcHandler and serves the embedded React SPA for everything else.
+func New(addr, rpcPath string, rpcHandler http.Handler) *Server {
 	return &Server{
 		addr:       addr,
-		grpcServer: grpcServer,
+		rpcPath:    rpcPath,
+		rpcHandler: rpcHandler,
 	}
 }
 
 func (s *Server) newHandler(distFS fs.FS) http.Handler {
-	wrappedGrpc := grpcweb.WrapServer(s.grpcServer, grpcweb.WithOriginFunc(func(origin string) bool {
-		return true // intentional: privutil is a local utility, not exposed to the internet
-	}))
 	fileServer := http.FileServer(http.FS(distFS))
 
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if wrappedGrpc.IsGrpcWebRequest(r) {
-			wrappedGrpc.ServeHTTP(w, r)
-			return
-		}
+	// Allow all origins, matching the previous grpc-web wrapper: PrivUtil is a
+	// local utility and is also used cross-origin from the Vite dev server. The
+	// connectcors helper supplies the headers the Connect/gRPC-Web protocols need.
+	corsMiddleware := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: connectcors.AllowedMethods(),
+		AllowedHeaders: connectcors.AllowedHeaders(),
+		ExposedHeaders: connectcors.ExposedHeaders(),
+	})
 
+	mux := http.NewServeMux()
+	mux.Handle(s.rpcPath, corsMiddleware.Handler(s.rpcHandler))
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		path := strings.TrimPrefix(r.URL.Path, "/")
 		if path == "" {
 			path = "index.html"
@@ -57,6 +67,10 @@ func (s *Server) newHandler(distFS fs.FS) http.Handler {
 
 		fileServer.ServeHTTP(w, r)
 	})
+
+	// Serve cleartext HTTP/2 (h2c) so native gRPC clients work without TLS; the
+	// browser uses gRPC-Web over HTTP/1.1, which the same handler also serves.
+	return h2c.NewHandler(mux, &http2.Server{})
 }
 
 func (s *Server) Start() error {
@@ -76,7 +90,6 @@ func (s *Server) Start() error {
 
 	go func() {
 		<-ctx.Done()
-		s.grpcServer.GracefulStop()
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		_ = httpServer.Shutdown(shutdownCtx)
