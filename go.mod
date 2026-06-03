@@ -3,7 +3,7 @@ module github.com/odinnordico/privutil
 go 1.26
 
 require (
-	github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.0
+	github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.1
 	github.com/brianvoe/gofakeit/v6 v6.28.0
 	github.com/clbanning/mxj/v2 v2.7.0
 	github.com/google/uuid v1.6.0
