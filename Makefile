@@ -1,4 +1,4 @@
-BUILD_SHA_SHORT := $(shell git rev-parse --short HEAD)
+BUILD_SHA_SHORT := $(shell git rev-parse --short HEAD 2>/dev/null)
 BUILD_VERSION := $(shell git describe --tags --exact-match 2>/dev/null || echo dev-$(BUILD_SHA_SHORT))
 BUILD_DATE ?= $$(date -u +"%Y-%m-%d")
 GOHOSTOS ?= $(shell go env GOHOSTOS)
