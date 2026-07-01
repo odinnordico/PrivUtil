@@ -29,7 +29,7 @@ require github.com/dlclark/regexp2 v1.10.0 // indirect
 require (
 	github.com/JohannesKaufmann/dom v0.2.0 // indirect
 	github.com/oklog/ulid/v2 v2.1.1
-	github.com/pelletier/go-toml/v2 v2.3.1
+	github.com/pelletier/go-toml/v2 v2.4.2
 	github.com/rs/cors v1.11.1
 	golang.org/x/net v0.55.0
 	golang.org/x/sys v0.45.0 // indirect
