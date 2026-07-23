@@ -5,6 +5,10 @@ import { ArrowDownUp, Upload, Download, Copy, X } from 'lucide-react';
 
 type Mode = 'encode' | 'decode';
 
+// Below this size, binary payloads (e.g. gRPC/protobuf octet streams) are
+// text-decoded inline so their readable content is visible without downloading.
+const MAX_BINARY_PREVIEW_BYTES = 5 * 1024 * 1024;
+
 function bytesToHuman(n: number): string {
   if (n < 1024) return `${n} B`;
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
@@ -17,6 +21,18 @@ function isTextMime(mime: string) {
 
 function isImageMime(mime: string) {
   return mime.startsWith('image/');
+}
+
+function isPdfMime(mime: string) {
+  return mime.startsWith('application/pdf');
+}
+
+function isAudioMime(mime: string) {
+  return mime.startsWith('audio/');
+}
+
+function isVideoMime(mime: string) {
+  return mime.startsWith('video/');
 }
 
 export function Base64Tool() {
@@ -136,6 +152,65 @@ export function Base64Tool() {
       );
     }
 
+    if (isPdfMime(decodeMime)) {
+      const blob    = new Blob([new Uint8Array(decodeData)], { type: decodeMime });
+      const dataUrl = URL.createObjectURL(blob);
+      return (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
+              PDF — {decodeMime} · {bytesToHuman(decodeData.length)}
+            </span>
+            <button onClick={downloadDecoded}
+              className="flex items-center gap-1 text-xs text-slate-500 hover:text-kawa-600 dark:hover:text-kawa-400 transition-colors">
+              <Download className="w-3.5 h-3.5" /> Download
+            </button>
+          </div>
+          <iframe src={dataUrl} title="decoded PDF"
+            className="w-full h-[32rem] rounded-lg border border-slate-300 dark:border-neutral-700 shadow-sm bg-white" />
+        </div>
+      );
+    }
+
+    if (isAudioMime(decodeMime)) {
+      const blob    = new Blob([new Uint8Array(decodeData)], { type: decodeMime });
+      const dataUrl = URL.createObjectURL(blob);
+      return (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
+              Audio — {decodeMime} · {bytesToHuman(decodeData.length)}
+            </span>
+            <button onClick={downloadDecoded}
+              className="flex items-center gap-1 text-xs text-slate-500 hover:text-kawa-600 dark:hover:text-kawa-400 transition-colors">
+              <Download className="w-3.5 h-3.5" /> Download
+            </button>
+          </div>
+          <audio controls src={dataUrl} className="w-full" />
+        </div>
+      );
+    }
+
+    if (isVideoMime(decodeMime)) {
+      const blob    = new Blob([new Uint8Array(decodeData)], { type: decodeMime });
+      const dataUrl = URL.createObjectURL(blob);
+      return (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
+              Video — {decodeMime} · {bytesToHuman(decodeData.length)}
+            </span>
+            <button onClick={downloadDecoded}
+              className="flex items-center gap-1 text-xs text-slate-500 hover:text-kawa-600 dark:hover:text-kawa-400 transition-colors">
+              <Download className="w-3.5 h-3.5" /> Download
+            </button>
+          </div>
+          <video controls src={dataUrl}
+            className="max-w-full rounded-lg border border-slate-300 dark:border-neutral-700 shadow-sm" />
+        </div>
+      );
+    }
+
     if (isTextMime(decodeMime)) {
       const text = new TextDecoder().decode(decodeData);
       return (
@@ -157,20 +232,36 @@ export function Base64Tool() {
     }
 
     // Binary / unknown
+    const previewable = decodeData.length <= MAX_BINARY_PREVIEW_BYTES;
+    const previewText = previewable ? new TextDecoder().decode(decodeData) : '';
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
             Binary — {decodeMime || 'application/octet-stream'} · {bytesToHuman(decodeData.length)}
           </span>
-          <button onClick={downloadDecoded}
-            className="flex items-center gap-1 text-xs text-slate-500 hover:text-kawa-600 dark:hover:text-kawa-400 transition-colors">
-            <Download className="w-3.5 h-3.5" /> Download
-          </button>
+          <div className="flex items-center gap-3">
+            {previewable && (
+              <button onClick={() => copy(previewText)}
+                className="flex items-center gap-1 text-xs text-slate-500 hover:text-kawa-600 dark:hover:text-kawa-400 transition-colors">
+                <Copy className="w-3.5 h-3.5" /> {copied ? 'Copied!' : 'Copy'}
+              </button>
+            )}
+            <button onClick={downloadDecoded}
+              className="flex items-center gap-1 text-xs text-slate-500 hover:text-kawa-600 dark:hover:text-kawa-400 transition-colors">
+              <Download className="w-3.5 h-3.5" /> Download
+            </button>
+          </div>
         </div>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          Binary content — use the Download button to save the file.
-        </p>
+        {previewable ? (
+          <textarea readOnly
+            className="w-full h-40 bg-slate-50 dark:bg-black/30 p-4 rounded-lg border border-slate-300 dark:border-gray-800 text-slate-900 dark:text-neutral-100 font-mono text-sm focus:outline-none shadow-inner"
+            value={previewText} />
+        ) : (
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Binary content is too large to preview ({bytesToHuman(decodeData.length)}) — use the Download button to save the file.
+          </p>
+        )}
       </div>
     );
   };
