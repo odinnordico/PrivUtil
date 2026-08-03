@@ -774,6 +774,8 @@ export interface OtpValidateRequest {
   period: number;
   /** "sha1", "sha256", "sha512" */
   algo: string;
+  /** 6 or 8 (default 6) */
+  digits: number;
 }
 
 export interface OtpValidateResponse {
@@ -7602,7 +7604,7 @@ export const OtpResponse: MessageFns<OtpResponse> = {
 };
 
 function createBaseOtpValidateRequest(): OtpValidateRequest {
-  return { secret: "", code: "", window: 0, period: 0, algo: "" };
+  return { secret: "", code: "", window: 0, period: 0, algo: "", digits: 0 };
 }
 
 export const OtpValidateRequest: MessageFns<OtpValidateRequest> = {
@@ -7621,6 +7623,9 @@ export const OtpValidateRequest: MessageFns<OtpValidateRequest> = {
     }
     if (message.algo !== "") {
       writer.uint32(42).string(message.algo);
+    }
+    if (message.digits !== 0) {
+      writer.uint32(48).int32(message.digits);
     }
     return writer;
   },
@@ -7672,6 +7677,14 @@ export const OtpValidateRequest: MessageFns<OtpValidateRequest> = {
           message.algo = reader.string();
           continue;
         }
+        case 6: {
+          if (tag !== 48) {
+            break;
+          }
+
+          message.digits = reader.int32();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -7688,6 +7701,7 @@ export const OtpValidateRequest: MessageFns<OtpValidateRequest> = {
       window: isSet(object.window) ? globalThis.Number(object.window) : 0,
       period: isSet(object.period) ? globalThis.Number(object.period) : 0,
       algo: isSet(object.algo) ? globalThis.String(object.algo) : "",
+      digits: isSet(object.digits) ? globalThis.Number(object.digits) : 0,
     };
   },
 
@@ -7708,6 +7722,9 @@ export const OtpValidateRequest: MessageFns<OtpValidateRequest> = {
     if (message.algo !== "") {
       obj.algo = message.algo;
     }
+    if (message.digits !== 0) {
+      obj.digits = Math.round(message.digits);
+    }
     return obj;
   },
 
@@ -7721,6 +7738,7 @@ export const OtpValidateRequest: MessageFns<OtpValidateRequest> = {
     message.window = object.window ?? 0;
     message.period = object.period ?? 0;
     message.algo = object.algo ?? "";
+    message.digits = object.digits ?? 0;
     return message;
   },
 };

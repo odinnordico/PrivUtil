@@ -140,8 +140,14 @@ func (s *Server) OtpGenerate(_ context.Context, req *pb.OtpRequest) (*pb.OtpResp
 	if algoLabel == "" {
 		algoLabel = "SHA1"
 	}
-	uri := fmt.Sprintf("otpauth://totp/%s?secret=%s&issuer=%s&algorithm=%s&digits=%d&period=%d",
-		issuer, secretStr, issuer, algoLabel, digits, period)
+	// Emit the correct otpauth type and per-type parameter (period for TOTP,
+	// counter for HOTP) so the provisioning URI actually matches the credential.
+	otpType, extra := "totp", fmt.Sprintf("&period=%d", period)
+	if strings.ToLower(req.Type) == "hotp" {
+		otpType, extra = "hotp", fmt.Sprintf("&counter=%d", req.Counter)
+	}
+	uri := fmt.Sprintf("otpauth://%s/%s?secret=%s&issuer=%s&algorithm=%s&digits=%d%s",
+		otpType, issuer, secretStr, issuer, algoLabel, digits, extra)
 
 	return &pb.OtpResponse{
 		Code:          code,
@@ -166,11 +172,15 @@ func (s *Server) OtpValidate(_ context.Context, req *pb.OtpValidateRequest) (*pb
 	if window <= 0 {
 		window = 1
 	}
+	digits := int(req.Digits)
+	if digits != 8 {
+		digits = 6
+	}
 	hashFn := otpHash(req.Algo)
 
 	counter := time.Now().Unix() / period
 	for delta := int64(-window); delta <= int64(window); delta++ {
-		code, err := hotpCode(secretBytes, uint64(counter+delta), 6, hashFn) // #nosec G115 -- counter is large Unix time; delta is ±window (default 1)
+		code, err := hotpCode(secretBytes, uint64(counter+delta), digits, hashFn) // #nosec G115 -- counter is large Unix time; delta is ±window (default 1)
 		if err != nil {
 			continue
 		}

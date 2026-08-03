@@ -160,14 +160,8 @@ func (p *mathParser) expect(k tokKind) (token, error) {
 	return t, nil
 }
 
-// parseExpr is the entry point. It is re-entered for every parenthesised
-// sub-expression and function argument, so the depth guard lives here.
+// parseExpr is the entry point.
 func (p *mathParser) parseExpr() (float64, error) {
-	p.depth++
-	if p.depth > maxParseDepth {
-		return 0, fmt.Errorf("expression nested too deeply (limit %d)", maxParseDepth)
-	}
-	defer func() { p.depth-- }()
 	return p.parseAddSub()
 }
 
@@ -233,6 +227,17 @@ func (p *mathParser) parseMulDiv() (float64, error) {
 
 // parseUnary handles prefix + and -.
 func (p *mathParser) parseUnary() (float64, error) {
+	// The depth guard lives here because every recursion cycle passes through
+	// parseUnary: parentheses and function arguments (via parseExpr), prefix
+	// +/- chains (self-recursion below), and right-associative ^ chains (via
+	// parsePower). A stack overflow is a fatal throw RecoveryInterceptor cannot
+	// catch, so it must be prevented before recursing.
+	p.depth++
+	if p.depth > maxParseDepth {
+		return 0, fmt.Errorf("expression nested too deeply (limit %d)", maxParseDepth)
+	}
+	defer func() { p.depth-- }()
+
 	if p.peek().kind == tokMinus {
 		p.consume()
 		v, err := p.parseUnary()
@@ -645,6 +650,12 @@ func (s *Server) MathEval(_ context.Context, req *pb.MathEvalRequest) (*pb.MathE
 	expr := strings.TrimSpace(req.Expression)
 	if expr == "" {
 		return &pb.MathEvalResponse{Error: "expression is required"}, nil
+	}
+	// Bound the input so a huge flat expression (millions of operators) cannot
+	// drive pathological tokenizing/parsing even below the 32 MiB body limit.
+	const maxExprLen = 10_000
+	if len(expr) > maxExprLen {
+		return &pb.MathEvalResponse{Error: fmt.Sprintf("expression too long (limit %d characters)", maxExprLen)}, nil
 	}
 
 	vars := make(map[string]float64, len(req.Variables))

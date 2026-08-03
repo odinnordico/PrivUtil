@@ -10,21 +10,32 @@ import (
 
 // TestMathEvalDepthLimit ensures deeply nested expressions are rejected with an
 // error instead of overflowing the goroutine stack (an unrecoverable throw).
+// It covers all three recursion cycles — parentheses, prefix unary chains, and
+// right-associative power chains — each of which must hit the depth guard.
 func TestMathEvalDepthLimit(t *testing.T) {
 	s := NewServer()
-	deep := strings.Repeat("(", 5000) + "1" + strings.Repeat(")", 5000)
 
-	resp, err := s.MathEval(context.Background(), &pb.MathEvalRequest{Expression: deep})
-	if err != nil {
-		t.Fatalf("MathEval() returned transport error = %v", err)
+	// Each case stays under the 10k expression-length cap but far exceeds the
+	// 256 recursion-depth cap. Before the fix, only the parenthesis case was
+	// guarded; the unary and power chains overflowed the stack.
+	cases := map[string]string{
+		"parens": strings.Repeat("(", 1000) + "1" + strings.Repeat(")", 1000),
+		"unary":  strings.Repeat("-", 1000) + "1",
+		"power":  "1" + strings.Repeat("^1", 1000),
 	}
-	if resp.Error == "" {
-		t.Fatal("MathEval() expected an error for over-nested expression, got none")
+	for name, expr := range cases {
+		resp, err := s.MathEval(context.Background(), &pb.MathEvalRequest{Expression: expr})
+		if err != nil {
+			t.Fatalf("%s: MathEval() returned transport error = %v", name, err)
+		}
+		if resp.Error == "" {
+			t.Fatalf("%s: MathEval() expected an error for over-deep expression, got none", name)
+		}
 	}
 
 	// A modestly nested expression well under the limit must still evaluate.
 	ok := strings.Repeat("(", 10) + "2+3" + strings.Repeat(")", 10)
-	resp, err = s.MathEval(context.Background(), &pb.MathEvalRequest{Expression: ok})
+	resp, err := s.MathEval(context.Background(), &pb.MathEvalRequest{Expression: ok})
 	if err != nil {
 		t.Fatalf("MathEval() error = %v", err)
 	}
@@ -78,6 +89,36 @@ func TestTextSimilarityInputLimit(t *testing.T) {
 	}
 	if resp.Error == "" {
 		t.Error("TextSimilarity() expected error for oversized input, got none")
+	}
+}
+
+// TestOtpValidate8Digit ensures an 8-digit TOTP code validates — previously
+// OtpValidate hard-coded 6 digits, so 8-digit codes always failed.
+func TestOtpValidate8Digit(t *testing.T) {
+	s := NewServer()
+	ctx := context.Background()
+
+	gen, err := s.OtpGenerate(ctx, &pb.OtpRequest{
+		Type: "totp", Algo: "sha1", Digits: 8, Period: 30, GenerateSecret: true,
+	})
+	if err != nil {
+		t.Fatalf("OtpGenerate() error = %v", err)
+	}
+	if gen.Error != "" {
+		t.Fatalf("OtpGenerate() returned error: %s", gen.Error)
+	}
+	if len(gen.Code) != 8 {
+		t.Fatalf("expected an 8-digit code, got %q", gen.Code)
+	}
+
+	val, err := s.OtpValidate(ctx, &pb.OtpValidateRequest{
+		Secret: gen.Secret, Code: gen.Code, Algo: "sha1", Period: 30, Window: 1, Digits: 8,
+	})
+	if err != nil {
+		t.Fatalf("OtpValidate() error = %v", err)
+	}
+	if !val.Valid {
+		t.Error("OtpValidate() rejected a freshly generated 8-digit code")
 	}
 }
 

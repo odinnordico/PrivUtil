@@ -101,9 +101,15 @@ func (s *Server) TextManipulate(ctx context.Context, req *pb.TextManipulateReque
 	return &pb.TextManipulateResponse{Text: result}, nil
 }
 
-// maxSimilarityRunes bounds each input to the quadratic Levenshtein matrix so
-// two large pastes cannot pin a CPU core (O(n·m) with no timeout otherwise).
-const maxSimilarityRunes = 100_000
+// maxSimilarityRunes bounds each input, and maxSimilarityCells bounds their
+// product, to the quadratic Levenshtein matrix so two large pastes cannot pin a
+// CPU core (O(n·m) with no timeout otherwise). The cell cap is the tighter of
+// the two: two 100k inputs would be 10^10 cells (~10s) under the per-input
+// limit alone, so the product is capped to ~5·10^7 cells (sub-100ms).
+const (
+	maxSimilarityRunes = 100_000
+	maxSimilarityCells = 50_000_000
+)
 
 func (s *Server) TextSimilarity(ctx context.Context, req *pb.SimilarityRequest) (*pb.SimilarityResponse, error) {
 	// Simple Levenshtein implementation
@@ -118,6 +124,11 @@ func (s *Server) TextSimilarity(ctx context.Context, req *pb.SimilarityRequest) 
 	if n > m {
 		r1, r2 = r2, r1
 		n, m = m, n
+	}
+	if n*m > maxSimilarityCells {
+		return &pb.SimilarityResponse{
+			Error: fmt.Sprintf("inputs too large to compare: %d cells exceeds limit %d", n*m, maxSimilarityCells),
+		}, nil
 	}
 
 	currentRow := make([]int, n+1)

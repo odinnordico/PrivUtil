@@ -500,6 +500,7 @@ message OtpValidateRequest {
   int32  window  = 3; // allowed drift in periods (default 1)
   int32  period  = 4; // default 30
   string algo    = 5; // "sha1", "sha256", "sha512"
+  int32  digits  = 6; // 6 or 8 (default 6)
 }
 
 message OtpValidateResponse {

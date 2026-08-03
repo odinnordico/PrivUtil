@@ -67,7 +67,7 @@ func main() {
 	connectSrv := api.NewConnectServer(api.NewServer())
 	rpcPath, rpcHandler := protoconnect.NewPrivUtilServiceHandler(
 		connectSrv,
-		connect.WithInterceptors(api.RecoveryInterceptor()),
+		connect.WithInterceptors(api.RecoveryInterceptor(*logLevel == "debug")),
 		connect.WithReadMaxBytes(maxRPCRequestBytes),
 	)
 

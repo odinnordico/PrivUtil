@@ -19,7 +19,7 @@ func newGRPCWebClient(t *testing.T) protoconnect.PrivUtilServiceClient {
 	t.Helper()
 	path, handler := protoconnect.NewPrivUtilServiceHandler(
 		NewConnectServer(NewServer()),
-		connect.WithInterceptors(RecoveryInterceptor()),
+		connect.WithInterceptors(RecoveryInterceptor(true)),
 	)
 	mux := http.NewServeMux()
 	mux.Handle(path, handler)

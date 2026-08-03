@@ -4279,6 +4279,7 @@ type OtpValidateRequest struct {
 	Window        int32                  `protobuf:"varint,3,opt,name=window,proto3" json:"window,omitempty"` // allowed drift in periods (default 1)
 	Period        int32                  `protobuf:"varint,4,opt,name=period,proto3" json:"period,omitempty"` // default 30
 	Algo          string                 `protobuf:"bytes,5,opt,name=algo,proto3" json:"algo,omitempty"`      // "sha1", "sha256", "sha512"
+	Digits        int32                  `protobuf:"varint,6,opt,name=digits,proto3" json:"digits,omitempty"` // 6 or 8 (default 6)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4346,6 +4347,13 @@ func (x *OtpValidateRequest) GetAlgo() string {
 		return x.Algo
 	}
 	return ""
+}
+
+func (x *OtpValidateRequest) GetDigits() int32 {
+	if x != nil {
+		return x.Digits
+	}
+	return 0
 }
 
 type OtpValidateResponse struct {
@@ -10087,13 +10095,14 @@ const file_proto_privutil_proto_rawDesc = "" +
 	"validUntil\x12%\n" +
 	"\x0etime_remaining\x18\x04 \x01(\x03R\rtimeRemaining\x12\x10\n" +
 	"\x03uri\x18\x05 \x01(\tR\x03uri\x12\x14\n" +
-	"\x05error\x18\x06 \x01(\tR\x05error\"\x84\x01\n" +
+	"\x05error\x18\x06 \x01(\tR\x05error\"\x9c\x01\n" +
 	"\x12OtpValidateRequest\x12\x16\n" +
 	"\x06secret\x18\x01 \x01(\tR\x06secret\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x16\n" +
 	"\x06window\x18\x03 \x01(\x05R\x06window\x12\x16\n" +
 	"\x06period\x18\x04 \x01(\x05R\x06period\x12\x12\n" +
-	"\x04algo\x18\x05 \x01(\tR\x04algo\"A\n" +
+	"\x04algo\x18\x05 \x01(\tR\x04algo\x12\x16\n" +
+	"\x06digits\x18\x06 \x01(\x05R\x06digits\"A\n" +
 	"\x13OtpValidateResponse\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05error\"A\n" +
