@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 
@@ -34,42 +34,44 @@ const HtmlMarkdownViewer = lazy(() => import('./components/HtmlMarkdownViewer').
 const TokenCounterTool   = lazy(() => import('./components/TokenCounterTool').then(m => ({ default: m.TokenCounterTool })));
 const SpellCheckTool     = lazy(() => import('./components/SpellCheckTool').then(m => ({ default: m.SpellCheckTool })));
 
+// A single Suspense fallback and ErrorBoundary wrap the routed Outlet in Layout,
+// so routes render their lazy component directly.
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Suspense><Dashboard /></Suspense>} />
-          <Route path="diff"      element={<Suspense><DiffTool /></Suspense>} />
-          <Route path="base64"    element={<Suspense><Base64Tool /></Suspense>} />
-          <Route path="json"      element={<Suspense><JsonTool /></Suspense>} />
-          <Route path="convert"   element={<Suspense><ConverterTool /></Suspense>} />
-          <Route path="base"      element={<Suspense><BaseTool /></Suspense>} />
-          <Route path="generators" element={<Suspense><GeneratorTool /></Suspense>} />
-          <Route path="text"      element={<Suspense><TextTool /></Suspense>} />
-          <Route path="encoder"   element={<Suspense><EncoderTool /></Suspense>} />
-          <Route path="time"      element={<Suspense><TimeTool /></Suspense>} />
-          <Route path="dev"       element={<Suspense><DevTools /></Suspense>} />
-          <Route path="cron"      element={<Suspense><CronTool /></Suspense>} />
-          <Route path="cert"      element={<Suspense><CertTool /></Suspense>} />
-          <Route path="color"     element={<Suspense><ColorTool /></Suspense>} />
-          <Route path="string"    element={<Suspense><StringTool /></Suspense>} />
-          <Route path="diff-text" element={<Suspense><SimilarityTool /></Suspense>} />
-          <Route path="sql"       element={<Suspense><SqlTool /></Suspense>} />
-          <Route path="ip"        element={<Suspense><IpTool /></Suspense>} />
-          <Route path="password"  element={<Suspense><PasswordTool /></Suspense>} />
-          <Route path="markdown"  element={<Suspense><MarkdownTool /></Suspense>} />
-          <Route path="validate"  element={<Suspense><DataValidatorTool /></Suspense>} />
-          <Route path="network"   element={<Suspense><NetworkTool /></Suspense>} />
-          <Route path="crypto"       element={<Suspense><EncodingCryptoTool /></Suspense>} />
-          <Route path="text-string"  element={<Suspense><TextStringTool /></Suspense>} />
-          <Route path="math"         element={<Suspense><MathUnitTool /></Suspense>} />
-          <Route path="datetime"     element={<Suspense><DateTimeTool /></Suspense>} />
-          <Route path="webdevops"    element={<Suspense><WebDevOpsTool /></Suspense>} />
-          <Route path="media"        element={<Suspense><MediaTool /></Suspense>} />
-          <Route path="viewer"       element={<Suspense><HtmlMarkdownViewer /></Suspense>} />
-          <Route path="tokens"      element={<Suspense><TokenCounterTool /></Suspense>} />
-          <Route path="spell"       element={<Suspense><SpellCheckTool /></Suspense>} />
+          <Route index element={<Dashboard />} />
+          <Route path="diff"      element={<DiffTool />} />
+          <Route path="base64"    element={<Base64Tool />} />
+          <Route path="json"      element={<JsonTool />} />
+          <Route path="convert"   element={<ConverterTool />} />
+          <Route path="base"      element={<BaseTool />} />
+          <Route path="generators" element={<GeneratorTool />} />
+          <Route path="text"      element={<TextTool />} />
+          <Route path="encoder"   element={<EncoderTool />} />
+          <Route path="time"      element={<TimeTool />} />
+          <Route path="dev"       element={<DevTools />} />
+          <Route path="cron"      element={<CronTool />} />
+          <Route path="cert"      element={<CertTool />} />
+          <Route path="color"     element={<ColorTool />} />
+          <Route path="string"    element={<StringTool />} />
+          <Route path="diff-text" element={<SimilarityTool />} />
+          <Route path="sql"       element={<SqlTool />} />
+          <Route path="ip"        element={<IpTool />} />
+          <Route path="password"  element={<PasswordTool />} />
+          <Route path="markdown"  element={<MarkdownTool />} />
+          <Route path="validate"  element={<DataValidatorTool />} />
+          <Route path="network"   element={<NetworkTool />} />
+          <Route path="crypto"       element={<EncodingCryptoTool />} />
+          <Route path="text-string"  element={<TextStringTool />} />
+          <Route path="math"         element={<MathUnitTool />} />
+          <Route path="datetime"     element={<DateTimeTool />} />
+          <Route path="webdevops"    element={<WebDevOpsTool />} />
+          <Route path="media"        element={<MediaTool />} />
+          <Route path="viewer"       element={<HtmlMarkdownViewer />} />
+          <Route path="tokens"      element={<TokenCounterTool />} />
+          <Route path="spell"       element={<SpellCheckTool />} />
           <Route path="*"         element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

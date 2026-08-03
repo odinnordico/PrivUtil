@@ -356,12 +356,15 @@ function SvgTab() {
             <div className="mt-2 rounded-xl border border-slate-200 dark:border-neutral-700 p-4 bg-[repeating-conic-gradient(#e2e8f0_0%_25%,transparent_0%_50%)] dark:bg-[repeating-conic-gradient(#404040_0%_25%,transparent_0%_50%)] bg-[length:20px_20px]">
               {/* Rendered in a fully sandboxed iframe: SvgOptimize only strips
                   whitespace, so the SVG is still untrusted — scripts and inline
-                  event handlers must not execute in the app origin. */}
+                  event handlers must not execute in the app origin. The wrapper
+                  document's CSP (default-src 'none') also blocks external
+                  references (<image href>, <use>) from beaconing out, and its
+                  CSS centers/fits the SVG within the fixed-height frame. */}
               <iframe
                 title="SVG preview"
                 sandbox=""
                 referrerPolicy="no-referrer"
-                srcDoc={result.result}
+                srcDoc={`<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'"><style>html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center}svg{max-width:100%;max-height:100%}</style>${result.result}`}
                 className="mx-auto w-full h-64 border-0 bg-transparent"
               />
             </div>
@@ -398,15 +401,21 @@ function ExifTab() {
   const [loading, setLoading] = useState(false);
   const { copied, copy } = useCopy();
 
+  // Revoke the last preview URL when the tab unmounts.
+  useEffect(() => {
+    return () => { if (previewUrl) URL.revokeObjectURL(previewUrl); };
+  }, [previewUrl]);
+
   const handleFile = useCallback(async (f: File) => {
     setFile(f);
     setResult(null);
-    // Build preview URL for image types
+    // Build preview URL for image types; revoke any previous URL in both the
+    // image and non-image branches so a dropped non-image file doesn't leak it.
     if (f.type.startsWith('image/')) {
       const url = URL.createObjectURL(f);
       setPreviewUrl(prev => { if (prev) URL.revokeObjectURL(prev); return url; });
     } else {
-      setPreviewUrl(null);
+      setPreviewUrl(prev => { if (prev) URL.revokeObjectURL(prev); return null; });
     }
     setLoading(true);
     try {

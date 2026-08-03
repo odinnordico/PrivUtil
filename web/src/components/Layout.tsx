@@ -1,8 +1,10 @@
+import { Suspense } from 'react';
 import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { navItems } from '../lib/nav';
 import { ThemeToggle } from './ThemeToggle';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export function Layout() {
   const location = useLocation();
@@ -75,7 +77,11 @@ export function Layout() {
           </div>
         </header>
         <div className="p-8 w-full mx-auto">
-          <Outlet />
+          <ErrorBoundary>
+            <Suspense fallback={<div className="text-slate-400 text-sm">Loading…</div>}>
+              <Outlet />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </main>
     </div>

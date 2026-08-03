@@ -235,11 +235,12 @@ function OtpTab() {
         window: 1,
         period,
         algo,
+        digits,
       } as Parameters<typeof client.otpValidate>[0]);
       if (resp.error) { setError(resp.error); setValidateResult(null); }
       else { setValidateResult(resp.valid); }
     } catch { setError('Server error'); }
-  }, [secret, validateCode, period, algo]);
+  }, [secret, validateCode, period, algo, digits]);
 
   const triggerGenerate = () => generate({ secret, type, digits, period, algo, counter });
 

@@ -134,6 +134,11 @@ export function Base64Tool() {
   // leaked a fresh URL on every re-render and restarted in-flight media/PDFs.
   const decodeUrl = useMemo(() => {
     if (!decodeData) return null;
+    // Only the media branches consume this URL; text/binary render via
+    // TextDecoder, so don't allocate a blob URL for them.
+    const isMedia = isImageMime(decodeMime) || isPdfMime(decodeMime)
+      || isAudioMime(decodeMime) || isVideoMime(decodeMime);
+    if (!isMedia) return null;
     return URL.createObjectURL(
       new Blob([new Uint8Array(decodeData)], { type: decodeMime || 'application/octet-stream' }),
     );
