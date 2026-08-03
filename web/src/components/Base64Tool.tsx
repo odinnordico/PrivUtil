@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { client } from '../lib/client';
 import { cn } from '../lib/utils';
 import { ArrowDownUp, Upload, Download, Copy, X } from 'lucide-react';
@@ -129,12 +129,25 @@ export function Base64Tool() {
 
   // ── Decoded output rendering ────────────────────────────────────────────────
 
+  // A single object URL for the decoded payload, revoked when it changes or the
+  // component unmounts. Creating it during render (as each media branch used to)
+  // leaked a fresh URL on every re-render and restarted in-flight media/PDFs.
+  const decodeUrl = useMemo(() => {
+    if (!decodeData) return null;
+    return URL.createObjectURL(
+      new Blob([new Uint8Array(decodeData)], { type: decodeMime || 'application/octet-stream' }),
+    );
+  }, [decodeData, decodeMime]);
+
+  useEffect(() => {
+    return () => { if (decodeUrl) URL.revokeObjectURL(decodeUrl); };
+  }, [decodeUrl]);
+
   const renderDecodeOutput = () => {
     if (!decodeData) return null;
 
     if (isImageMime(decodeMime)) {
-      const blob    = new Blob([new Uint8Array(decodeData)], { type: decodeMime });
-      const dataUrl = URL.createObjectURL(blob);
+      const dataUrl = decodeUrl ?? undefined;
       return (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -153,8 +166,7 @@ export function Base64Tool() {
     }
 
     if (isPdfMime(decodeMime)) {
-      const blob    = new Blob([new Uint8Array(decodeData)], { type: decodeMime });
-      const dataUrl = URL.createObjectURL(blob);
+      const dataUrl = decodeUrl ?? undefined;
       return (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -166,15 +178,14 @@ export function Base64Tool() {
               <Download className="w-3.5 h-3.5" /> Download
             </button>
           </div>
-          <iframe src={dataUrl} title="decoded PDF"
+          <iframe src={dataUrl} title="decoded PDF" referrerPolicy="no-referrer"
             className="w-full h-[32rem] rounded-lg border border-slate-300 dark:border-neutral-700 shadow-sm bg-white" />
         </div>
       );
     }
 
     if (isAudioMime(decodeMime)) {
-      const blob    = new Blob([new Uint8Array(decodeData)], { type: decodeMime });
-      const dataUrl = URL.createObjectURL(blob);
+      const dataUrl = decodeUrl ?? undefined;
       return (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -192,8 +203,7 @@ export function Base64Tool() {
     }
 
     if (isVideoMime(decodeMime)) {
-      const blob    = new Blob([new Uint8Array(decodeData)], { type: decodeMime });
-      const dataUrl = URL.createObjectURL(blob);
+      const dataUrl = decodeUrl ?? undefined;
       return (
         <div className="space-y-3">
           <div className="flex items-center justify-between">

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect, type DragEvent } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo, type DragEvent } from 'react';
 import { client } from '../lib/client';
 import {
   Copy, Check, Upload, Download, FileImage, Code2, Layers,
@@ -354,9 +354,15 @@ function SvgTab() {
           </button>
           {showPreview && (
             <div className="mt-2 rounded-xl border border-slate-200 dark:border-neutral-700 p-4 bg-[repeating-conic-gradient(#e2e8f0_0%_25%,transparent_0%_50%)] dark:bg-[repeating-conic-gradient(#404040_0%_25%,transparent_0%_50%)] bg-[length:20px_20px]">
-              <div
-                className="mx-auto max-w-full max-h-64 flex items-center justify-center overflow-hidden"
-                dangerouslySetInnerHTML={{ __html: result.result }}
+              {/* Rendered in a fully sandboxed iframe: SvgOptimize only strips
+                  whitespace, so the SVG is still untrusted — scripts and inline
+                  event handlers must not execute in the app origin. */}
+              <iframe
+                title="SVG preview"
+                sandbox=""
+                referrerPolicy="no-referrer"
+                srcDoc={result.result}
+                className="mx-auto w-full h-64 border-0 bg-transparent"
               />
             </div>
           )}
@@ -617,6 +623,18 @@ function DecodeSubTab() {
     downloadBytes(result.data, result.filename, result.mimeType);
   };
 
+  // Build the image preview from an object URL rather than
+  // btoa(String.fromCharCode(...data)), which throws RangeError once the byte
+  // array exceeds the argument-count limit (~64-125 KB). Revoked on change.
+  const imageUrl = useMemo(() => {
+    if (!result || !result.mimeType.startsWith('image/')) return null;
+    return URL.createObjectURL(new Blob([new Uint8Array(result.data)], { type: result.mimeType }));
+  }, [result]);
+
+  useEffect(() => {
+    return () => { if (imageUrl) URL.revokeObjectURL(imageUrl); };
+  }, [imageUrl]);
+
   return (
     <div className="space-y-4">
       <div>
@@ -657,7 +675,7 @@ function DecodeSubTab() {
           {result.mimeType.startsWith('image/') && (
             <div className="rounded-xl border border-slate-200 dark:border-neutral-700 p-4 bg-[repeating-conic-gradient(#e2e8f0_0%_25%,transparent_0%_50%)] dark:bg-[repeating-conic-gradient(#404040_0%_25%,transparent_0%_50%)] bg-[length:20px_20px]">
               <img
-                src={`data:${result.mimeType};base64,${btoa(String.fromCharCode(...result.data))}`}
+                src={imageUrl ?? undefined}
                 alt="decoded"
                 className="mx-auto max-h-48 object-contain"
               />

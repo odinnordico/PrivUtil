@@ -8,14 +8,18 @@ export function DiffTool() {
   const [text2, setText2] = useState('');
   const [diffHtml, setDiffHtml] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleDiff = async () => {
     setLoading(true);
+    setError(null);
     try {
       const response = await client.diff({ text1, text2 } as Parameters<typeof client.diff>[0]);
       setDiffHtml(response.diffHtml);
-    } catch (error) {
-      console.error('Error fetching diff:', error);
+    } catch (err) {
+      console.error('Error fetching diff:', err);
+      setError(String(err));
+      setDiffHtml(null);
     } finally {
       setLoading(false);
     }
@@ -58,6 +62,12 @@ export function DiffTool() {
           />
         </div>
       </div>
+
+      {error && (
+        <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-500 text-sm">
+          {error}
+        </div>
+      )}
 
       {diffHtml && (
         <div className="space-y-2">

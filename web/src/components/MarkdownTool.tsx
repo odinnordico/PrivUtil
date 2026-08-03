@@ -8,8 +8,12 @@ export function MarkdownTool() {
   const [mode, setMode] = useState<Mode>('md2html');
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleConvert = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const req = { text: input } as Parameters<typeof client.markdownToHtml>[0];
       const resp = mode === 'md2html'
@@ -18,6 +22,10 @@ export function MarkdownTool() {
       setOutput(resp.text);
     } catch (e) {
       console.error(e);
+      setError(String(e));
+      setOutput('');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -29,13 +37,13 @@ export function MarkdownTool() {
 
       <div className="flex gap-4 border-b border-slate-300 dark:border-gray-700">
         <button
-          onClick={() => { setMode('md2html'); setOutput(''); }}
+          onClick={() => { setMode('md2html'); setOutput(''); setError(null); }}
           className={`pb-2 px-4 font-bold transition-colors ${mode === 'md2html' ? 'text-kawa-600 border-b-2 border-kawa-500' : 'text-slate-500 hover:text-slate-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
         >
           Markdown → HTML
         </button>
         <button
-          onClick={() => { setMode('html2md'); setOutput(''); }}
+          onClick={() => { setMode('html2md'); setOutput(''); setError(null); }}
           className={`pb-2 px-4 font-bold transition-colors ${mode === 'html2md' ? 'text-kawa-600 border-b-2 border-kawa-500' : 'text-slate-500 hover:text-slate-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
         >
           HTML → Markdown
@@ -50,11 +58,18 @@ export function MarkdownTool() {
           </h3>
           <button
             onClick={handleConvert}
-            className="bg-kawa-500 hover:bg-kawa-600 text-slate-900 px-4 py-1.5 rounded text-sm font-medium transition-colors"
+            disabled={loading}
+            className="bg-kawa-500 hover:bg-kawa-600 disabled:opacity-50 disabled:cursor-not-allowed text-slate-900 px-4 py-1.5 rounded text-sm font-medium transition-colors"
           >
-            Convert
+            {loading ? 'Converting…' : 'Convert'}
           </button>
         </div>
+
+        {error && (
+          <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-500 text-sm">
+            {error}
+          </div>
+        )}
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1">
