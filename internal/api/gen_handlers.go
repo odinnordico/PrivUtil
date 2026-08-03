@@ -104,6 +104,11 @@ func (s *Server) GenerateLorem(ctx context.Context, req *pb.LoremRequest) (*pb.L
 	if count <= 0 {
 		count = 1
 	}
+	// Cap the upper bound to avoid unbounded allocation, mirroring the other
+	// generators (UUID/password/port/MAC/ULID all cap at 100).
+	if count > 100 {
+		count = 100
+	}
 
 	switch req.Type {
 	case "word":

@@ -279,7 +279,7 @@ func parsePNG(data []byte) (width, height int32, fields []*pb.ExifField) {
 	offset := 8
 	for offset+12 <= len(data) {
 		chunkLen := int(binary.BigEndian.Uint32(data[offset : offset+4]))
-		if offset+8+chunkLen > len(data) {
+		if chunkLen < 0 || offset+8+chunkLen > len(data) {
 			break
 		}
 		chunkType := string(data[offset+4 : offset+8])
@@ -339,7 +339,7 @@ func parseWebP(data []byte) (width, height int32, fields []*pb.ExifField) {
 	for offset+8 <= len(data) {
 		chunkType := string(data[offset : offset+4])
 		chunkSize := int(binary.LittleEndian.Uint32(data[offset+4 : offset+8]))
-		if offset+8+chunkSize > len(data) {
+		if chunkSize < 0 || offset+8+chunkSize > len(data) {
 			break
 		}
 		chunkData := data[offset+8 : offset+8+chunkSize]

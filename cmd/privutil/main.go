@@ -21,6 +21,11 @@ var (
 	BuildTime = "unknown"
 )
 
+// maxRPCRequestBytes caps the size of any single RPC request body. 32 MiB is
+// generously above the media handlers' own 10 MB limits while still preventing
+// unbounded allocations from a hostile client.
+const maxRPCRequestBytes = 32 << 20
+
 func main() {
 	// Define CLI flags
 	port := flag.String("port", getEnvOrDefault("PORT", "8090"), "Port to listen on")
@@ -56,10 +61,14 @@ func main() {
 	}
 
 	// Build the connect handler over the existing handlers, with panic recovery.
+	// WithReadMaxBytes bounds every RPC body (default is unlimited), capping the
+	// memory/CPU amplification available to abusive requests. The media handlers
+	// enforce their own stricter 10 MB limits on top of this.
 	connectSrv := api.NewConnectServer(api.NewServer())
 	rpcPath, rpcHandler := protoconnect.NewPrivUtilServiceHandler(
 		connectSrv,
 		connect.WithInterceptors(api.RecoveryInterceptor()),
+		connect.WithReadMaxBytes(maxRPCRequestBytes),
 	)
 
 	// Create and start HTTP server

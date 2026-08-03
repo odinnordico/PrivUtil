@@ -101,10 +101,19 @@ func (s *Server) TextManipulate(ctx context.Context, req *pb.TextManipulateReque
 	return &pb.TextManipulateResponse{Text: result}, nil
 }
 
+// maxSimilarityRunes bounds each input to the quadratic Levenshtein matrix so
+// two large pastes cannot pin a CPU core (O(n·m) with no timeout otherwise).
+const maxSimilarityRunes = 100_000
+
 func (s *Server) TextSimilarity(ctx context.Context, req *pb.SimilarityRequest) (*pb.SimilarityResponse, error) {
 	// Simple Levenshtein implementation
 	s1, s2 := req.Text1, req.Text2
 	r1, r2 := []rune(s1), []rune(s2)
+	if len(r1) > maxSimilarityRunes || len(r2) > maxSimilarityRunes {
+		return &pb.SimilarityResponse{
+			Error: fmt.Sprintf("input too large: limit %d characters per text", maxSimilarityRunes),
+		}, nil
+	}
 	n, m := len(r1), len(r2)
 	if n > m {
 		r1, r2 = r2, r1

@@ -40,9 +40,13 @@ func (s *Server) CalculateHash(ctx context.Context, req *pb.HashRequest) (*pb.Ha
 		sum := sha512.Sum512(data)
 		hash = hex.EncodeToString(sum[:])
 	case "bcrypt":
+		// Cap the cost well below bcrypt.MaxCost (31): work grows as 2^cost, so
+		// an attacker-supplied high cost is a CPU-exhaustion vector. 15 is a
+		// generous interactive maximum (~1s), still far above DefaultCost (10).
+		const maxBcryptCost = 15
 		cost := bcrypt.DefaultCost
-		if reqCost := req.GetCost(); int(reqCost) >= bcrypt.MinCost && int(reqCost) <= bcrypt.MaxCost {
-			cost = int(reqCost)
+		if reqCost := int(req.GetCost()); reqCost >= bcrypt.MinCost && reqCost <= maxBcryptCost {
+			cost = reqCost
 		}
 		hashBytes, err := bcrypt.GenerateFromPassword(data, cost)
 		if err != nil {

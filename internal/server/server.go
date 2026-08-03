@@ -70,7 +70,21 @@ func (s *Server) newHandler(distFS fs.FS) http.Handler {
 
 	// Serve cleartext HTTP/2 (h2c) so native gRPC clients work without TLS; the
 	// browser uses gRPC-Web over HTTP/1.1, which the same handler also serves.
-	return h2c.NewHandler(mux, &http2.Server{})
+	return h2c.NewHandler(securityHeaders(mux), &http2.Server{})
+}
+
+// securityHeaders adds conservative hardening headers to every response. A
+// full Content-Security-Policy is intentionally omitted here to avoid breaking
+// the SPA's inline assets; untrusted markup is already isolated in sandboxed
+// iframes by the client.
+func securityHeaders(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		h := w.Header()
+		h.Set("X-Content-Type-Options", "nosniff")
+		h.Set("X-Frame-Options", "DENY")
+		h.Set("Referrer-Policy", "no-referrer")
+		next.ServeHTTP(w, r)
+	})
 }
 
 func (s *Server) Start() error {

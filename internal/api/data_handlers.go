@@ -458,10 +458,17 @@ func (s *Server) ColorConvert(ctx context.Context, req *pb.ColorRequest) (*pb.Co
 		re := regexp.MustCompile(`rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)`)
 		matches := re.FindStringSubmatch(input)
 		if len(matches) == 4 {
-			ri, _ := strconv.Atoi(matches[1])
-			gi, _ := strconv.Atoi(matches[2])
-			bi, _ := strconv.Atoi(matches[3])
-			r, g, b = uint8(ri), uint8(gi), uint8(bi) // #nosec G115
+			ri, errR := strconv.Atoi(matches[1])
+			gi, errG := strconv.Atoi(matches[2])
+			bi, errB := strconv.Atoi(matches[3])
+			switch {
+			case errR != nil || errG != nil || errB != nil:
+				err = fmt.Errorf("invalid rgb format")
+			case ri > 255 || gi > 255 || bi > 255:
+				err = fmt.Errorf("rgb components must be 0-255")
+			default:
+				r, g, b = uint8(ri), uint8(gi), uint8(bi) // #nosec G115
+			}
 		} else {
 			err = fmt.Errorf("invalid rgb format")
 		}

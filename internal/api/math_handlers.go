@@ -125,12 +125,18 @@ func tokenize(expr string) ([]token, error) {
 	return tokens, nil
 }
 
+// maxParseDepth bounds recursion through parentheses/function arguments so a
+// deeply nested expression cannot overflow the goroutine stack — a fatal,
+// unrecoverable throw that RecoveryInterceptor cannot catch.
+const maxParseDepth = 256
+
 // parser is a recursive descent parser with operator-precedence.
 type mathParser struct {
 	tokens  []token
 	pos     int
 	vars    map[string]float64
 	degrees bool // if true, trig functions receive/return degrees
+	depth   int  // current recursion depth, guarded by maxParseDepth
 }
 
 func (p *mathParser) peek() token {
@@ -154,8 +160,14 @@ func (p *mathParser) expect(k tokKind) (token, error) {
 	return t, nil
 }
 
-// parseExpr is the entry point.
+// parseExpr is the entry point. It is re-entered for every parenthesised
+// sub-expression and function argument, so the depth guard lives here.
 func (p *mathParser) parseExpr() (float64, error) {
+	p.depth++
+	if p.depth > maxParseDepth {
+		return 0, fmt.Errorf("expression nested too deeply (limit %d)", maxParseDepth)
+	}
+	defer func() { p.depth-- }()
 	return p.parseAddSub()
 }
 
