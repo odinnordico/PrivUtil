@@ -4,14 +4,20 @@ on:
   release:
     types: [created]
 
+# Only contents: write is needed to attach assets to the Release; this workflow
+# never pushes to a registry.
 permissions:
     contents: write
-    packages: write
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   releases-matrix:
     name: Release Go Binary
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       matrix:
         # build and publish in parallel: linux/386, linux/amd64, linux/arm64, windows/386, windows/amd64, darwin/amd64, darwin/arm64
@@ -40,7 +46,10 @@ jobs:
         check-latest: true
     - name: Build and Archive
       run: |
-        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} make build
+        # Pass the tag explicitly: the default checkout is shallow and tagless,
+        # so the Makefile's `git describe` would otherwise fall back to dev-<sha>
+        # and the released binaries would report the wrong version.
+        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} make build BUILD_VERSION=${{ github.ref_name }}
         
         ARCHIVE_NAME="privutil-${{ matrix.goos }}-${{ matrix.goarch }}"
         

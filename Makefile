@@ -28,7 +28,7 @@ proto:
 
 # Build Frontend
 build-web:
-	cd web && npm install && npm run build
+	cd web && npm ci && npm run build
 
 # Build Backend (embeds frontend)
 build-go: build-web
@@ -60,7 +60,7 @@ test-backend: build
 
 # Run frontend tests (excludes config files and proto)
 test-frontend: build
-	cd web && npm install && npm run test
+	cd web && npm ci && npm run test
 
 # Run tests with coverage reports
 test-coverage: test
@@ -69,7 +69,7 @@ test-coverage: test
 	go tool cover -func=coverage.out | grep total
 	go tool cover -html=coverage.out -o coverage.html
 	@echo "\n=== Frontend Coverage ==="
-	cd web && npm install && npm run test:coverage
+	cd web && npm ci && npm run test:coverage
 
 # Run all linters
 lint: lint-backend lint-frontend
@@ -77,8 +77,13 @@ lint: lint-backend lint-frontend
 # Run Go linters
 lint-backend: build
 	go vet ./...
-	go fmt ./...
+	@unformatted=$$(gofmt -l . | grep -v '/node_modules/' || true); \
+	if [ -n "$$unformatted" ]; then \
+		echo "gofmt: the following files need formatting (run 'gofmt -w'):"; \
+		echo "$$unformatted"; \
+		exit 1; \
+	fi
 
 # Run frontend linters
 lint-frontend: build
-	cd web && npm install && npm run lint
+	cd web && npm ci && npm run lint

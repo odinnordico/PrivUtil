@@ -31,4 +31,9 @@ FROM alpine:3.23
 RUN addgroup -S privutil && adduser -S privutil -G privutil
 COPY --from=build /PrivUtil/privutil /bin/privutil
 USER privutil
+# Documents the default listen port (override with -port/PORT).
+EXPOSE 8090
+# Probe the SPA root so orchestrators can detect an unhealthy container.
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -q -O /dev/null http://127.0.0.1:8090/ || exit 1
 ENTRYPOINT ["privutil"]

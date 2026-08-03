@@ -4,9 +4,15 @@ on:
     tags:
       - "v*"
 
+# Serialize releases per-tag; never cancel a publish in progress.
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: "ubuntu-24.04"
+    timeout-minutes: 30
     permissions:
       contents: read
       packages: write
@@ -36,7 +42,9 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           tags: |
             type=ref,event=tag
-            type=raw,value=latest
+            # Only move :latest for stable releases; a pre-release tag such as
+            # v2.0.0-rc1 (contains a hyphen) must not overwrite it.
+            type=raw,value=latest,enable=${{ !contains(github.ref_name, '-') }}
 
       - name: Build and push image
         uses: docker/build-push-action@v6
