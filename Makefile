@@ -1,6 +1,7 @@
 BUILD_SHA_SHORT := $(shell git rev-parse --short HEAD 2>/dev/null)
 BUILD_VERSION := $(shell git describe --tags --exact-match 2>/dev/null || echo dev-$(BUILD_SHA_SHORT))
-BUILD_DATE ?= $$(date -u +"%Y-%m-%d")
+# Derive from the commit date for reproducible builds; fall back to today.
+BUILD_DATE ?= $(shell git show -s --format=%cd --date=format:%Y-%m-%d HEAD 2>/dev/null || date -u +%Y-%m-%d)
 GOHOSTOS ?= $(shell go env GOHOSTOS)
 GOHOSTARCH ?= $(shell go env GOHOSTARCH)
 
@@ -77,7 +78,7 @@ lint: lint-backend lint-frontend
 # Run Go linters
 lint-backend: build
 	go vet ./...
-	@unformatted=$$(gofmt -l . | grep -v '/node_modules/' || true); \
+	@unformatted=$$(gofmt -l $$(git ls-files '*.go')); \
 	if [ -n "$$unformatted" ]; then \
 		echo "gofmt: the following files need formatting (run 'gofmt -w'):"; \
 		echo "$$unformatted"; \
