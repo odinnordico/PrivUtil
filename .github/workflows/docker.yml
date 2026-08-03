@@ -1,12 +1,13 @@
 name: Build and publish a Docker image to ghcr.io
+# Fires on a published GitHub Release (the same event as publish.yml) so the
+# image and the release binaries are always produced together from one event.
 on:
-  push:
-    tags:
-      - "v*"
+  release:
+    types: [published]
 
-# Serialize releases per-tag; never cancel a publish in progress.
+# Serialize per-release; never cancel a publish in progress.
 concurrency:
-  group: docker-${{ github.ref }}
+  group: docker-${{ github.event.release.tag_name }}
   cancel-in-progress: false
 
 jobs:
@@ -40,11 +41,13 @@ jobs:
           # metadata-action lowercases the image name, so the mixed-case repo
           # (odinnordico/PrivUtil) becomes ghcr.io/odinnordico/privutil.
           images: ghcr.io/${{ github.repository }}
+          # type=ref,event=tag does not populate on release events, so the
+          # version tag comes from the release tag_name directly.
           tags: |
-            type=ref,event=tag
-            # Only move :latest for stable releases; a pre-release tag such as
-            # v2.0.0-rc1 (contains a hyphen) must not overwrite it.
-            type=raw,value=latest,enable=${{ !contains(github.ref_name, '-') }}
+            type=raw,value=${{ github.event.release.tag_name }}
+            # Only move :latest for stable releases; a GitHub pre-release
+            # (e.g. v2.0.0-rc1 marked pre-release) must not overwrite it.
+            type=raw,value=latest,enable=${{ !github.event.release.prerelease }}
 
       - name: Build and push image
         uses: docker/build-push-action@v6
@@ -57,11 +60,13 @@ jobs:
           # Stamp the release version into the binary (main.Version); the build
           # context has no .git, so the version cannot be derived inside the image.
           build-args: |
-            VERSION=${{ github.ref_name }}
+            VERSION=${{ github.event.release.tag_name }}
 
       - name: Verify version-pinned multi-arch tag was published
+        env:
+          TAG: ${{ github.event.release.tag_name }}
         run: |
-          image="ghcr.io/${GITHUB_REPOSITORY,,}:${GITHUB_REF_NAME}"
+          image="ghcr.io/${GITHUB_REPOSITORY,,}:${TAG}"
           echo "Verifying ${image} exists with linux/amd64 + linux/arm64..."
           raw="$(docker buildx imagetools inspect "${image}" --raw)"
           echo "${raw}"

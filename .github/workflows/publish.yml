@@ -2,7 +2,7 @@ name: Publish
 
 on:
   release:
-    types: [created]
+    types: [published]
 
 # Only contents: write is needed to attach assets to the Release; this workflow
 # never pushes to a registry.
@@ -10,7 +10,7 @@ permissions:
     contents: write
 
 concurrency:
-  group: publish-${{ github.ref }}
+  group: publish-${{ github.event.release.tag_name }}
   cancel-in-progress: false
 
 jobs:
@@ -49,7 +49,7 @@ jobs:
         # Pass the tag explicitly: the default checkout is shallow and tagless,
         # so the Makefile's `git describe` would otherwise fall back to dev-<sha>
         # and the released binaries would report the wrong version.
-        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} make build BUILD_VERSION=${{ github.ref_name }}
+        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} make build BUILD_VERSION=${{ github.event.release.tag_name }}
         
         ARCHIVE_NAME="privutil-${{ matrix.goos }}-${{ matrix.goarch }}"
         
