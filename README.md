@@ -1,6 +1,7 @@
 # PrivUtil
 
 ![Build Status](https://github.com/odinnordico/privutil/actions/workflows/build.yml/badge.svg)
+![Security](https://github.com/odinnordico/privutil/actions/workflows/security.yml/badge.svg)
 ![License](https://img.shields.io/github/license/odinnordico/privutil)
 ![Go Version](https://img.shields.io/github/go-mod/go-version/odinnordico/privutil)
 
