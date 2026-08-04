@@ -31,6 +31,10 @@ FROM alpine:3.23@sha256:fd791d74b68913cbb027c6546007b3f0d3bc45125f797758156952bc
 RUN addgroup -S privutil && adduser -S privutil -G privutil
 COPY --from=build /PrivUtil/privutil /bin/privutil
 USER privutil
+# The binary now defaults to loopback; containers must bind all interfaces to be
+# reachable via port mapping. Access is still gated by the Host-header allowlist
+# (localhost/127.0.0.1 by default; set ALLOWED_HOSTS for LAN/custom domains).
+ENV HOST=0.0.0.0
 # Documents the default listen port (override with -port/PORT).
 EXPOSE 8090
 # Probe the SPA root so orchestrators can detect an unhealthy container. Shell

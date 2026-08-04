@@ -6,7 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"strings"
@@ -23,32 +25,75 @@ import (
 var staticFiles embed.FS
 
 type Server struct {
-	addr       string
-	rpcPath    string
-	rpcHandler http.Handler
+	addr         string
+	rpcPath      string
+	rpcHandler   http.Handler
+	allowedHosts map[string]struct{}
 }
 
 // New builds an HTTP server that routes connect RPC requests under rpcPath to
-// rpcHandler and serves the embedded React SPA for everything else.
-func New(addr, rpcPath string, rpcHandler http.Handler) *Server {
-	return &Server{
-		addr:       addr,
-		rpcPath:    rpcPath,
-		rpcHandler: rpcHandler,
+// rpcHandler and serves the embedded React SPA for everything else. allowedHosts
+// is the set of Host-header hostnames (no port) accepted for both request
+// admission and CORS — the DNS-rebinding / cross-origin defense.
+func New(addr, rpcPath string, rpcHandler http.Handler, allowedHosts []string) *Server {
+	set := make(map[string]struct{}, len(allowedHosts))
+	for _, h := range allowedHosts {
+		set[strings.ToLower(h)] = struct{}{}
 	}
+	return &Server{
+		addr:         addr,
+		rpcPath:      rpcPath,
+		rpcHandler:   rpcHandler,
+		allowedHosts: set,
+	}
+}
+
+// hostAllowed reports whether the given Host header (which may include a port)
+// has a hostname in the allowlist.
+func (s *Server) hostAllowed(hostport string) bool {
+	host := hostport
+	if h, _, err := net.SplitHostPort(hostport); err == nil {
+		host = h
+	}
+	_, ok := s.allowedHosts[strings.ToLower(host)]
+	return ok
+}
+
+// allowedOrigin authorizes a CORS Origin whose hostname is in the allowlist
+// (any port/scheme) — scopes the RPC surface to localhost-family origins.
+func (s *Server) allowedOrigin(origin string) bool {
+	u, err := url.Parse(origin)
+	if err != nil {
+		return false
+	}
+	_, ok := s.allowedHosts[strings.ToLower(u.Hostname())]
+	return ok
+}
+
+// checkHost rejects requests whose Host header is not in the allowlist, the
+// canonical defense against DNS rebinding (which survives a loopback bind).
+func (s *Server) checkHost(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !s.hostAllowed(r.Host) {
+			http.Error(w, "forbidden: host not allowed", http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 func (s *Server) newHandler(distFS fs.FS) http.Handler {
 	fileServer := http.FileServer(http.FS(distFS))
 
-	// Allow all origins, matching the previous grpc-web wrapper: PrivUtil is a
-	// local utility and is also used cross-origin from the Vite dev server. The
-	// connectcors helper supplies the headers the Connect/gRPC-Web protocols need.
+	// Scope CORS to the allowlisted hosts (localhost family + any configured
+	// host) instead of "*", so a website the user visits cannot read RPC
+	// responses cross-origin. The connectcors helper supplies the headers the
+	// Connect/gRPC-Web protocols need.
 	corsMiddleware := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: connectcors.AllowedMethods(),
-		AllowedHeaders: connectcors.AllowedHeaders(),
-		ExposedHeaders: connectcors.ExposedHeaders(),
+		AllowOriginFunc: s.allowedOrigin,
+		AllowedMethods:  connectcors.AllowedMethods(),
+		AllowedHeaders:  connectcors.AllowedHeaders(),
+		ExposedHeaders:  connectcors.ExposedHeaders(),
 	})
 
 	mux := http.NewServeMux()
@@ -70,19 +115,35 @@ func (s *Server) newHandler(distFS fs.FS) http.Handler {
 
 	// Serve cleartext HTTP/2 (h2c) so native gRPC clients work without TLS; the
 	// browser uses gRPC-Web over HTTP/1.1, which the same handler also serves.
-	return h2c.NewHandler(securityHeaders(mux), &http2.Server{})
+	// checkHost runs first (rebinding defense), then security headers, then mux.
+	return h2c.NewHandler(securityHeaders(s.checkHost(mux)), &http2.Server{})
 }
 
-// securityHeaders adds conservative hardening headers to every response. A
-// full Content-Security-Policy is intentionally omitted here to avoid breaking
-// the SPA's inline assets; untrusted markup is already isolated in sandboxed
-// iframes by the client.
+// contentSecurityPolicy backstops the SPA's parent origin. Scripts must be
+// same-origin ('self', no inline/eval); the theme bootstrap is an external
+// /theme.js for that reason. Preview iframes (srcDoc/blob) need frame-src, and
+// decoded media needs data:/blob: in img/frame-src. Untrusted markup is still
+// isolated in per-iframe sandboxes with their own stricter CSP.
+const contentSecurityPolicy = "default-src 'self'; " +
+	"script-src 'self'; " +
+	"style-src 'self' 'unsafe-inline'; " +
+	"img-src 'self' data: blob:; " +
+	"media-src 'self' data: blob:; " + // decoded audio/video preview (blob URLs)
+	"font-src 'self' data:; " +
+	"connect-src 'self'; " +
+	"frame-src 'self' data: blob:; " +
+	"object-src 'none'; " +
+	"base-uri 'none'; " +
+	"frame-ancestors 'none'"
+
+// securityHeaders adds hardening headers to every response.
 func securityHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h := w.Header()
 		h.Set("X-Content-Type-Options", "nosniff")
 		h.Set("X-Frame-Options", "DENY")
 		h.Set("Referrer-Policy", "no-referrer")
+		h.Set("Content-Security-Policy", contentSecurityPolicy)
 		next.ServeHTTP(w, r)
 	})
 }
