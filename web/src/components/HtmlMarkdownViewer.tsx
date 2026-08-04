@@ -68,9 +68,11 @@ function inferModeFromFile(name: string): Mode | null {
   return null;
 }
 
-function buildSrcDoc(bodyHtml: string, allowImages: boolean, enableMermaid: boolean): string {
+function buildSrcDoc(bodyHtml: string, allowImages: boolean): string {
   const imgSrc = allowImages ? "img-src data: https: http:;" : "img-src 'none';";
-  const cspParts = [
+  // No script-src: the iframe never runs scripts. Mermaid diagrams are rendered
+  // in the app to static SVG before being placed here.
+  const csp = [
     "default-src 'none'",
     "style-src 'unsafe-inline'",
     imgSrc,
@@ -78,18 +80,7 @@ function buildSrcDoc(bodyHtml: string, allowImages: boolean, enableMermaid: bool
     "base-uri 'none'",
     "form-action 'none'",
     "frame-ancestors 'none'",
-  ];
-  if (enableMermaid) {
-    cspParts.push("script-src https://cdn.jsdelivr.net 'unsafe-inline'");
-  }
-  const csp = cspParts.join('; ');
-
-  const mermaidScripts = enableMermaid ? `
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-<script>
-  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'default' });
-</script>` : '';
+  ].join('; ');
 
   return `<!doctype html>
 <html lang="en">
@@ -108,19 +99,51 @@ function buildSrcDoc(bodyHtml: string, allowImages: boolean, enableMermaid: bool
   th, td { border: 1px solid rgba(127,127,127,0.35); padding: 6px 12px; text-align: left; }
   th { background: rgba(127,127,127,0.12); font-weight: 600; }
   tr:nth-child(even) td { background: rgba(127,127,127,0.05); }
-  pre.mermaid { background: transparent; padding: 0; }
+  .mermaid { background: transparent; padding: 0; }
+  .mermaid svg { max-width: 100%; height: auto; }
 </style>
 </head>
 <body>
-${bodyHtml}${mermaidScripts}
+${bodyHtml}
 </body>
 </html>`;
+}
+
+// renderMermaid replaces goldmark's <pre class="mermaid"> blocks with static SVG
+// produced by the bundled mermaid library (securityLevel 'strict'), so the
+// preview iframe never needs to run scripts or fetch mermaid.js from a CDN.
+async function renderMermaid(html: string): Promise<string> {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const blocks = Array.from(doc.querySelectorAll<HTMLElement>('pre.mermaid, .mermaid'));
+  if (blocks.length === 0) return html;
+
+  const mermaid = (await import('mermaid')).default;
+  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: false, securityLevel: 'strict', theme: dark ? 'dark' : 'default' });
+
+  for (let i = 0; i < blocks.length; i++) {
+    const el = blocks[i];
+    const code = el.textContent ?? '';
+    const wrapper = doc.createElement('div');
+    wrapper.className = 'mermaid';
+    try {
+      const { svg } = await mermaid.render(`mermaid-diagram-${i}`, code);
+      wrapper.innerHTML = svg;
+    } catch (err) {
+      const pre = doc.createElement('pre');
+      pre.textContent = `Mermaid error: ${err instanceof Error ? err.message : String(err)}`;
+      wrapper.appendChild(pre);
+    }
+    el.replaceWith(wrapper);
+  }
+  return doc.body.innerHTML;
 }
 
 export function HtmlMarkdownViewer() {
   const [mode, setMode] = useState<Mode>('markdown');
   const [input, setInput] = useState<string>(SAMPLE_MD);
   const [renderedHtml, setRenderedHtml] = useState<string>('');
+  const [mermaidHtml, setMermaidHtml] = useState<string>('');
   const [allowImages, setAllowImages] = useState(false);
   const [enableMermaid, setEnableMermaid] = useState(false);
   const [showSource, setShowSource] = useState(false);
@@ -179,9 +202,21 @@ export function HtmlMarkdownViewer() {
     return () => window.removeEventListener('keydown', onKey);
   }, [maximized]);
 
+  // Render mermaid blocks to SVG in-app so the preview stays script-free; the
+  // async result feeds mermaidHtml, used only while the toggle is on.
+  useEffect(() => {
+    if (!enableMermaid) return;
+    let cancelled = false;
+    void renderMermaid(renderedHtml).then((html) => {
+      if (!cancelled) setMermaidHtml(html);
+    });
+    return () => { cancelled = true; };
+  }, [renderedHtml, enableMermaid]);
+
+  const bodyHtml = enableMermaid ? mermaidHtml : renderedHtml;
   const srcDoc = useMemo(
-    () => buildSrcDoc(renderedHtml, allowImages, enableMermaid),
-    [renderedHtml, allowImages, enableMermaid],
+    () => buildSrcDoc(bodyHtml, allowImages),
+    [bodyHtml, allowImages],
   );
 
   const handleFile = useCallback(async (file: File) => {
@@ -246,7 +281,7 @@ export function HtmlMarkdownViewer() {
         </h2>
         <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
           <ShieldCheck className="w-4 h-4 text-emerald-500" />
-          Sandboxed iframe • CSP enforced • {allowImages ? 'images allowed' : 'images blocked'} • {enableMermaid ? 'scripts allowed (mermaid)' : 'scripts blocked'}
+          Sandboxed iframe • CSP enforced • scripts blocked • {allowImages ? 'images allowed' : 'images blocked'} • {enableMermaid ? 'mermaid on' : 'mermaid off'}
         </div>
       </div>
 
@@ -399,7 +434,7 @@ export function HtmlMarkdownViewer() {
             <iframe
               key={`${allowImages}-${enableMermaid}`}
               title="Rendered preview"
-              sandbox={enableMermaid ? 'allow-scripts' : ''}
+              sandbox=""
               srcDoc={srcDoc}
               referrerPolicy="no-referrer"
               className="w-full h-[28rem] rounded border border-slate-300 dark:border-neutral-700 bg-white"
@@ -442,7 +477,7 @@ export function HtmlMarkdownViewer() {
           <iframe
             key={`${allowImages}-${enableMermaid}-max`}
             title="Rendered preview (maximised)"
-            sandbox={enableMermaid ? 'allow-scripts' : ''}
+            sandbox=""
             srcDoc={srcDoc}
             referrerPolicy="no-referrer"
             className="flex-1 w-full bg-white"
@@ -455,7 +490,7 @@ export function HtmlMarkdownViewer() {
           <ShieldCheck className="w-4 h-4 text-emerald-500" /> Security guardrails
         </p>
         <ul className="list-disc list-inside space-y-0.5">
-          <li>Preview runs inside an <code>iframe</code> with a strict <code>sandbox</code> attribute — forms, popups, plugins and top-level navigation are always disabled. Scripts are blocked unless <em>Mermaid diagrams</em> is enabled.</li>
+          <li>Preview runs inside an <code>iframe</code> with a strict <code>sandbox</code> attribute — scripts, forms, popups, plugins and top-level navigation are always disabled. <em>Mermaid diagrams</em> are rendered in the app and embedded as static SVG, so no script ever runs in the preview.</li>
           <li>A strict Content-Security-Policy <code>meta</code> tag blocks scripts, objects, frames and external fetches; only inline styles and (optionally) images are permitted.</li>
           <li>File uploads are limited to {fmtBytes(MAX_INPUT_BYTES)} and to <code>.html</code>, <code>.htm</code>, <code>.md</code>, <code>.markdown</code>, <code>.txt</code>.</li>
           <li>Markdown is rendered server-side with goldmark, then handed to the same sandboxed iframe — never injected into the parent page.</li>
