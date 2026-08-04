@@ -13,3 +13,7 @@ updates:
   directory: "/web"
   schedule:
     interval: "monthly"
+- package-ecosystem: "github-actions" # keeps the SHA-pinned action versions current
+  directory: "/"
+  schedule:
+    interval: "monthly"

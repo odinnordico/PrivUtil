@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.26-alpine3.23 AS build
+FROM --platform=$BUILDPLATFORM golang:1.26-alpine3.23@sha256:622e56dbc11a8cfe87cafa2331e9a201877271cbff918af53d3be315f3da88cc AS build
 
 RUN apk add --no-cache make g++ nodejs npm
 
@@ -27,7 +27,7 @@ ARG TARGETOS
 ARG TARGETARCH
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} make build-go BUILD_VERSION=${VERSION}
 
-FROM alpine:3.23
+FROM alpine:3.23@sha256:fd791d74b68913cbb027c6546007b3f0d3bc45125f797758156952bc2d6daf40
 RUN addgroup -S privutil && adduser -S privutil -G privutil
 COPY --from=build /PrivUtil/privutil /bin/privutil
 USER privutil
