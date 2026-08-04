@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.26-alpine3.23 AS build
+FROM --platform=$BUILDPLATFORM golang:1.26-alpine3.23@sha256:622e56dbc11a8cfe87cafa2331e9a201877271cbff918af53d3be315f3da88cc AS build
 
 RUN apk add --no-cache make g++ nodejs npm
 
@@ -27,10 +27,14 @@ ARG TARGETOS
 ARG TARGETARCH
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} make build-go BUILD_VERSION=${VERSION}
 
-FROM alpine:3.23
+FROM alpine:3.23@sha256:fd791d74b68913cbb027c6546007b3f0d3bc45125f797758156952bc2d6daf40
 RUN addgroup -S privutil && adduser -S privutil -G privutil
 COPY --from=build /PrivUtil/privutil /bin/privutil
 USER privutil
+# The binary now defaults to loopback; containers must bind all interfaces to be
+# reachable via port mapping. Access is still gated by the Host-header allowlist
+# (localhost/127.0.0.1 by default; set ALLOWED_HOSTS for LAN/custom domains).
+ENV HOST=0.0.0.0
 # Documents the default listen port (override with -port/PORT).
 EXPOSE 8090
 # Probe the SPA root so orchestrators can detect an unhealthy container. Shell

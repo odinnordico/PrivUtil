@@ -109,25 +109,33 @@ ${bodyHtml}
 </html>`;
 }
 
+// Monotonic counter so overlapping renderMermaid calls (rapid edits) never reuse
+// a mermaid diagram id — mermaid keys a transient live-DOM measuring node off the
+// id, and colliding ids across concurrent renders throw or orphan nodes.
+let mermaidRunSeq = 0;
+
 // renderMermaid replaces goldmark's <pre class="mermaid"> blocks with static SVG
 // produced by the bundled mermaid library (securityLevel 'strict'), so the
 // preview iframe never needs to run scripts or fetch mermaid.js from a CDN.
 async function renderMermaid(html: string): Promise<string> {
   const doc = new DOMParser().parseFromString(html, 'text/html');
-  const blocks = Array.from(doc.querySelectorAll<HTMLElement>('pre.mermaid, .mermaid'));
+  // Only goldmark's own <pre class="mermaid"> output; not arbitrary .mermaid
+  // elements a user's raw HTML might contain.
+  const blocks = Array.from(doc.querySelectorAll<HTMLElement>('pre.mermaid'));
   if (blocks.length === 0) return html;
 
   const mermaid = (await import('mermaid')).default;
   const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   mermaid.initialize({ startOnLoad: false, securityLevel: 'strict', theme: dark ? 'dark' : 'default' });
 
+  const runId = ++mermaidRunSeq;
   for (let i = 0; i < blocks.length; i++) {
     const el = blocks[i];
     const code = el.textContent ?? '';
     const wrapper = doc.createElement('div');
     wrapper.className = 'mermaid';
     try {
-      const { svg } = await mermaid.render(`mermaid-diagram-${i}`, code);
+      const { svg } = await mermaid.render(`mermaid-${runId}-${i}`, code);
       wrapper.innerHTML = svg;
     } catch (err) {
       const pre = doc.createElement('pre');
@@ -144,6 +152,7 @@ export function HtmlMarkdownViewer() {
   const [input, setInput] = useState<string>(SAMPLE_MD);
   const [renderedHtml, setRenderedHtml] = useState<string>('');
   const [mermaidHtml, setMermaidHtml] = useState<string>('');
+  const [mermaidSrc, setMermaidSrc] = useState<string>('');
   const [allowImages, setAllowImages] = useState(false);
   const [enableMermaid, setEnableMermaid] = useState(false);
   const [showSource, setShowSource] = useState(false);
@@ -203,17 +212,24 @@ export function HtmlMarkdownViewer() {
   }, [maximized]);
 
   // Render mermaid blocks to SVG in-app so the preview stays script-free; the
-  // async result feeds mermaidHtml, used only while the toggle is on.
+  // async result feeds mermaidHtml, tagged with the source it was rendered from.
   useEffect(() => {
     if (!enableMermaid) return;
     let cancelled = false;
     void renderMermaid(renderedHtml).then((html) => {
-      if (!cancelled) setMermaidHtml(html);
+      if (cancelled) return;
+      setMermaidHtml(html);
+      setMermaidSrc(renderedHtml);
     });
     return () => { cancelled = true; };
   }, [renderedHtml, enableMermaid]);
 
-  const bodyHtml = enableMermaid ? mermaidHtml : renderedHtml;
+  // While mermaid is on but its render for the *current* document hasn't landed,
+  // show a placeholder instead of a blank (first toggle) or stale (mid-edit) body.
+  const mermaidBusy = enableMermaid && mermaidSrc !== renderedHtml;
+  const bodyHtml = mermaidBusy
+    ? '<p style="opacity:0.6">Rendering diagrams…</p>'
+    : enableMermaid ? mermaidHtml : renderedHtml;
   const srcDoc = useMemo(
     () => buildSrcDoc(bodyHtml, allowImages),
     [bodyHtml, allowImages],
@@ -353,7 +369,7 @@ export function HtmlMarkdownViewer() {
           </button>
           <button
             onClick={downloadHtml}
-            disabled={!renderedHtml}
+            disabled={!renderedHtml || mermaidBusy}
             className="text-sm px-3 py-1.5 rounded bg-slate-100 dark:bg-neutral-700 hover:bg-slate-200 dark:hover:bg-neutral-600 text-slate-700 dark:text-slate-200 transition-colors disabled:opacity-40 flex items-center gap-1.5">
             <Download className="w-4 h-4" /> Download HTML
           </button>

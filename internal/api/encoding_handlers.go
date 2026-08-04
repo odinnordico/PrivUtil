@@ -143,6 +143,13 @@ func (s *Server) BaseConvert(ctx context.Context, req *pb.BaseConvertRequest) (*
 	if input == "" {
 		return &pb.BaseConvertResponse{Error: "Input cannot be empty"}, nil
 	}
+	// Bound the input: big.Int parsing and the base64 DivMod loop are
+	// superlinear (the loop is O(n²)), so a large body would pin a core.
+	// 10k digits is already a ~33k-bit number, far beyond any real use.
+	const maxBaseConvertLen = 10_000
+	if len(input) > maxBaseConvertLen {
+		return &pb.BaseConvertResponse{Error: fmt.Sprintf("input too long (limit %d characters)", maxBaseConvertLen)}, nil
+	}
 
 	// Strip prefixes
 	inputLower := strings.ToLower(input)

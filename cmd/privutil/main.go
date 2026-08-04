@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	connect "connectrpc.com/connect"
 
@@ -29,7 +30,8 @@ const maxRPCRequestBytes = 32 << 20
 func main() {
 	// Define CLI flags
 	port := flag.String("port", getEnvOrDefault("PORT", "8090"), "Port to listen on")
-	host := flag.String("host", getEnvOrDefault("HOST", ""), "Host to bind to (empty = all interfaces)")
+	host := flag.String("host", getEnvOrDefault("HOST", "127.0.0.1"), "Host to bind to (default: loopback; use 0.0.0.0 for all interfaces)")
+	allowedHosts := flag.String("allowed-hosts", getEnvOrDefault("ALLOWED_HOSTS", ""), "Comma-separated extra Host header values to accept (for LAN/custom-domain access)")
 	logLevel := flag.String("log-level", getEnvOrDefault("LOG_LEVEL", "info"), "Log level: debug, info (debug adds file/line to log output)")
 	version := flag.Bool("version", false, "Print version and exit")
 
@@ -39,9 +41,10 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Options:\n")
 		flag.PrintDefaults()
 		fmt.Fprintf(os.Stderr, "\nEnvironment Variables:\n")
-		fmt.Fprintf(os.Stderr, "  PORT       Port to listen on (default: 8090)\n")
-		fmt.Fprintf(os.Stderr, "  HOST       Host to bind to (default: all interfaces)\n")
-		fmt.Fprintf(os.Stderr, "  LOG_LEVEL  Log level (default: info)\n")
+		fmt.Fprintf(os.Stderr, "  PORT           Port to listen on (default: 8090)\n")
+		fmt.Fprintf(os.Stderr, "  HOST           Host to bind to (default: 127.0.0.1; use 0.0.0.0 for all interfaces)\n")
+		fmt.Fprintf(os.Stderr, "  ALLOWED_HOSTS  Extra Host header values to accept, comma-separated\n")
+		fmt.Fprintf(os.Stderr, "  LOG_LEVEL      Log level (default: info)\n")
 	}
 
 	flag.Parse()
@@ -73,12 +76,29 @@ func main() {
 
 	// Create and start HTTP server
 	addr := *host + ":" + *port
-	srv := server.New(addr, rpcPath, rpcHandler)
+	srv := server.New(addr, rpcPath, rpcHandler, buildAllowedHosts(*host, *allowedHosts))
 
 	log.Printf("Starting PrivUtil on %s...", addr)
 	if err := srv.Start(); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
+}
+
+// buildAllowedHosts returns the Host-header allowlist: the loopback names
+// always, the concrete bind host when it isn't a wildcard, plus any extra hosts
+// (comma-separated). This is what lets the container (HOST=0.0.0.0) still be
+// reached at localhost while blocking DNS-rebinding from other hostnames.
+func buildAllowedHosts(bindHost, extra string) []string {
+	hosts := []string{"localhost", "127.0.0.1", "::1"}
+	if bindHost != "" && bindHost != "0.0.0.0" && bindHost != "::" {
+		hosts = append(hosts, bindHost)
+	}
+	for _, h := range strings.Split(extra, ",") {
+		if h = strings.TrimSpace(h); h != "" {
+			hosts = append(hosts, h)
+		}
+	}
+	return hosts
 }
 
 func getEnvOrDefault(key, defaultValue string) string {
