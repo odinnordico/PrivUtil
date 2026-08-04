@@ -233,6 +233,9 @@ func (s *Server) LeapYear(_ context.Context, req *pb.LeapYearRequest) (*pb.LeapY
 				return &pb.LeapYearResponse{Error: fmt.Sprintf("invalid year %q", part)}, nil
 			}
 			years = append(years, y)
+			if len(years) > 400 {
+				return &pb.LeapYearResponse{Error: "too many years — max 400"}, nil
+			}
 		}
 	}
 

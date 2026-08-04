@@ -122,6 +122,54 @@ func TestOtpValidate8Digit(t *testing.T) {
 	}
 }
 
+// TestBaseConvertInputLimit ensures oversized input is rejected before the
+// superlinear big.Int / O(n^2) base64 conversion runs.
+func TestBaseConvertInputLimit(t *testing.T) {
+	s := NewServer()
+	resp, err := s.BaseConvert(context.Background(), &pb.BaseConvertRequest{
+		Input: strings.Repeat("9", 10_001), SourceBase: 10,
+	})
+	if err != nil {
+		t.Fatalf("BaseConvert() error = %v", err)
+	}
+	if resp.Error == "" {
+		t.Error("BaseConvert() expected error for oversized input, got none")
+	}
+}
+
+// TestLeapYearListCap ensures the comma-separated form is bounded like the range
+// form (both capped at 400 entries).
+func TestLeapYearListCap(t *testing.T) {
+	s := NewServer()
+	years := make([]string, 500)
+	for i := range years {
+		years[i] = "2000"
+	}
+	resp, err := s.LeapYear(context.Background(), &pb.LeapYearRequest{Input: strings.Join(years, ",")})
+	if err != nil {
+		t.Fatalf("LeapYear() error = %v", err)
+	}
+	if resp.Error == "" {
+		t.Error("LeapYear() expected error for over-long list, got none")
+	}
+}
+
+// TestCaseConvertUnicode ensures the first character is treated as a rune, not a
+// byte, so a leading multi-byte character is not corrupted.
+func TestCaseConvertUnicode(t *testing.T) {
+	s := NewServer()
+	resp, err := s.CaseConvert(context.Background(), &pb.CaseRequest{Text: "über cafe"})
+	if err != nil {
+		t.Fatalf("CaseConvert() error = %v", err)
+	}
+	if resp.Pascal != "ÜberCafe" {
+		t.Errorf("Pascal = %q, want %q", resp.Pascal, "ÜberCafe")
+	}
+	if resp.Camel != "überCafe" {
+		t.Errorf("Camel = %q, want %q", resp.Camel, "überCafe")
+	}
+}
+
 // TestColorConvertRejectsOutOfRange ensures RGB components above 255 or
 // unparseable values are rejected rather than silently truncated.
 func TestColorConvertRejectsOutOfRange(t *testing.T) {

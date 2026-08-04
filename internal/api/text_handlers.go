@@ -190,7 +190,8 @@ func (s *Server) CaseConvert(ctx context.Context, req *pb.CaseRequest) (*pb.Case
 		res.WriteString(strings.ToLower(words[0]))
 		for _, w := range words[1:] {
 			if len(w) > 0 {
-				res.WriteString(strings.ToUpper(w[:1]) + strings.ToLower(w[1:]))
+				rw := []rune(w)
+				res.WriteString(strings.ToUpper(string(rw[:1])) + strings.ToLower(string(rw[1:])))
 			}
 		}
 		return res.String()
@@ -200,7 +201,8 @@ func (s *Server) CaseConvert(ctx context.Context, req *pb.CaseRequest) (*pb.Case
 		var res strings.Builder
 		for _, w := range words {
 			if len(w) > 0 {
-				res.WriteString(strings.ToUpper(w[:1]) + strings.ToLower(w[1:]))
+				rw := []rune(w)
+				res.WriteString(strings.ToUpper(string(rw[:1])) + strings.ToLower(string(rw[1:])))
 			}
 		}
 		return res.String()
