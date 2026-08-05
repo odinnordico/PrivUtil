@@ -28,9 +28,14 @@ ARG TARGETARCH
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} make build-go BUILD_VERSION=${VERSION}
 
 FROM alpine:3.23@sha256:fd791d74b68913cbb027c6546007b3f0d3bc45125f797758156952bc2d6daf40
-RUN addgroup -S privutil && adduser -S privutil -G privutil
+RUN addgroup -S privutil && adduser -S privutil -G privutil \
+    && mkdir -p /data && chown privutil:privutil /data
 COPY --from=build /PrivUtil/privutil /bin/privutil
 USER privutil
+# Persist the spellchecker custom dictionary under /data; mount a volume
+# (e.g. -v privutil-data:/data) to keep it across container restarts.
+ENV CUSTOM_DICT=/data/custom-dictionary.txt
+VOLUME /data
 # The binary now defaults to loopback; containers must bind all interfaces to be
 # reachable via port mapping. Access is still gated by the Host-header allowlist
 # (localhost/127.0.0.1 by default; set ALLOWED_HOSTS for LAN/custom domains).

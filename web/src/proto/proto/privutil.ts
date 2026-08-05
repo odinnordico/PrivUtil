@@ -1403,6 +1403,28 @@ export interface SpellLanguagesResponse {
   languages: SpellLanguage[];
 }
 
+/**
+ * Custom dictionary: a server-side, persisted list of extra accepted words,
+ * shared across all languages. SpellCheck consults it automatically.
+ */
+export interface GetCustomWordsRequest {
+}
+
+export interface AddCustomWordsRequest {
+  /** words to add (whitespace/case normalized server-side) */
+  words: string[];
+}
+
+export interface RemoveCustomWordRequest {
+  word: string;
+}
+
+export interface CustomWordsResponse {
+  /** the full custom word list after the operation, sorted */
+  words: string[];
+  error: string;
+}
+
 function createBaseDiffRequest(): DiffRequest {
   return { text1: "", text2: "" };
 }
@@ -16625,6 +16647,241 @@ export const SpellLanguagesResponse: MessageFns<SpellLanguagesResponse> = {
   },
 };
 
+function createBaseGetCustomWordsRequest(): GetCustomWordsRequest {
+  return {};
+}
+
+export const GetCustomWordsRequest: MessageFns<GetCustomWordsRequest> = {
+  encode(_: GetCustomWordsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCustomWordsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCustomWordsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): GetCustomWordsRequest {
+    return {};
+  },
+
+  toJSON(_: GetCustomWordsRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCustomWordsRequest>, I>>(base?: I): GetCustomWordsRequest {
+    return GetCustomWordsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCustomWordsRequest>, I>>(_: I): GetCustomWordsRequest {
+    const message = createBaseGetCustomWordsRequest();
+    return message;
+  },
+};
+
+function createBaseAddCustomWordsRequest(): AddCustomWordsRequest {
+  return { words: [] };
+}
+
+export const AddCustomWordsRequest: MessageFns<AddCustomWordsRequest> = {
+  encode(message: AddCustomWordsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.words) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AddCustomWordsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddCustomWordsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.words.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddCustomWordsRequest {
+    return { words: globalThis.Array.isArray(object?.words) ? object.words.map((e: any) => globalThis.String(e)) : [] };
+  },
+
+  toJSON(message: AddCustomWordsRequest): unknown {
+    const obj: any = {};
+    if (message.words?.length) {
+      obj.words = message.words;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AddCustomWordsRequest>, I>>(base?: I): AddCustomWordsRequest {
+    return AddCustomWordsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AddCustomWordsRequest>, I>>(object: I): AddCustomWordsRequest {
+    const message = createBaseAddCustomWordsRequest();
+    message.words = object.words?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseRemoveCustomWordRequest(): RemoveCustomWordRequest {
+  return { word: "" };
+}
+
+export const RemoveCustomWordRequest: MessageFns<RemoveCustomWordRequest> = {
+  encode(message: RemoveCustomWordRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.word !== "") {
+      writer.uint32(10).string(message.word);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RemoveCustomWordRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRemoveCustomWordRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.word = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveCustomWordRequest {
+    return { word: isSet(object.word) ? globalThis.String(object.word) : "" };
+  },
+
+  toJSON(message: RemoveCustomWordRequest): unknown {
+    const obj: any = {};
+    if (message.word !== "") {
+      obj.word = message.word;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RemoveCustomWordRequest>, I>>(base?: I): RemoveCustomWordRequest {
+    return RemoveCustomWordRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RemoveCustomWordRequest>, I>>(object: I): RemoveCustomWordRequest {
+    const message = createBaseRemoveCustomWordRequest();
+    message.word = object.word ?? "";
+    return message;
+  },
+};
+
+function createBaseCustomWordsResponse(): CustomWordsResponse {
+  return { words: [], error: "" };
+}
+
+export const CustomWordsResponse: MessageFns<CustomWordsResponse> = {
+  encode(message: CustomWordsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.words) {
+      writer.uint32(10).string(v!);
+    }
+    if (message.error !== "") {
+      writer.uint32(18).string(message.error);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CustomWordsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCustomWordsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.words.push(reader.string());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.error = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CustomWordsResponse {
+    return {
+      words: globalThis.Array.isArray(object?.words) ? object.words.map((e: any) => globalThis.String(e)) : [],
+      error: isSet(object.error) ? globalThis.String(object.error) : "",
+    };
+  },
+
+  toJSON(message: CustomWordsResponse): unknown {
+    const obj: any = {};
+    if (message.words?.length) {
+      obj.words = message.words;
+    }
+    if (message.error !== "") {
+      obj.error = message.error;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CustomWordsResponse>, I>>(base?: I): CustomWordsResponse {
+    return CustomWordsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CustomWordsResponse>, I>>(object: I): CustomWordsResponse {
+    const message = createBaseCustomWordsResponse();
+    message.words = object.words?.map((e) => e) || [];
+    message.error = object.error ?? "";
+    return message;
+  },
+};
+
 export type PrivUtilServiceDefinition = typeof PrivUtilServiceDefinition;
 export const PrivUtilServiceDefinition = {
   name: "PrivUtilService",
@@ -17222,6 +17479,30 @@ export const PrivUtilServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    getCustomWords: {
+      name: "GetCustomWords",
+      requestType: GetCustomWordsRequest as typeof GetCustomWordsRequest,
+      requestStream: false,
+      responseType: CustomWordsResponse as typeof CustomWordsResponse,
+      responseStream: false,
+      options: {},
+    },
+    addCustomWords: {
+      name: "AddCustomWords",
+      requestType: AddCustomWordsRequest as typeof AddCustomWordsRequest,
+      requestStream: false,
+      responseType: CustomWordsResponse as typeof CustomWordsResponse,
+      responseStream: false,
+      options: {},
+    },
+    removeCustomWord: {
+      name: "RemoveCustomWord",
+      requestType: RemoveCustomWordRequest as typeof RemoveCustomWordRequest,
+      requestStream: false,
+      responseType: CustomWordsResponse as typeof CustomWordsResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -17393,6 +17674,18 @@ export interface PrivUtilServiceImplementation<CallContextExt = {}> {
     request: SpellLanguagesRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<SpellLanguagesResponse>>;
+  getCustomWords(
+    request: GetCustomWordsRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<CustomWordsResponse>>;
+  addCustomWords(
+    request: AddCustomWordsRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<CustomWordsResponse>>;
+  removeCustomWord(
+    request: RemoveCustomWordRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<CustomWordsResponse>>;
 }
 
 export interface PrivUtilServiceClient<CallOptionsExt = {}> {
@@ -17566,6 +17859,18 @@ export interface PrivUtilServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<SpellLanguagesRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<SpellLanguagesResponse>;
+  getCustomWords(
+    request: DeepPartial<GetCustomWordsRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<CustomWordsResponse>;
+  addCustomWords(
+    request: DeepPartial<AddCustomWordsRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<CustomWordsResponse>;
+  removeCustomWord(
+    request: DeepPartial<RemoveCustomWordRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<CustomWordsResponse>;
 }
 
 function bytesFromBase64(b64: string): Uint8Array {

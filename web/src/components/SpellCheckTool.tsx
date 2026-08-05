@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { client } from '../lib/client';
-import { Copy, Check, Wand2, Eye, X, CheckCircle2 } from 'lucide-react';
+import { Copy, Check, Wand2, Eye, X, CheckCircle2, BookPlus, Book, Plus, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '../lib/utils';
 import type { SpellIssue, SpellLanguage } from '../proto/proto/privutil';
 
@@ -102,6 +102,10 @@ export function SpellCheckTool() {
   const [error, setError] = useState('');
   const [popover, setPopover] = useState<PopoverState | null>(null);
   const [copied, setCopied] = useState(false);
+  const [customWords, setCustomWords] = useState<string[]>([]);
+  const [dictOpen, setDictOpen] = useState(false);
+  const [newWord, setNewWord] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const spanRefs = useRef<Record<string, HTMLSpanElement | null>>({});
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -111,6 +115,11 @@ export function SpellCheckTool() {
     client.spellLanguages({}).then(resp => {
       if (resp.languages.length > 0) setLanguages(resp.languages);
     }).catch(() => { /* keep static fallback */ });
+  }, []);
+
+  // Load the server-side custom dictionary on mount.
+  useEffect(() => {
+    client.getCustomWords({}).then(resp => setCustomWords(resp.words)).catch(() => { /* ignore */ });
   }, []);
 
   // Debounced check whenever text or language changes.
@@ -134,7 +143,7 @@ export function SpellCheckTool() {
       }
     }, DEBOUNCE_MS);
     return () => clearTimeout(timer);
-  }, [text, language]);
+  }, [text, language, refreshKey]);
 
   const visibleIssues = useMemo(
     () => issues.filter(is => !ignored.has(signature(is))),
@@ -189,6 +198,32 @@ export function SpellCheckTool() {
   const ignoreIssue = useCallback((is: SpellIssue) => {
     setIgnored(prev => new Set(prev).add(signature(is)));
     setPopover(null);
+  }, []);
+
+  const addToDictionary = useCallback(async (word: string) => {
+    const w = word.trim();
+    if (!w) return;
+    try {
+      const resp = await client.addCustomWords({ words: [w] } as Parameters<typeof client.addCustomWords>[0]);
+      if (resp.error) { setError(resp.error); return; }
+      setCustomWords(resp.words);
+      setNewWord('');
+      setPopover(null);
+      setRefreshKey(k => k + 1); // re-check so the word stops being flagged
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to add word to dictionary');
+    }
+  }, []);
+
+  const removeFromDictionary = useCallback(async (word: string) => {
+    try {
+      const resp = await client.removeCustomWord({ word } as Parameters<typeof client.removeCustomWord>[0]);
+      if (resp.error) { setError(resp.error); return; }
+      setCustomWords(resp.words);
+      setRefreshKey(k => k + 1);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to remove word from dictionary');
+    }
   }, []);
 
   const focusIssue = useCallback((id: string) => {
@@ -360,9 +395,76 @@ export function SpellCheckTool() {
                         ))}
                       </div>
                     )}
+                    {is.type === 'spelling' && (
+                      <button
+                        onClick={() => addToDictionary(is.text)}
+                        className="flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-kawa-600 dark:hover:text-kawa-400 transition-colors"
+                      >
+                        <BookPlus className="w-3.5 h-3.5" /> Add to dictionary
+                      </button>
+                    )}
                   </div>
                 );
               })
+            )}
+          </div>
+
+          {/* Custom dictionary manager */}
+          <div className="bg-white dark:bg-neutral-800 rounded-lg border border-slate-200 dark:border-neutral-700 shadow-sm">
+            <button
+              onClick={() => setDictOpen(o => !o)}
+              className="w-full flex items-center justify-between p-3 text-sm font-bold text-slate-600 dark:text-slate-300"
+            >
+              <span className="flex items-center gap-1.5">
+                <Book className="w-4 h-4" /> Custom dictionary
+                <span className="font-normal text-slate-400 dark:text-slate-500">({customWords.length})</span>
+              </span>
+              {dictOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+            {dictOpen && (
+              <div className="p-3 pt-0 space-y-3">
+                <form
+                  onSubmit={e => { e.preventDefault(); addToDictionary(newWord); }}
+                  className="flex gap-2"
+                >
+                  <input
+                    value={newWord}
+                    onChange={e => setNewWord(e.target.value)}
+                    placeholder="Add a word…"
+                    className="flex-1 min-w-0 bg-slate-50 dark:bg-neutral-900 border border-slate-300 dark:border-neutral-700 rounded-md px-2 py-1 text-sm text-slate-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-kawa-500/50"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!newWord.trim()}
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-md text-sm font-medium bg-kawa-500 text-black hover:bg-kawa-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </form>
+                {customWords.length === 0 ? (
+                  <p className="text-xs text-slate-400 dark:text-slate-500">
+                    No custom words yet. Words you add here are never flagged as misspelled.
+                  </p>
+                ) : (
+                  <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto">
+                    {customWords.map(w => (
+                      <span
+                        key={w}
+                        className="flex items-center gap-1 pl-2 pr-1 py-0.5 rounded bg-slate-100 dark:bg-neutral-700 text-xs font-mono text-slate-700 dark:text-slate-200"
+                      >
+                        {w}
+                        <button
+                          onClick={() => removeFromDictionary(w)}
+                          title={`Remove "${w}"`}
+                          className="text-slate-400 hover:text-red-500 transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -399,6 +501,14 @@ export function SpellCheckTool() {
             </div>
           ) : (
             <p className="text-[11px] italic text-slate-400 dark:text-slate-500">No automatic suggestion available.</p>
+          )}
+          {activeIssue.type === 'spelling' && (
+            <button
+              onClick={() => addToDictionary(activeIssue.text)}
+              className="w-full flex items-center justify-center gap-1 text-xs font-medium text-slate-500 hover:text-kawa-600 dark:text-slate-400 dark:hover:text-kawa-400 pt-1 transition-colors"
+            >
+              <BookPlus className="w-3.5 h-3.5" /> Add “{activeIssue.text}” to dictionary
+            </button>
           )}
           <button
             onClick={() => ignoreIssue(activeIssue)}

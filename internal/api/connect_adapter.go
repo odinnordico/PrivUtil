@@ -630,3 +630,27 @@ func (a *ConnectServer) SpellLanguages(ctx context.Context, r *connect.Request[p
 	}
 	return connect.NewResponse(resp), nil
 }
+
+func (a *ConnectServer) GetCustomWords(ctx context.Context, r *connect.Request[pb.GetCustomWordsRequest]) (*connect.Response[pb.CustomWordsResponse], error) {
+	resp, err := a.s.GetCustomWords(ctx, r.Msg)
+	if err != nil {
+		return nil, toConnectError(err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (a *ConnectServer) AddCustomWords(ctx context.Context, r *connect.Request[pb.AddCustomWordsRequest]) (*connect.Response[pb.CustomWordsResponse], error) {
+	resp, err := a.s.AddCustomWords(ctx, r.Msg)
+	if err != nil {
+		return nil, toConnectError(err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (a *ConnectServer) RemoveCustomWord(ctx context.Context, r *connect.Request[pb.RemoveCustomWordRequest]) (*connect.Response[pb.CustomWordsResponse], error) {
+	resp, err := a.s.RemoveCustomWord(ctx, r.Msg)
+	if err != nil {
+		return nil, toConnectError(err)
+	}
+	return connect.NewResponse(resp), nil
+}

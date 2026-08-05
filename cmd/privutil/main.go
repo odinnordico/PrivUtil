@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	connect "connectrpc.com/connect"
@@ -32,6 +33,7 @@ func main() {
 	port := flag.String("port", getEnvOrDefault("PORT", "8090"), "Port to listen on")
 	host := flag.String("host", getEnvOrDefault("HOST", "127.0.0.1"), "Host to bind to (default: loopback; use 0.0.0.0 for all interfaces)")
 	allowedHosts := flag.String("allowed-hosts", getEnvOrDefault("ALLOWED_HOSTS", ""), "Comma-separated extra Host header values to accept (for LAN/custom-domain access)")
+	customDict := flag.String("custom-dict", getEnvOrDefault("CUSTOM_DICT", defaultCustomDictPath()), "Path to the spellchecker custom-dictionary file (empty disables persistence)")
 	logLevel := flag.String("log-level", getEnvOrDefault("LOG_LEVEL", "info"), "Log level: debug, info (debug adds file/line to log output)")
 	version := flag.Bool("version", false, "Print version and exit")
 
@@ -44,6 +46,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "  PORT           Port to listen on (default: 8090)\n")
 		fmt.Fprintf(os.Stderr, "  HOST           Host to bind to (default: 127.0.0.1; use 0.0.0.0 for all interfaces)\n")
 		fmt.Fprintf(os.Stderr, "  ALLOWED_HOSTS  Extra Host header values to accept, comma-separated\n")
+		fmt.Fprintf(os.Stderr, "  CUSTOM_DICT    Path to the spellchecker custom-dictionary file\n")
 		fmt.Fprintf(os.Stderr, "  LOG_LEVEL      Log level (default: info)\n")
 	}
 
@@ -67,7 +70,7 @@ func main() {
 	// WithReadMaxBytes bounds every RPC body (default is unlimited), capping the
 	// memory/CPU amplification available to abusive requests. The media handlers
 	// enforce their own stricter 10 MB limits on top of this.
-	connectSrv := api.NewConnectServer(api.NewServer())
+	connectSrv := api.NewConnectServer(api.NewServer(api.WithCustomDictPath(*customDict)))
 	rpcPath, rpcHandler := protoconnect.NewPrivUtilServiceHandler(
 		connectSrv,
 		connect.WithInterceptors(api.RecoveryInterceptor(*logLevel == "debug")),
@@ -99,6 +102,18 @@ func buildAllowedHosts(bindHost, extra string) []string {
 		}
 	}
 	return hosts
+}
+
+// defaultCustomDictPath returns the per-user location for the spellchecker's
+// custom dictionary (e.g. ~/.config/privutil/custom-dictionary.txt), or "" when
+// the OS config dir can't be determined — in which case the dictionary is
+// in-memory only until a path is set via -custom-dict / CUSTOM_DICT.
+func defaultCustomDictPath() string {
+	dir, err := os.UserConfigDir()
+	if err != nil {
+		return ""
+	}
+	return filepath.Join(dir, "privutil", "custom-dictionary.txt")
 }
 
 func getEnvOrDefault(key, defaultValue string) string {
