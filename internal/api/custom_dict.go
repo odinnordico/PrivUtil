@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"unicode"
 )
 
 const (
@@ -44,7 +45,7 @@ func (d *customDict) load() {
 	defer f.Close()
 	sc := bufio.NewScanner(f)
 	for sc.Scan() {
-		if w := normalizeCustomWord(sc.Text()); w != "" {
+		if w := normalizeCustomWord(sc.Text()); w != "" && !hasControlChar(w) {
 			d.words[w] = struct{}{}
 		}
 	}
@@ -80,10 +81,15 @@ func (d *customDict) sortedLocked() []string {
 }
 
 // Add inserts words (each entry may contain several whitespace-separated words)
-// and persists. Returns the full list after the operation.
+// and persists. It is transactional: every token is validated first, so an
+// invalid word (too long, control characters) or hitting the cap rejects the
+// whole batch without mutating memory or disk. On a persist failure the added
+// words are rolled back so the in-memory set never gets ahead of the file.
+// Returns the full list after the operation.
 func (d *customDict) Add(words []string) ([]string, error) {
-	d.mu.Lock()
-	defer d.mu.Unlock()
+	// Validate + dedupe candidate tokens before taking the write lock.
+	var candidates []string
+	seen := make(map[string]struct{})
 	for _, raw := range words {
 		for _, tok := range strings.Fields(raw) {
 			w := normalizeCustomWord(tok)
@@ -91,30 +97,57 @@ func (d *customDict) Add(words []string) ([]string, error) {
 				continue
 			}
 			if len([]rune(w)) > maxCustomWordLen {
-				return d.sortedLocked(), fmt.Errorf("word %q is too long (limit %d characters)", tok, maxCustomWordLen)
+				return d.List(), fmt.Errorf("word %q is too long (limit %d characters)", tok, maxCustomWordLen)
 			}
-			if _, ok := d.words[w]; ok {
-				continue
+			if hasControlChar(w) {
+				return d.List(), fmt.Errorf("word %q contains control characters", tok)
 			}
-			if len(d.words) >= maxCustomWords {
-				return d.sortedLocked(), fmt.Errorf("custom dictionary is full (limit %d words)", maxCustomWords)
+			if _, dup := seen[w]; !dup {
+				seen[w] = struct{}{}
+				candidates = append(candidates, w)
 			}
-			d.words[w] = struct{}{}
 		}
 	}
+
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
+	var added []string
+	for _, w := range candidates {
+		if _, ok := d.words[w]; !ok {
+			added = append(added, w)
+		}
+	}
+	if len(added) == 0 {
+		return d.sortedLocked(), nil // nothing new: skip the rewrite
+	}
+	if len(d.words)+len(added) > maxCustomWords {
+		return d.sortedLocked(), fmt.Errorf("custom dictionary is full (limit %d words)", maxCustomWords)
+	}
+	for _, w := range added {
+		d.words[w] = struct{}{}
+	}
 	if err := d.persistLocked(); err != nil {
+		for _, w := range added {
+			delete(d.words, w) // roll back so memory matches the unchanged file
+		}
 		return d.sortedLocked(), err
 	}
 	return d.sortedLocked(), nil
 }
 
-// Remove deletes a word and persists. Removing an absent word is a no-op.
+// Remove deletes a word and persists. Removing an absent word is a no-op (no
+// file rewrite). On a persist failure the deletion is rolled back.
 func (d *customDict) Remove(word string) ([]string, error) {
 	w := normalizeCustomWord(word)
 	d.mu.Lock()
 	defer d.mu.Unlock()
+	if _, ok := d.words[w]; !ok {
+		return d.sortedLocked(), nil
+	}
 	delete(d.words, w)
 	if err := d.persistLocked(); err != nil {
+		d.words[w] = struct{}{} // roll back
 		return d.sortedLocked(), err
 	}
 	return d.sortedLocked(), nil
@@ -148,6 +181,12 @@ func (d *customDict) persistLocked() error {
 		_ = tmp.Close()
 		return err
 	}
+	// fsync before the rename so the data is durable, not just atomically
+	// swapped — otherwise a crash after rename can leave a truncated file.
+	if err := tmp.Sync(); err != nil {
+		_ = tmp.Close()
+		return err
+	}
 	if err := tmp.Close(); err != nil {
 		return err
 	}
@@ -157,4 +196,11 @@ func (d *customDict) persistLocked() error {
 // normalizeCustomWord lowercases and trims a stored/looked-up word.
 func normalizeCustomWord(s string) string {
 	return strings.ToLower(strings.TrimSpace(s))
+}
+
+// hasControlChar reports whether s contains any control character, so such
+// words are never stored (they can inject ANSI escapes when the dictionary file
+// is later viewed in a terminal).
+func hasControlChar(s string) bool {
+	return strings.IndexFunc(s, unicode.IsControl) >= 0
 }
