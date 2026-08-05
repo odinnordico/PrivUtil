@@ -79,6 +79,9 @@ service PrivUtilService {
   rpc TokenCount(TokenCountRequest) returns (TokenCountResponse) {}
   rpc SpellCheck(SpellCheckRequest) returns (SpellCheckResponse) {}
   rpc SpellLanguages(SpellLanguagesRequest) returns (SpellLanguagesResponse) {}
+  rpc GetCustomWords(GetCustomWordsRequest) returns (CustomWordsResponse) {}
+  rpc AddCustomWords(AddCustomWordsRequest) returns (CustomWordsResponse) {}
+  rpc RemoveCustomWord(RemoveCustomWordRequest) returns (CustomWordsResponse) {}
 }
 
 message DiffRequest {
@@ -1075,4 +1078,18 @@ message SpellLanguage {
 }
 message SpellLanguagesResponse {
   repeated SpellLanguage languages = 1;
+}
+
+// Custom dictionary: a server-side, persisted list of extra accepted words,
+// shared across all languages. SpellCheck consults it automatically.
+message GetCustomWordsRequest {}
+message AddCustomWordsRequest {
+  repeated string words = 1; // words to add (whitespace/case normalized server-side)
+}
+message RemoveCustomWordRequest {
+  string word = 1;
+}
+message CustomWordsResponse {
+  repeated string words = 1; // the full custom word list after the operation, sorted
+  string          error = 2;
 }

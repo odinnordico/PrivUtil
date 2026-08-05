@@ -30,7 +30,7 @@ func (s *Server) SpellCheck(ctx context.Context, req *pb.SpellCheckRequest) (*pb
 		}, nil
 	}
 
-	issues, lang := spellcheck.Check(req.Text, req.Language)
+	issues, lang := spellcheck.CheckWithCustom(req.Text, req.Language, s.custom)
 
 	out := make([]*pb.SpellIssue, 0, len(issues))
 	for _, is := range issues {
@@ -54,6 +54,29 @@ func (s *Server) SpellCheck(ctx context.Context, req *pb.SpellCheckRequest) (*pb
 		Language:  lang,
 		WordCount: int32(spellcheck.WordCount(req.Text)), // #nosec G115
 	}, nil
+}
+
+// GetCustomWords returns the current custom-dictionary word list.
+func (s *Server) GetCustomWords(_ context.Context, _ *pb.GetCustomWordsRequest) (*pb.CustomWordsResponse, error) {
+	return &pb.CustomWordsResponse{Words: s.custom.List()}, nil
+}
+
+// AddCustomWords adds words to the custom dictionary and returns the full list.
+func (s *Server) AddCustomWords(_ context.Context, req *pb.AddCustomWordsRequest) (*pb.CustomWordsResponse, error) {
+	words, err := s.custom.Add(req.Words)
+	if err != nil {
+		return &pb.CustomWordsResponse{Words: words, Error: err.Error()}, nil
+	}
+	return &pb.CustomWordsResponse{Words: words}, nil
+}
+
+// RemoveCustomWord removes a word from the custom dictionary.
+func (s *Server) RemoveCustomWord(_ context.Context, req *pb.RemoveCustomWordRequest) (*pb.CustomWordsResponse, error) {
+	words, err := s.custom.Remove(req.Word)
+	if err != nil {
+		return &pb.CustomWordsResponse{Words: words, Error: err.Error()}, nil
+	}
+	return &pb.CustomWordsResponse{Words: words}, nil
 }
 
 // SpellLanguages reports the languages supported by the offline engine.

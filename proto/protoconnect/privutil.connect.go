@@ -250,6 +250,15 @@ const (
 	// PrivUtilServiceSpellLanguagesProcedure is the fully-qualified name of the PrivUtilService's
 	// SpellLanguages RPC.
 	PrivUtilServiceSpellLanguagesProcedure = "/privutil.PrivUtilService/SpellLanguages"
+	// PrivUtilServiceGetCustomWordsProcedure is the fully-qualified name of the PrivUtilService's
+	// GetCustomWords RPC.
+	PrivUtilServiceGetCustomWordsProcedure = "/privutil.PrivUtilService/GetCustomWords"
+	// PrivUtilServiceAddCustomWordsProcedure is the fully-qualified name of the PrivUtilService's
+	// AddCustomWords RPC.
+	PrivUtilServiceAddCustomWordsProcedure = "/privutil.PrivUtilService/AddCustomWords"
+	// PrivUtilServiceRemoveCustomWordProcedure is the fully-qualified name of the PrivUtilService's
+	// RemoveCustomWord RPC.
+	PrivUtilServiceRemoveCustomWordProcedure = "/privutil.PrivUtilService/RemoveCustomWord"
 )
 
 // PrivUtilServiceClient is a client for the privutil.PrivUtilService service.
@@ -328,6 +337,9 @@ type PrivUtilServiceClient interface {
 	TokenCount(context.Context, *connect.Request[proto.TokenCountRequest]) (*connect.Response[proto.TokenCountResponse], error)
 	SpellCheck(context.Context, *connect.Request[proto.SpellCheckRequest]) (*connect.Response[proto.SpellCheckResponse], error)
 	SpellLanguages(context.Context, *connect.Request[proto.SpellLanguagesRequest]) (*connect.Response[proto.SpellLanguagesResponse], error)
+	GetCustomWords(context.Context, *connect.Request[proto.GetCustomWordsRequest]) (*connect.Response[proto.CustomWordsResponse], error)
+	AddCustomWords(context.Context, *connect.Request[proto.AddCustomWordsRequest]) (*connect.Response[proto.CustomWordsResponse], error)
+	RemoveCustomWord(context.Context, *connect.Request[proto.RemoveCustomWordRequest]) (*connect.Response[proto.CustomWordsResponse], error)
 }
 
 // NewPrivUtilServiceClient constructs a client for the privutil.PrivUtilService service. By
@@ -785,6 +797,24 @@ func NewPrivUtilServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(privUtilServiceMethods.ByName("SpellLanguages")),
 			connect.WithClientOptions(opts...),
 		),
+		getCustomWords: connect.NewClient[proto.GetCustomWordsRequest, proto.CustomWordsResponse](
+			httpClient,
+			baseURL+PrivUtilServiceGetCustomWordsProcedure,
+			connect.WithSchema(privUtilServiceMethods.ByName("GetCustomWords")),
+			connect.WithClientOptions(opts...),
+		),
+		addCustomWords: connect.NewClient[proto.AddCustomWordsRequest, proto.CustomWordsResponse](
+			httpClient,
+			baseURL+PrivUtilServiceAddCustomWordsProcedure,
+			connect.WithSchema(privUtilServiceMethods.ByName("AddCustomWords")),
+			connect.WithClientOptions(opts...),
+		),
+		removeCustomWord: connect.NewClient[proto.RemoveCustomWordRequest, proto.CustomWordsResponse](
+			httpClient,
+			baseURL+PrivUtilServiceRemoveCustomWordProcedure,
+			connect.WithSchema(privUtilServiceMethods.ByName("RemoveCustomWord")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -864,6 +894,9 @@ type privUtilServiceClient struct {
 	tokenCount         *connect.Client[proto.TokenCountRequest, proto.TokenCountResponse]
 	spellCheck         *connect.Client[proto.SpellCheckRequest, proto.SpellCheckResponse]
 	spellLanguages     *connect.Client[proto.SpellLanguagesRequest, proto.SpellLanguagesResponse]
+	getCustomWords     *connect.Client[proto.GetCustomWordsRequest, proto.CustomWordsResponse]
+	addCustomWords     *connect.Client[proto.AddCustomWordsRequest, proto.CustomWordsResponse]
+	removeCustomWord   *connect.Client[proto.RemoveCustomWordRequest, proto.CustomWordsResponse]
 }
 
 // Diff calls privutil.PrivUtilService.Diff.
@@ -1236,6 +1269,21 @@ func (c *privUtilServiceClient) SpellLanguages(ctx context.Context, req *connect
 	return c.spellLanguages.CallUnary(ctx, req)
 }
 
+// GetCustomWords calls privutil.PrivUtilService.GetCustomWords.
+func (c *privUtilServiceClient) GetCustomWords(ctx context.Context, req *connect.Request[proto.GetCustomWordsRequest]) (*connect.Response[proto.CustomWordsResponse], error) {
+	return c.getCustomWords.CallUnary(ctx, req)
+}
+
+// AddCustomWords calls privutil.PrivUtilService.AddCustomWords.
+func (c *privUtilServiceClient) AddCustomWords(ctx context.Context, req *connect.Request[proto.AddCustomWordsRequest]) (*connect.Response[proto.CustomWordsResponse], error) {
+	return c.addCustomWords.CallUnary(ctx, req)
+}
+
+// RemoveCustomWord calls privutil.PrivUtilService.RemoveCustomWord.
+func (c *privUtilServiceClient) RemoveCustomWord(ctx context.Context, req *connect.Request[proto.RemoveCustomWordRequest]) (*connect.Response[proto.CustomWordsResponse], error) {
+	return c.removeCustomWord.CallUnary(ctx, req)
+}
+
 // PrivUtilServiceHandler is an implementation of the privutil.PrivUtilService service.
 type PrivUtilServiceHandler interface {
 	Diff(context.Context, *connect.Request[proto.DiffRequest]) (*connect.Response[proto.DiffResponse], error)
@@ -1312,6 +1360,9 @@ type PrivUtilServiceHandler interface {
 	TokenCount(context.Context, *connect.Request[proto.TokenCountRequest]) (*connect.Response[proto.TokenCountResponse], error)
 	SpellCheck(context.Context, *connect.Request[proto.SpellCheckRequest]) (*connect.Response[proto.SpellCheckResponse], error)
 	SpellLanguages(context.Context, *connect.Request[proto.SpellLanguagesRequest]) (*connect.Response[proto.SpellLanguagesResponse], error)
+	GetCustomWords(context.Context, *connect.Request[proto.GetCustomWordsRequest]) (*connect.Response[proto.CustomWordsResponse], error)
+	AddCustomWords(context.Context, *connect.Request[proto.AddCustomWordsRequest]) (*connect.Response[proto.CustomWordsResponse], error)
+	RemoveCustomWord(context.Context, *connect.Request[proto.RemoveCustomWordRequest]) (*connect.Response[proto.CustomWordsResponse], error)
 }
 
 // NewPrivUtilServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -1765,6 +1816,24 @@ func NewPrivUtilServiceHandler(svc PrivUtilServiceHandler, opts ...connect.Handl
 		connect.WithSchema(privUtilServiceMethods.ByName("SpellLanguages")),
 		connect.WithHandlerOptions(opts...),
 	)
+	privUtilServiceGetCustomWordsHandler := connect.NewUnaryHandler(
+		PrivUtilServiceGetCustomWordsProcedure,
+		svc.GetCustomWords,
+		connect.WithSchema(privUtilServiceMethods.ByName("GetCustomWords")),
+		connect.WithHandlerOptions(opts...),
+	)
+	privUtilServiceAddCustomWordsHandler := connect.NewUnaryHandler(
+		PrivUtilServiceAddCustomWordsProcedure,
+		svc.AddCustomWords,
+		connect.WithSchema(privUtilServiceMethods.ByName("AddCustomWords")),
+		connect.WithHandlerOptions(opts...),
+	)
+	privUtilServiceRemoveCustomWordHandler := connect.NewUnaryHandler(
+		PrivUtilServiceRemoveCustomWordProcedure,
+		svc.RemoveCustomWord,
+		connect.WithSchema(privUtilServiceMethods.ByName("RemoveCustomWord")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/privutil.PrivUtilService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PrivUtilServiceDiffProcedure:
@@ -1915,6 +1984,12 @@ func NewPrivUtilServiceHandler(svc PrivUtilServiceHandler, opts ...connect.Handl
 			privUtilServiceSpellCheckHandler.ServeHTTP(w, r)
 		case PrivUtilServiceSpellLanguagesProcedure:
 			privUtilServiceSpellLanguagesHandler.ServeHTTP(w, r)
+		case PrivUtilServiceGetCustomWordsProcedure:
+			privUtilServiceGetCustomWordsHandler.ServeHTTP(w, r)
+		case PrivUtilServiceAddCustomWordsProcedure:
+			privUtilServiceAddCustomWordsHandler.ServeHTTP(w, r)
+		case PrivUtilServiceRemoveCustomWordProcedure:
+			privUtilServiceRemoveCustomWordHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -2218,4 +2293,16 @@ func (UnimplementedPrivUtilServiceHandler) SpellCheck(context.Context, *connect.
 
 func (UnimplementedPrivUtilServiceHandler) SpellLanguages(context.Context, *connect.Request[proto.SpellLanguagesRequest]) (*connect.Response[proto.SpellLanguagesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("privutil.PrivUtilService.SpellLanguages is not implemented"))
+}
+
+func (UnimplementedPrivUtilServiceHandler) GetCustomWords(context.Context, *connect.Request[proto.GetCustomWordsRequest]) (*connect.Response[proto.CustomWordsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("privutil.PrivUtilService.GetCustomWords is not implemented"))
+}
+
+func (UnimplementedPrivUtilServiceHandler) AddCustomWords(context.Context, *connect.Request[proto.AddCustomWordsRequest]) (*connect.Response[proto.CustomWordsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("privutil.PrivUtilService.AddCustomWords is not implemented"))
+}
+
+func (UnimplementedPrivUtilServiceHandler) RemoveCustomWord(context.Context, *connect.Request[proto.RemoveCustomWordRequest]) (*connect.Response[proto.CustomWordsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("privutil.PrivUtilService.RemoveCustomWord is not implemented"))
 }

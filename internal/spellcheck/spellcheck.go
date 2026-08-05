@@ -50,10 +50,21 @@ func Languages() []LanguageInfo {
 	return out
 }
 
+// Lookup is an optional extra dictionary consulted in addition to the built-in
+// one — a word it accepts is never flagged as a spelling mistake. Membership is
+// expected to be case-insensitive.
+type Lookup interface {
+	Has(word string) bool
+}
+
 // Check runs spelling and grammar checks over text in the given language.
-// It returns the issues, the resolved language code, and (for symmetry with
-// other engines) an error slot that is currently always nil.
 func Check(text, lang string) ([]Issue, string) {
+	return CheckWithCustom(text, lang, nil)
+}
+
+// CheckWithCustom is Check plus a custom dictionary whose words are treated as
+// correctly spelled. Pass nil for custom to get the default behavior.
+func CheckWithCustom(text, lang string, custom Lookup) ([]Issue, string) {
 	if lang == "" {
 		lang = DefaultLanguage
 	}
@@ -61,7 +72,7 @@ func Check(text, lang string) ([]Issue, string) {
 	if !ok {
 		l, lang = registry[DefaultLanguage], DefaultLanguage
 	}
-	return l.check([]rune(text)), lang
+	return l.check([]rune(text), custom), lang
 }
 
 // WordCount counts word tokens in text (language-independent).
@@ -69,8 +80,8 @@ func WordCount(text string) int {
 	return len(tokenizeWords([]rune(text)))
 }
 
-func (l *Language) check(runes []rune) []Issue {
-	issues := l.spellingIssues(runes)
+func (l *Language) check(runes []rune, custom Lookup) []Issue {
+	issues := l.spellingIssues(runes, custom)
 	for _, rule := range l.rules {
 		issues = append(issues, rule(runes)...)
 	}
@@ -81,7 +92,7 @@ func (l *Language) check(runes []rune) []Issue {
 // suggestions. Capitalized words that aren't at a sentence start are treated as
 // likely proper nouns and only flagged when a strong (edit-distance-1)
 // correction exists.
-func (l *Language) spellingIssues(runes []rune) []Issue {
+func (l *Language) spellingIssues(runes []rune, custom Lookup) []Issue {
 	var issues []Issue
 	for _, t := range tokenizeWords(runes) {
 		w := trimApostrophes(t.text)
@@ -94,6 +105,9 @@ func (l *Language) spellingIssues(runes []rune) []Issue {
 		}
 		if l.dict.contains(w) || acceptedContraction(l.dict, w) {
 			continue
+		}
+		if custom != nil && custom.Has(w) {
+			continue // user's custom dictionary
 		}
 
 		titleCased := unicode.IsUpper(rw[0]) && !isAllUpper(w)
