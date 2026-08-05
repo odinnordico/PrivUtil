@@ -26,7 +26,7 @@ to our team.
 
 ## I Have a Question
 
-If you want to ask a question, we assume that you have read the available [Documentation](link-to-docs).
+If you want to ask a question, we assume that you have read the available [Documentation](https://github.com/odinnordico/privutil/wiki).
 
 Before you ask a question, it is best to search for existing [Issues](https://github.com/odinnordico/privutil/issues) that might help you. In case you have found a suitable issue and still need clarification, you can write your question in this issue. It is also advisable to search the internet for answers first.
 
@@ -42,12 +42,12 @@ We will then take care of the issue as soon as possible.
 
 ### Reporting Bugs
 
-**If you find a security vulnerability, please send an email to security@example.com instead of using the issue tracker.**
+**If you find a security vulnerability, do not use the issue tracker — report it privately following [SECURITY.md](SECURITY.md).**
 
 Before you submit a bug report, please check these points:
 
 - Make sure that you are using the latest version.
-- Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the [documentation](link-to-docs). If you are looking for support, you might want to check [this section](#i-have-a-question)).
+- Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the [documentation](https://github.com/odinnordico/privutil/wiki). If you are looking for support, you might want to check [this section](#i-have-a-question)).
 - To see if other users have experienced (and potentially already solved) the same issue you are having, check if there is not already a bug report existing for your bug or error in the [bug tracker](https://github.com/odinnordico/privutil/issues?q=label%3Abug).
 
 ### Suggesting Enhancements
