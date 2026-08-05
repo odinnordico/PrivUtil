@@ -32,10 +32,13 @@ RUN addgroup -S privutil && adduser -S privutil -G privutil \
     && mkdir -p /data && chown privutil:privutil /data
 COPY --from=build /PrivUtil/privutil /bin/privutil
 USER privutil
-# Persist the spellchecker custom dictionary under /data; mount a volume
-# (e.g. -v privutil-data:/data) to keep it across container restarts.
+# The spellchecker custom dictionary is written under /data. Mount a NAMED
+# volume to persist it, e.g.  docker run -v privutil-data:/data ...
+# No VOLUME is declared on purpose: it would spawn a throwaway anonymous volume
+# on every container recreation (silently losing the dictionary and leaking
+# orphaned volumes). A bind-mounted host directory must be chown'd to the
+# container's privutil user (or run with a matching --user) to be writable.
 ENV CUSTOM_DICT=/data/custom-dictionary.txt
-VOLUME /data
 # The binary now defaults to loopback; containers must bind all interfaces to be
 # reachable via port mapping. Access is still gated by the Host-header allowlist
 # (localhost/127.0.0.1 by default; set ALLOWED_HOSTS for LAN/custom domains).

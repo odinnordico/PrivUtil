@@ -52,11 +52,26 @@ func TestCustomDictPersistence(t *testing.T) {
 func TestCustomDictValidation(t *testing.T) {
 	d := newCustomDict("") // in-memory
 	long := strings.Repeat("a", maxCustomWordLen+1)
-	if _, err := d.Add([]string{long}); err == nil {
+
+	// A batch with an invalid token is rejected atomically: the valid token
+	// ("good") that precedes it must NOT be stored.
+	if _, err := d.Add([]string{"good", long}); err == nil {
 		t.Error("expected error for over-long word")
 	}
 	if d.Has(long) {
 		t.Error("over-long word should not have been stored")
+	}
+	if d.Has("good") {
+		t.Error("Add must be transactional: a valid word in a failing batch must not persist")
+	}
+
+	// Control characters are rejected (they could inject ANSI escapes into the
+	// dictionary file when viewed in a terminal).
+	if _, err := d.Add([]string{"a\x1b[2Jb"}); err == nil {
+		t.Error("expected error for word with control characters")
+	}
+	if len(d.List()) != 0 {
+		t.Errorf("dictionary should be empty, got %v", d.List())
 	}
 }
 

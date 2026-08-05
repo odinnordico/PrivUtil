@@ -106,6 +106,7 @@ export function SpellCheckTool() {
   const [dictOpen, setDictOpen] = useState(false);
   const [newWord, setNewWord] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
+  const [dictBusy, setDictBusy] = useState(false);
 
   const spanRefs = useRef<Record<string, HTMLSpanElement | null>>({});
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -200,22 +201,34 @@ export function SpellCheckTool() {
     setPopover(null);
   }, []);
 
-  const addToDictionary = useCallback(async (word: string) => {
+  const addToDictionary = useCallback(async (word: string): Promise<boolean> => {
     const w = word.trim();
-    if (!w) return;
+    if (!w || dictBusy) return false;
+    setDictBusy(true);
+    setError('');
     try {
       const resp = await client.addCustomWords({ words: [w] } as Parameters<typeof client.addCustomWords>[0]);
-      if (resp.error) { setError(resp.error); return; }
+      if (resp.error) { setError(resp.error); return false; }
       setCustomWords(resp.words);
-      setNewWord('');
       setPopover(null);
-      setRefreshKey(k => k + 1); // re-check so the word stops being flagged
+      // Drop matching spelling issues immediately for instant feedback; a full
+      // re-check follows via refreshKey.
+      const lw = w.toLowerCase();
+      setIssues(prev => prev.filter(is => !(is.type === 'spelling' && is.text.trim().toLowerCase() === lw)));
+      setRefreshKey(k => k + 1);
+      return true;
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to add word to dictionary');
+      return false;
+    } finally {
+      setDictBusy(false);
     }
-  }, []);
+  }, [dictBusy]);
 
   const removeFromDictionary = useCallback(async (word: string) => {
+    if (dictBusy) return;
+    setDictBusy(true);
+    setError('');
     try {
       const resp = await client.removeCustomWord({ word } as Parameters<typeof client.removeCustomWord>[0]);
       if (resp.error) { setError(resp.error); return; }
@@ -223,8 +236,10 @@ export function SpellCheckTool() {
       setRefreshKey(k => k + 1);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to remove word from dictionary');
+    } finally {
+      setDictBusy(false);
     }
-  }, []);
+  }, [dictBusy]);
 
   const focusIssue = useCallback((id: string) => {
     const el = spanRefs.current[id];
@@ -398,7 +413,8 @@ export function SpellCheckTool() {
                     {is.type === 'spelling' && (
                       <button
                         onClick={() => addToDictionary(is.text)}
-                        className="flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-kawa-600 dark:hover:text-kawa-400 transition-colors"
+                        disabled={dictBusy}
+                        className="flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-kawa-600 dark:hover:text-kawa-400 disabled:opacity-40 transition-colors"
                       >
                         <BookPlus className="w-3.5 h-3.5" /> Add to dictionary
                       </button>
@@ -413,6 +429,7 @@ export function SpellCheckTool() {
           <div className="bg-white dark:bg-neutral-800 rounded-lg border border-slate-200 dark:border-neutral-700 shadow-sm">
             <button
               onClick={() => setDictOpen(o => !o)}
+              aria-expanded={dictOpen}
               className="w-full flex items-center justify-between p-3 text-sm font-bold text-slate-600 dark:text-slate-300"
             >
               <span className="flex items-center gap-1.5">
@@ -424,18 +441,20 @@ export function SpellCheckTool() {
             {dictOpen && (
               <div className="p-3 pt-0 space-y-3">
                 <form
-                  onSubmit={e => { e.preventDefault(); addToDictionary(newWord); }}
+                  onSubmit={async e => { e.preventDefault(); if (await addToDictionary(newWord)) setNewWord(''); }}
                   className="flex gap-2"
                 >
                   <input
                     value={newWord}
                     onChange={e => setNewWord(e.target.value)}
                     placeholder="Add a word…"
+                    aria-label="Add a word to the custom dictionary"
                     className="flex-1 min-w-0 bg-slate-50 dark:bg-neutral-900 border border-slate-300 dark:border-neutral-700 rounded-md px-2 py-1 text-sm text-slate-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-kawa-500/50"
                   />
                   <button
                     type="submit"
-                    disabled={!newWord.trim()}
+                    disabled={!newWord.trim() || dictBusy}
+                    aria-label="Add word"
                     className="flex items-center gap-1 px-2.5 py-1 rounded-md text-sm font-medium bg-kawa-500 text-black hover:bg-kawa-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     <Plus className="w-4 h-4" />
@@ -455,8 +474,9 @@ export function SpellCheckTool() {
                         {w}
                         <button
                           onClick={() => removeFromDictionary(w)}
+                          disabled={dictBusy}
                           title={`Remove "${w}"`}
-                          className="text-slate-400 hover:text-red-500 transition-colors"
+                          className="text-slate-400 hover:text-red-500 disabled:opacity-40 transition-colors"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -505,7 +525,8 @@ export function SpellCheckTool() {
           {activeIssue.type === 'spelling' && (
             <button
               onClick={() => addToDictionary(activeIssue.text)}
-              className="w-full flex items-center justify-center gap-1 text-xs font-medium text-slate-500 hover:text-kawa-600 dark:text-slate-400 dark:hover:text-kawa-400 pt-1 transition-colors"
+              disabled={dictBusy}
+              className="w-full flex items-center justify-center gap-1 text-xs font-medium text-slate-500 hover:text-kawa-600 dark:text-slate-400 dark:hover:text-kawa-400 disabled:opacity-40 pt-1 transition-colors"
             >
               <BookPlus className="w-3.5 h-3.5" /> Add “{activeIssue.text}” to dictionary
             </button>
