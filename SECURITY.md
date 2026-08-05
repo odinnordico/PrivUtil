@@ -26,9 +26,7 @@ We take the security of PrivUtil seriously. If you have discovered a security vu
 
 ### How to Report
 
-Preferred: open a private [GitHub security advisory](https://github.com/odinnordico/PrivUtil/security/advisories/new) for this repository.
-
-<!-- TODO: add a dedicated security contact email address here. -->
+Preferred: open a private [GitHub security advisory](https://github.com/odinnordico/PrivUtil/security/advisories/new) for this repository. Alternatively, email **odin.nordico90@gmail.com**.
 
 You should receive a response within 48 hours. If for some reason you do not, please follow up to ensure we received your original message.
 
