@@ -160,7 +160,8 @@ func (d *customDict) persistLocked() error {
 		return nil
 	}
 	dir := filepath.Dir(d.path)
-	if err := os.MkdirAll(dir, 0o755); err != nil {
+	// 0700: the dictionary is per-user data; keep its directory private.
+	if err := os.MkdirAll(dir, 0o700); err != nil {
 		return fmt.Errorf("create dictionary directory: %w", err)
 	}
 	tmp, err := os.CreateTemp(dir, ".custom-dict-*.tmp")
