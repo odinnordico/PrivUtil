@@ -23,7 +23,7 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 | **Diff Utility** | Visual text comparison with syntax highlighting |
 | **Text Tools** | Sort, dedupe, reverse, trim, inspect line count/word count/bytes |
 | **Text Similarity** | Levenshtein distance and similarity percentage |
-| **Spell & Grammar Checker** | Fully offline spelling and grammar/punctuation checking; English and Latin American Spanish; embedded ~50k-word dictionaries; inline wavy underlines with one-click fixes |
+| **Spell & Grammar Checker** | Fully offline spelling and grammar/punctuation checking; English and Latin American Spanish; embedded ~50k-word dictionaries; inline wavy underlines with one-click fixes; add words to a persistent custom dictionary (never flagged again) |
 | **Token Counter** | Offline LLM token counter; exact BPE for OpenAI (o200k_base/cl100k_base), heuristic estimates for Claude/Llama 3/Gemini/Mistral, plus classic tokenizers; char/byte counts, token preview, side-by-side comparison |
 
 ### Formatters & Converters
@@ -56,7 +56,7 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 
 | Tool | Description |
 | ---- | ----------- |
-| **Base64** | Encode/decode strings |
+| **Base64** | Encode text or uploaded files; decode raw or data-URI input with MIME-aware inline preview (text, images, PDF, audio, video, and binary/gRPC payloads as text up to 5 MB) |
 | **URL Encoder/Decoder** | Percent-encoding |
 | **HTML Entity Encoder/Decoder** | Named and numeric entities |
 | **HMAC Generator** | SHA-256/SHA-512/SHA-1/MD5 with hex and base64 output |
@@ -215,13 +215,17 @@ Access at **http://localhost:8090**
 ./privutil --help
 
 Options:
-  -port string      Port to listen on (default "8090")
-  -host string      Host to bind to (default "localhost")
-  -log-level string Log level: debug, info, warn, error (default "info")
-  -version          Print version and exit
+  -port string          Port to listen on (default "8090")
+  -host string          Host to bind to (default "127.0.0.1"; use 0.0.0.0 for all interfaces)
+  -allowed-hosts string Comma-separated extra Host header values to accept (for LAN/custom-domain access)
+  -custom-dict string   Path to the spellchecker custom-dictionary file (default: <user-config-dir>/privutil/custom-dictionary.txt)
+  -log-level string     Log level: debug or info (default "info")
+  -version              Print version and exit
 ```
 
-Environment variables: `PORT`, `HOST`, `LOG_LEVEL`
+Environment variables: `PORT`, `HOST`, `ALLOWED_HOSTS`, `CUSTOM_DICT`, `LOG_LEVEL`
+
+> The server binds to loopback (`127.0.0.1`) by default and only accepts requests whose `Host` header is `localhost`/`127.0.0.1`/`::1` (a DNS-rebinding defense). To expose it on a LAN, set `-host 0.0.0.0` **and** add the reachable host name(s) to `ALLOWED_HOSTS`.
 
 ---
 
