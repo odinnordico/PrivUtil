@@ -15,12 +15,12 @@
   "dependencies": {
     "clsx": "^2.1.1",
     "lucide-react": "^1.28.0",
-    "mermaid": "^11.16.0",
+    "mermaid": "^11.16.1",
     "nice-grpc-common": "^2.0.2",
     "nice-grpc-web": "^3.3.9",
     "react": "^19.2.0",
     "react-dom": "^19.2.4",
-    "react-router-dom": "^7.16.0",
+    "react-router-dom": "^7.18.2",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
