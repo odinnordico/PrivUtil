@@ -38,10 +38,26 @@ func TestMCPHandler(t *testing.T) {
 		if code != http.StatusOK {
 			t.Fatalf("status = %d, body = %s", code, body)
 		}
-		for _, name := range []string{"calculate_hash", "generate_uuid", "base64_encode", "jwt_decode", "text_diff"} {
+		// A sampling across every registration group.
+		for _, name := range []string{
+			"calculate_hash", "generate_uuid", "base64_encode", "jwt_decode", "text_diff",
+			"convert", "case_convert", "regex_test", "token_count", "ip_calc", "url_parse",
+			"math_eval", "unit_convert", "date_diff", "generate_password", "cron_explain",
+		} {
 			if !strings.Contains(body, name) {
 				t.Errorf("tools/list missing %q; body = %s", name, body)
 			}
+		}
+	})
+
+	t.Run("tools/call with an enum argument (convert json->yaml)", func(t *testing.T) {
+		code, body := rpc(t, ts.URL,
+			`{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"convert","arguments":{"data":"{\"a\":1}","source_format":"json","target_format":"yaml"}}}`)
+		if code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", code, body)
+		}
+		if strings.Contains(body, `"isError":true`) || !strings.Contains(body, "a:") {
+			t.Errorf("convert json->yaml did not produce YAML; body = %s", body)
 		}
 	})
 
