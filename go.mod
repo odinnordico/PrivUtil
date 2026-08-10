@@ -19,12 +19,22 @@ require (
 require (
 	connectrpc.com/connect v1.20.0
 	connectrpc.com/cors v0.1.0
+	github.com/modelcontextprotocol/go-sdk v1.7.0
 	github.com/pkoukk/tiktoken-go v0.1.8
 	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
 	go.abhg.dev/goldmark/mermaid v0.6.0
 )
 
-require github.com/dlclark/regexp2 v1.10.0 // indirect
+require (
+	github.com/dlclark/regexp2 v1.10.0 // indirect
+	github.com/google/jsonschema-go v0.4.3 // indirect
+	github.com/segmentio/asm v1.1.3 // indirect
+	github.com/segmentio/encoding v0.5.4 // indirect
+	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
+	golang.org/x/oauth2 v0.36.0 // indirect
+	golang.org/x/sync v0.22.0 // indirect
+	golang.org/x/time v0.15.0 // indirect
+)
 
 require (
 	github.com/JohannesKaufmann/dom v0.3.1 // indirect

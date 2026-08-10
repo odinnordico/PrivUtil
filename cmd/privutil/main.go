@@ -8,11 +8,13 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	connect "connectrpc.com/connect"
 
 	"github.com/odinnordico/privutil/internal/api"
+	"github.com/odinnordico/privutil/internal/mcp"
 	"github.com/odinnordico/privutil/internal/server"
 	protoconnect "github.com/odinnordico/privutil/proto/protoconnect"
 )
@@ -34,6 +36,7 @@ func main() {
 	host := flag.String("host", getEnvOrDefault("HOST", "127.0.0.1"), "Host to bind to (default: loopback; use 0.0.0.0 for all interfaces)")
 	allowedHosts := flag.String("allowed-hosts", getEnvOrDefault("ALLOWED_HOSTS", ""), "Comma-separated extra Host header values to accept (for LAN/custom-domain access)")
 	customDict := flag.String("custom-dict", getEnvOrDefault("CUSTOM_DICT", defaultCustomDictPath()), "Path to the spellchecker custom-dictionary file (empty disables persistence)")
+	mcpEnabled := flag.Bool("mcp", getEnvBool("MCP", true), "Serve the in-process MCP endpoint at /mcp for local LLM agents")
 	logLevel := flag.String("log-level", getEnvOrDefault("LOG_LEVEL", "info"), "Log level: debug, info (debug adds file/line to log output)")
 	version := flag.Bool("version", false, "Print version and exit")
 
@@ -47,6 +50,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "  HOST           Host to bind to (default: 127.0.0.1; use 0.0.0.0 for all interfaces)\n")
 		fmt.Fprintf(os.Stderr, "  ALLOWED_HOSTS  Extra Host header values to accept, comma-separated\n")
 		fmt.Fprintf(os.Stderr, "  CUSTOM_DICT    Path to the spellchecker custom-dictionary file\n")
+		fmt.Fprintf(os.Stderr, "  MCP            Serve the in-process MCP endpoint at /mcp (default: true)\n")
 		fmt.Fprintf(os.Stderr, "  LOG_LEVEL      Log level (default: info)\n")
 	}
 
@@ -70,7 +74,8 @@ func main() {
 	// WithReadMaxBytes bounds every RPC body (default is unlimited), capping the
 	// memory/CPU amplification available to abusive requests. The media handlers
 	// enforce their own stricter 10 MB limits on top of this.
-	connectSrv := api.NewConnectServer(api.NewServer(api.WithCustomDictPath(*customDict)))
+	apiServer := api.NewServer(api.WithCustomDictPath(*customDict))
+	connectSrv := api.NewConnectServer(apiServer)
 	rpcPath, rpcHandler := protoconnect.NewPrivUtilServiceHandler(
 		connectSrv,
 		connect.WithInterceptors(api.RecoveryInterceptor(*logLevel == "debug")),
@@ -80,6 +85,12 @@ func main() {
 	// Create and start HTTP server
 	addr := *host + ":" + *port
 	srv := server.New(addr, rpcPath, rpcHandler, buildAllowedHosts(*host, *allowedHosts))
+
+	// Expose the tools to local LLM agents over MCP, in-process (no new process).
+	if *mcpEnabled {
+		srv.SetMCPHandler(mcp.Handler(apiServer, Version))
+		log.Printf("MCP endpoint enabled at /mcp")
+	}
 
 	log.Printf("Starting PrivUtil on %s...", addr)
 	if err := srv.Start(); err != nil {
@@ -114,6 +125,15 @@ func defaultCustomDictPath() string {
 		return ""
 	}
 	return filepath.Join(dir, "privutil", "custom-dictionary.txt")
+}
+
+func getEnvBool(key string, defaultValue bool) bool {
+	if v := os.Getenv(key); v != "" {
+		if b, err := strconv.ParseBool(v); err == nil {
+			return b
+		}
+	}
+	return defaultValue
 }
 
 func getEnvOrDefault(key, defaultValue string) string {
