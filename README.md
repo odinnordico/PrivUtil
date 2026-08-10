@@ -219,13 +219,40 @@ Options:
   -host string          Host to bind to (default "127.0.0.1"; use 0.0.0.0 for all interfaces)
   -allowed-hosts string Comma-separated extra Host header values to accept (for LAN/custom-domain access)
   -custom-dict string   Path to the spellchecker custom-dictionary file (default: <user-config-dir>/privutil/custom-dictionary.txt)
+  -mcp                  Serve the in-process MCP endpoint at /mcp for local LLM agents (default true)
   -log-level string     Log level: debug or info (default "info")
   -version              Print version and exit
 ```
 
-Environment variables: `PORT`, `HOST`, `ALLOWED_HOSTS`, `CUSTOM_DICT`, `LOG_LEVEL`
+Environment variables: `PORT`, `HOST`, `ALLOWED_HOSTS`, `CUSTOM_DICT`, `MCP`, `LOG_LEVEL`
 
 > The server binds to loopback (`127.0.0.1`) by default and only accepts requests whose `Host` header is `localhost`/`127.0.0.1`/`::1` (a DNS-rebinding defense). To expose it on a LAN, set `-host 0.0.0.0` **and** add the reachable host name(s) to `ALLOWED_HOSTS`.
+
+---
+
+## 🤖 MCP Server (for AI agents)
+
+PrivUtil exposes its tools to local LLM agents over the [Model Context Protocol](https://modelcontextprotocol.io), served **in-process** by the same binary — no separate server or process is launched. It's a **Streamable HTTP** endpoint at `/mcp`, reachable at `http://localhost:8090/mcp` while PrivUtil is running.
+
+Point your agent's CLI at that URL. For example, with Claude Code:
+
+```bash
+claude mcp add --transport http privutil http://localhost:8090/mcp
+```
+
+Or in a client config that takes MCP server definitions:
+
+```json
+{
+  "mcpServers": {
+    "privutil": { "type": "http", "url": "http://localhost:8090/mcp" }
+  }
+}
+```
+
+- **No login** — access is gated by the same loopback bind + Host-header allowlist as the rest of the server; cross-origin browsers are refused (no CORS, Origin check), and the endpoint is body-size- and rate-limited.
+- **Tools exposed** (pure, offline, no side effects): `calculate_hash`, `hmac_generate`, `generate_uuid`, `base64_encode`, `base64_decode`, `url_encode`, `url_decode`, `base_convert`, `json_format`, `jwt_decode`, `slugify`, `text_diff`.
+- Disable it with `-mcp=false` / `MCP=false`.
 
 ---
 
