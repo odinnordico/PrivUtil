@@ -23,7 +23,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 	type hashOut struct {
 		Hash string `json:"hash"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "calculate_hash", Description: "Compute a cryptographic hash (md5, sha1, sha256, sha512, or bcrypt) of text."},
+	addTool(srv, &mcp.Tool{Name: "calculate_hash", Description: "Compute a cryptographic hash (md5, sha1, sha256, sha512, or bcrypt) of text."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in hashIn) (*mcp.CallToolResult, hashOut, error) {
 			resp, err := s.CalculateHash(ctx, &pb.HashRequest{Text: in.Text, Algo: in.Algo, Cost: in.Cost})
 			if err != nil {
@@ -41,7 +41,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 		Hex    string `json:"hex"`
 		Base64 string `json:"base64"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "hmac_generate", Description: "Generate an HMAC of a message with a secret key."},
+	addTool(srv, &mcp.Tool{Name: "hmac_generate", Description: "Generate an HMAC of a message with a secret key."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in hmacIn) (*mcp.CallToolResult, hmacOut, error) {
 			resp, err := s.HmacGenerate(ctx, &pb.HmacRequest{Message: in.Message, Secret: in.Secret, Algo: in.Algo})
 			if err != nil {
@@ -64,7 +64,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 	type uuidOut struct {
 		UUIDs []string `json:"uuids"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "generate_uuid", Description: "Generate one or more UUIDs (versions 1-8)."},
+	addTool(srv, &mcp.Tool{Name: "generate_uuid", Description: "Generate one or more UUIDs (versions 1-8)."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in uuidIn) (*mcp.CallToolResult, uuidOut, error) {
 			resp, err := s.GenerateUuid(ctx, &pb.UuidRequest{
 				Version: in.Version, Count: in.Count, Hyphen: in.Hyphen, Uppercase: in.Uppercase, Namespace: in.Namespace,
@@ -83,7 +83,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 	type b64EncOut struct {
 		Encoded string `json:"encoded"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "base64_encode", Description: "Base64-encode UTF-8 text (standard encoding)."},
+	addTool(srv, &mcp.Tool{Name: "base64_encode", Description: "Base64-encode UTF-8 text (standard encoding)."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in textIn) (*mcp.CallToolResult, b64EncOut, error) {
 			resp, err := s.Base64Encode(ctx, &pb.Base64Request{Text: in.Text})
 			if err != nil {
@@ -96,7 +96,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 		Text     string `json:"text" jsonschema:"the decoded bytes as text (may be garbled if binary)"`
 		MimeType string `json:"mime_type" jsonschema:"detected content type of the decoded data"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "base64_decode", Description: "Decode a Base64 string (accepts standard/URL-safe, padded or not) and report the detected content type."},
+	addTool(srv, &mcp.Tool{Name: "base64_decode", Description: "Decode a Base64 string (accepts standard/URL-safe, padded or not) and report the detected content type."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in textIn) (*mcp.CallToolResult, b64DecOut, error) {
 			resp, err := s.Base64Decode(ctx, &pb.Base64Request{Text: in.Text})
 			if err != nil {
@@ -111,7 +111,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 	type encOut struct {
 		Result string `json:"result"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "url_encode", Description: "URL/percent-encode text."},
+	addTool(srv, &mcp.Tool{Name: "url_encode", Description: "URL/percent-encode text."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in textIn) (*mcp.CallToolResult, encOut, error) {
 			resp, err := s.UrlEncode(ctx, &pb.TextRequest{Text: in.Text})
 			if err != nil {
@@ -119,7 +119,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 			}
 			return nil, encOut{Result: resp.Text}, nil
 		})
-	mcp.AddTool(srv, &mcp.Tool{Name: "url_decode", Description: "Decode URL/percent-encoded text."},
+	addTool(srv, &mcp.Tool{Name: "url_decode", Description: "Decode URL/percent-encoded text."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in textIn) (*mcp.CallToolResult, encOut, error) {
 			resp, err := s.UrlDecode(ctx, &pb.TextRequest{Text: in.Text})
 			if err != nil {
@@ -139,7 +139,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 		Octal   string `json:"octal"`
 		Base64  string `json:"base64"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "base_convert", Description: "Convert a number between bases (2, 8, 10, 16, 64)."},
+	addTool(srv, &mcp.Tool{Name: "base_convert", Description: "Convert a number between bases (2, 8, 10, 16, 64)."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in baseConvIn) (*mcp.CallToolResult, baseConvOut, error) {
 			resp, err := s.BaseConvert(ctx, &pb.BaseConvertRequest{Input: in.Input, SourceBase: in.SourceBase})
 			if err != nil {
@@ -160,7 +160,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 	type jsonOut struct {
 		Formatted string `json:"formatted"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "json_format", Description: "Pretty-print, minify, or sort-keys a JSON document."},
+	addTool(srv, &mcp.Tool{Name: "json_format", Description: "Pretty-print, minify, or sort-keys a JSON document."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in jsonIn) (*mcp.CallToolResult, jsonOut, error) {
 			resp, err := s.JsonFormat(ctx, &pb.JsonFormatRequest{Text: in.Text, Indent: in.Indent, SortKeys: in.SortKeys})
 			if err != nil {
@@ -179,7 +179,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 		Header  string `json:"header"`
 		Payload string `json:"payload"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "jwt_decode", Description: "Decode a JWT's header and payload (signature is NOT verified)."},
+	addTool(srv, &mcp.Tool{Name: "jwt_decode", Description: "Decode a JWT's header and payload (signature is NOT verified)."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in jwtIn) (*mcp.CallToolResult, jwtOut, error) {
 			resp, err := s.JwtDecode(ctx, &pb.JwtRequest{Token: in.Token})
 			if err != nil {
@@ -200,7 +200,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 	type slugOut struct {
 		Slug string `json:"slug"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "slugify", Description: "Turn text into a URL-safe slug."},
+	addTool(srv, &mcp.Tool{Name: "slugify", Description: "Turn text into a URL-safe slug."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in slugIn) (*mcp.CallToolResult, slugOut, error) {
 			resp, err := s.Slugify(ctx, &pb.SlugifyRequest{Text: in.Text, Separator: in.Separator, Uppercase: in.Uppercase, MaxLen: in.MaxLen})
 			if err != nil {
@@ -219,7 +219,7 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 	type diffOut struct {
 		DiffHTML string `json:"diff_html" jsonschema:"inline diff as HTML (ins/del/span spans)"`
 	}
-	mcp.AddTool(srv, &mcp.Tool{Name: "text_diff", Description: "Compute an inline (unified) diff of two texts, returned as HTML."},
+	addTool(srv, &mcp.Tool{Name: "text_diff", Description: "Compute an inline (unified) diff of two texts, returned as HTML."},
 		func(ctx context.Context, _ *mcp.CallToolRequest, in diffIn) (*mcp.CallToolResult, diffOut, error) {
 			resp, err := s.Diff(ctx, &pb.DiffRequest{Text1: in.Text1, Text2: in.Text2})
 			if err != nil {

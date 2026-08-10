@@ -11,11 +11,12 @@ import (
 )
 
 // structured converts a protobuf response into a generic JSON object for use as
-// an MCP tool's structured output. The in-band "error" field is dropped (errors
-// are surfaced via errResult before this is called), so a successful result
-// carries only data.
+// an MCP tool's structured output. EmitUnpopulated keeps false/zero values so a
+// negative result (e.g. valid:false) is not silently dropped. The in-band
+// "error" field is removed (errors are surfaced via errResult before this is
+// called); tools whose "error" field is meaningful re-add it themselves.
 func structured(m proto.Message) (map[string]any, error) {
-	b, err := protojson.Marshal(m)
+	b, err := protojson.MarshalOptions{EmitUnpopulated: true}.Marshal(m)
 	if err != nil {
 		return nil, err
 	}
@@ -27,20 +28,26 @@ func structured(m proto.Message) (map[string]any, error) {
 	return out, nil
 }
 
-// String-to-enum helpers (case-insensitive). Unknown values map to the zero enum
-// value, which the underlying handlers treat as their documented default.
-func dataFormat(s string) pb.DataFormat {
-	return pb.DataFormat(pb.DataFormat_value[strings.ToUpper(strings.TrimSpace(s))])
+// String-to-enum helpers (case-insensitive). The bool reports whether the value
+// was recognized, so tools can reject a typo instead of silently using the zero
+// enum (which some handlers treat as a default, others as the first action).
+func dataFormat(s string) (pb.DataFormat, bool) {
+	v, ok := pb.DataFormat_value[strings.ToUpper(strings.TrimSpace(s))]
+	return pb.DataFormat(v), ok
 }
-func textAction(s string) pb.TextAction {
-	return pb.TextAction(pb.TextAction_value[strings.ToUpper(strings.TrimSpace(s))])
+func textAction(s string) (pb.TextAction, bool) {
+	v, ok := pb.TextAction_value[strings.ToUpper(strings.TrimSpace(s))]
+	return pb.TextAction(v), ok
 }
-func listAction(s string) pb.ListAction {
-	return pb.ListAction(pb.ListAction_value["LIST_"+strings.ToUpper(strings.TrimSpace(s))])
+func listAction(s string) (pb.ListAction, bool) {
+	v, ok := pb.ListAction_value["LIST_"+strings.ToUpper(strings.TrimSpace(s))]
+	return pb.ListAction(v), ok
 }
-func percentMode(s string) pb.PercentMode {
-	return pb.PercentMode(pb.PercentMode_value["PCT_"+strings.ToUpper(strings.TrimSpace(s))])
+func percentMode(s string) (pb.PercentMode, bool) {
+	v, ok := pb.PercentMode_value["PCT_"+strings.ToUpper(strings.TrimSpace(s))]
+	return pb.PercentMode(v), ok
 }
-func unitCategory(s string) pb.UnitCategory {
-	return pb.UnitCategory(pb.UnitCategory_value["UNIT_"+strings.ToUpper(strings.TrimSpace(s))])
+func unitCategory(s string) (pb.UnitCategory, bool) {
+	v, ok := pb.UnitCategory_value["UNIT_"+strings.ToUpper(strings.TrimSpace(s))]
+	return pb.UnitCategory(v), ok
 }
