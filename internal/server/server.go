@@ -29,6 +29,26 @@ type Server struct {
 	rpcPath      string
 	rpcHandler   http.Handler
 	allowedHosts map[string]struct{}
+	mcpHandler   http.Handler // optional; mounted at /mcp when set
+}
+
+// SetMCPHandler mounts an MCP handler at /mcp (in-process). It is served behind
+// the same Host-header allowlist and security middleware as everything else,
+// plus an Origin guard, and without any permissive CORS.
+func (s *Server) SetMCPHandler(h http.Handler) { s.mcpHandler = h }
+
+// mcpGuard rejects cross-origin browser requests to the MCP endpoint. Local/CLI
+// agents send no Origin header and pass through; a browser page from another
+// origin (whose Origin is not allowlisted) is refused. Combined with the absence
+// of CORS headers on /mcp, this blocks cross-origin browser access entirely.
+func (s *Server) mcpGuard(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if o := r.Header.Get("Origin"); o != "" && !s.allowedOrigin(o) {
+			http.Error(w, "forbidden: origin not allowed", http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 // New builds an HTTP server that routes connect RPC requests under rpcPath to
@@ -98,6 +118,16 @@ func (s *Server) newHandler(distFS fs.FS) http.Handler {
 
 	mux := http.NewServeMux()
 	mux.Handle(s.rpcPath, corsMiddleware.Handler(s.rpcHandler))
+
+	// In-process MCP endpoint (no CORS: cross-origin browsers are blocked, local
+	// agents reach it directly). The outer securityHeaders/checkHost middleware
+	// still applies, and mcpGuard adds an Origin check.
+	if s.mcpHandler != nil {
+		guarded := s.mcpGuard(s.mcpHandler)
+		mux.Handle("/mcp", guarded)
+		mux.Handle("/mcp/", guarded)
+	}
+
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		path := strings.TrimPrefix(r.URL.Path, "/")
 		if path == "" {
