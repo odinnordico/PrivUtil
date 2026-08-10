@@ -35,6 +35,9 @@ const (
 const (
 	// PrivUtilServiceDiffProcedure is the fully-qualified name of the PrivUtilService's Diff RPC.
 	PrivUtilServiceDiffProcedure = "/privutil.PrivUtilService/Diff"
+	// PrivUtilServiceDiffFilesProcedure is the fully-qualified name of the PrivUtilService's DiffFiles
+	// RPC.
+	PrivUtilServiceDiffFilesProcedure = "/privutil.PrivUtilService/DiffFiles"
 	// PrivUtilServiceBase64EncodeProcedure is the fully-qualified name of the PrivUtilService's
 	// Base64Encode RPC.
 	PrivUtilServiceBase64EncodeProcedure = "/privutil.PrivUtilService/Base64Encode"
@@ -264,6 +267,7 @@ const (
 // PrivUtilServiceClient is a client for the privutil.PrivUtilService service.
 type PrivUtilServiceClient interface {
 	Diff(context.Context, *connect.Request[proto.DiffRequest]) (*connect.Response[proto.DiffResponse], error)
+	DiffFiles(context.Context, *connect.Request[proto.DiffFilesRequest]) (*connect.Response[proto.DiffFilesResponse], error)
 	Base64Encode(context.Context, *connect.Request[proto.Base64Request]) (*connect.Response[proto.Base64Response], error)
 	Base64Decode(context.Context, *connect.Request[proto.Base64Request]) (*connect.Response[proto.Base64Response], error)
 	JsonFormat(context.Context, *connect.Request[proto.JsonFormatRequest]) (*connect.Response[proto.JsonFormatResponse], error)
@@ -357,6 +361,12 @@ func NewPrivUtilServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			httpClient,
 			baseURL+PrivUtilServiceDiffProcedure,
 			connect.WithSchema(privUtilServiceMethods.ByName("Diff")),
+			connect.WithClientOptions(opts...),
+		),
+		diffFiles: connect.NewClient[proto.DiffFilesRequest, proto.DiffFilesResponse](
+			httpClient,
+			baseURL+PrivUtilServiceDiffFilesProcedure,
+			connect.WithSchema(privUtilServiceMethods.ByName("DiffFiles")),
 			connect.WithClientOptions(opts...),
 		),
 		base64Encode: connect.NewClient[proto.Base64Request, proto.Base64Response](
@@ -821,6 +831,7 @@ func NewPrivUtilServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 // privUtilServiceClient implements PrivUtilServiceClient.
 type privUtilServiceClient struct {
 	diff               *connect.Client[proto.DiffRequest, proto.DiffResponse]
+	diffFiles          *connect.Client[proto.DiffFilesRequest, proto.DiffFilesResponse]
 	base64Encode       *connect.Client[proto.Base64Request, proto.Base64Response]
 	base64Decode       *connect.Client[proto.Base64Request, proto.Base64Response]
 	jsonFormat         *connect.Client[proto.JsonFormatRequest, proto.JsonFormatResponse]
@@ -902,6 +913,11 @@ type privUtilServiceClient struct {
 // Diff calls privutil.PrivUtilService.Diff.
 func (c *privUtilServiceClient) Diff(ctx context.Context, req *connect.Request[proto.DiffRequest]) (*connect.Response[proto.DiffResponse], error) {
 	return c.diff.CallUnary(ctx, req)
+}
+
+// DiffFiles calls privutil.PrivUtilService.DiffFiles.
+func (c *privUtilServiceClient) DiffFiles(ctx context.Context, req *connect.Request[proto.DiffFilesRequest]) (*connect.Response[proto.DiffFilesResponse], error) {
+	return c.diffFiles.CallUnary(ctx, req)
 }
 
 // Base64Encode calls privutil.PrivUtilService.Base64Encode.
@@ -1287,6 +1303,7 @@ func (c *privUtilServiceClient) RemoveCustomWord(ctx context.Context, req *conne
 // PrivUtilServiceHandler is an implementation of the privutil.PrivUtilService service.
 type PrivUtilServiceHandler interface {
 	Diff(context.Context, *connect.Request[proto.DiffRequest]) (*connect.Response[proto.DiffResponse], error)
+	DiffFiles(context.Context, *connect.Request[proto.DiffFilesRequest]) (*connect.Response[proto.DiffFilesResponse], error)
 	Base64Encode(context.Context, *connect.Request[proto.Base64Request]) (*connect.Response[proto.Base64Response], error)
 	Base64Decode(context.Context, *connect.Request[proto.Base64Request]) (*connect.Response[proto.Base64Response], error)
 	JsonFormat(context.Context, *connect.Request[proto.JsonFormatRequest]) (*connect.Response[proto.JsonFormatResponse], error)
@@ -1376,6 +1393,12 @@ func NewPrivUtilServiceHandler(svc PrivUtilServiceHandler, opts ...connect.Handl
 		PrivUtilServiceDiffProcedure,
 		svc.Diff,
 		connect.WithSchema(privUtilServiceMethods.ByName("Diff")),
+		connect.WithHandlerOptions(opts...),
+	)
+	privUtilServiceDiffFilesHandler := connect.NewUnaryHandler(
+		PrivUtilServiceDiffFilesProcedure,
+		svc.DiffFiles,
+		connect.WithSchema(privUtilServiceMethods.ByName("DiffFiles")),
 		connect.WithHandlerOptions(opts...),
 	)
 	privUtilServiceBase64EncodeHandler := connect.NewUnaryHandler(
@@ -1838,6 +1861,8 @@ func NewPrivUtilServiceHandler(svc PrivUtilServiceHandler, opts ...connect.Handl
 		switch r.URL.Path {
 		case PrivUtilServiceDiffProcedure:
 			privUtilServiceDiffHandler.ServeHTTP(w, r)
+		case PrivUtilServiceDiffFilesProcedure:
+			privUtilServiceDiffFilesHandler.ServeHTTP(w, r)
 		case PrivUtilServiceBase64EncodeProcedure:
 			privUtilServiceBase64EncodeHandler.ServeHTTP(w, r)
 		case PrivUtilServiceBase64DecodeProcedure:
@@ -2001,6 +2026,10 @@ type UnimplementedPrivUtilServiceHandler struct{}
 
 func (UnimplementedPrivUtilServiceHandler) Diff(context.Context, *connect.Request[proto.DiffRequest]) (*connect.Response[proto.DiffResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("privutil.PrivUtilService.Diff is not implemented"))
+}
+
+func (UnimplementedPrivUtilServiceHandler) DiffFiles(context.Context, *connect.Request[proto.DiffFilesRequest]) (*connect.Response[proto.DiffFilesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("privutil.PrivUtilService.DiffFiles is not implemented"))
 }
 
 func (UnimplementedPrivUtilServiceHandler) Base64Encode(context.Context, *connect.Request[proto.Base64Request]) (*connect.Response[proto.Base64Response], error) {
