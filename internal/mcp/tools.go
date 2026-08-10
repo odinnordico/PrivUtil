@@ -227,4 +227,12 @@ func registerTools(srv *mcp.Server, s *api.Server) {
 			}
 			return nil, diffOut{DiffHTML: resp.DiffHtml}, nil
 		})
+
+	registerDataTools(srv, s)
+	registerTextTools(srv, s)
+	registerEncodingTools(srv, s)
+	registerNetworkTools(srv, s)
+	registerDateMathTools(srv, s)
+	registerGeneratorTools(srv, s)
+	registerMiscTools(srv, s)
 }
