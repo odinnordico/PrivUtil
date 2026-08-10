@@ -4,6 +4,8 @@
 package mcp
 
 import (
+	"context"
+	"log"
 	"net/http"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -69,4 +71,26 @@ func errResult(msg string) *mcp.CallToolResult {
 		IsError: true,
 		Content: []mcp.Content{&mcp.TextContent{Text: msg}},
 	}
+}
+
+// addTool registers a tool whose handler is wrapped with panic recovery. The MCP
+// path does not go through the Connect RecoveryInterceptor, and the SDK runs each
+// tool in a goroutine with no recover of its own, so an unhandled panic in any
+// handler would otherwise crash the whole process. A recovered panic becomes an
+// error result instead.
+func addTool[In, Out any](srv *mcp.Server, t *mcp.Tool, h func(context.Context, *mcp.CallToolRequest, In) (*mcp.CallToolResult, Out, error)) {
+	mcp.AddTool(srv, t, func(ctx context.Context, req *mcp.CallToolRequest, in In) (res *mcp.CallToolResult, out Out, err error) {
+		defer func() {
+			if r := recover(); r != nil {
+				name := ""
+				if req != nil && req.Params != nil {
+					name = req.Params.Name
+				}
+				log.Printf("mcp: recovered from panic in tool %q", name)
+				var zero Out
+				res, out, err = errResult("internal error"), zero, nil
+			}
+		}()
+		return h(ctx, req, in)
+	})
 }

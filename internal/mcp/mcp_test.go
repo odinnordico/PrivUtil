@@ -1,11 +1,14 @@
 package mcp
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"github.com/odinnordico/privutil/internal/api"
 )
@@ -84,4 +87,43 @@ func TestMCPHandler(t *testing.T) {
 			t.Errorf("expected an error result for invalid JSON; body = %s", body)
 		}
 	})
+
+	t.Run("false/zero output is not dropped (otp_validate)", func(t *testing.T) {
+		// A valid base32 secret with a wrong code → valid:false must be present,
+		// not silently omitted.
+		code, body := rpc(t, ts.URL,
+			`{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"otp_validate","arguments":{"secret":"JBSWY3DPEHPK3PXP","code":"000000"}}}`)
+		if code != http.StatusOK {
+			t.Fatalf("status = %d, body = %s", code, body)
+		}
+		if !strings.Contains(body, `"valid":false`) {
+			t.Errorf("expected valid:false in output; body = %s", body)
+		}
+	})
+}
+
+// TestPanicRecovery verifies the addTool wrapper turns a handler panic into an
+// error result instead of crashing the process (the MCP path doesn't go through
+// the Connect RecoveryInterceptor).
+func TestPanicRecovery(t *testing.T) {
+	srv := mcpsdk.NewServer(&mcpsdk.Implementation{Name: "test", Version: "test"}, nil)
+	addTool(srv, &mcpsdk.Tool{Name: "boom", Description: "always panics"},
+		func(_ context.Context, _ *mcpsdk.CallToolRequest, _ struct{}) (*mcpsdk.CallToolResult, map[string]any, error) {
+			panic("boom")
+		})
+	h := mcpsdk.NewStreamableHTTPHandler(
+		func(*http.Request) *mcpsdk.Server { return srv },
+		&mcpsdk.StreamableHTTPOptions{Stateless: true, JSONResponse: true},
+	)
+	ts := httptest.NewServer(h)
+	defer ts.Close()
+
+	code, body := rpc(t, ts.URL,
+		`{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"boom","arguments":{}}}`)
+	if code != http.StatusOK {
+		t.Fatalf("status = %d, body = %s", code, body)
+	}
+	if !strings.Contains(body, "isError") {
+		t.Errorf("panic should have become an error result; body = %s", body)
+	}
 }
