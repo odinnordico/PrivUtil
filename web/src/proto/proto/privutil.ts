@@ -326,6 +326,28 @@ export interface DiffResponse {
   diffHtml: string;
 }
 
+export interface DiffFilesRequest {
+  file1: Uint8Array;
+  file2: Uint8Array;
+}
+
+export interface DiffFilesResponse {
+  /** both files are readable text → diff_html is populated */
+  isText: boolean;
+  /** inline diff HTML (only when is_text) */
+  diffHtml: string;
+  /** SHA-256 hex of file1 */
+  checksum1: string;
+  /** SHA-256 hex of file2 */
+  checksum2: string;
+  checksumsMatch: boolean;
+  /** e.g. "SHA-256" */
+  checksumAlgo: string;
+  /** note shown for the binary/checksum path */
+  message: string;
+  error: string;
+}
+
 export interface Base64Request {
   text: string;
   /** binary input for file encode */
@@ -1561,6 +1583,279 @@ export const DiffResponse: MessageFns<DiffResponse> = {
   fromPartial<I extends Exact<DeepPartial<DiffResponse>, I>>(object: I): DiffResponse {
     const message = createBaseDiffResponse();
     message.diffHtml = object.diffHtml ?? "";
+    return message;
+  },
+};
+
+function createBaseDiffFilesRequest(): DiffFilesRequest {
+  return { file1: new Uint8Array(0), file2: new Uint8Array(0) };
+}
+
+export const DiffFilesRequest: MessageFns<DiffFilesRequest> = {
+  encode(message: DiffFilesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.file1.length !== 0) {
+      writer.uint32(10).bytes(message.file1);
+    }
+    if (message.file2.length !== 0) {
+      writer.uint32(18).bytes(message.file2);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DiffFilesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDiffFilesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.file1 = reader.bytes();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.file2 = reader.bytes();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DiffFilesRequest {
+    return {
+      file1: isSet(object.file1) ? bytesFromBase64(object.file1) : new Uint8Array(0),
+      file2: isSet(object.file2) ? bytesFromBase64(object.file2) : new Uint8Array(0),
+    };
+  },
+
+  toJSON(message: DiffFilesRequest): unknown {
+    const obj: any = {};
+    if (message.file1.length !== 0) {
+      obj.file1 = base64FromBytes(message.file1);
+    }
+    if (message.file2.length !== 0) {
+      obj.file2 = base64FromBytes(message.file2);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DiffFilesRequest>, I>>(base?: I): DiffFilesRequest {
+    return DiffFilesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DiffFilesRequest>, I>>(object: I): DiffFilesRequest {
+    const message = createBaseDiffFilesRequest();
+    message.file1 = object.file1 ?? new Uint8Array(0);
+    message.file2 = object.file2 ?? new Uint8Array(0);
+    return message;
+  },
+};
+
+function createBaseDiffFilesResponse(): DiffFilesResponse {
+  return {
+    isText: false,
+    diffHtml: "",
+    checksum1: "",
+    checksum2: "",
+    checksumsMatch: false,
+    checksumAlgo: "",
+    message: "",
+    error: "",
+  };
+}
+
+export const DiffFilesResponse: MessageFns<DiffFilesResponse> = {
+  encode(message: DiffFilesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.isText !== false) {
+      writer.uint32(8).bool(message.isText);
+    }
+    if (message.diffHtml !== "") {
+      writer.uint32(18).string(message.diffHtml);
+    }
+    if (message.checksum1 !== "") {
+      writer.uint32(26).string(message.checksum1);
+    }
+    if (message.checksum2 !== "") {
+      writer.uint32(34).string(message.checksum2);
+    }
+    if (message.checksumsMatch !== false) {
+      writer.uint32(40).bool(message.checksumsMatch);
+    }
+    if (message.checksumAlgo !== "") {
+      writer.uint32(50).string(message.checksumAlgo);
+    }
+    if (message.message !== "") {
+      writer.uint32(58).string(message.message);
+    }
+    if (message.error !== "") {
+      writer.uint32(66).string(message.error);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DiffFilesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDiffFilesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.isText = reader.bool();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.diffHtml = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.checksum1 = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.checksum2 = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.checksumsMatch = reader.bool();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.checksumAlgo = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.error = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DiffFilesResponse {
+    return {
+      isText: isSet(object.isText)
+        ? globalThis.Boolean(object.isText)
+        : isSet(object.is_text)
+        ? globalThis.Boolean(object.is_text)
+        : false,
+      diffHtml: isSet(object.diffHtml)
+        ? globalThis.String(object.diffHtml)
+        : isSet(object.diff_html)
+        ? globalThis.String(object.diff_html)
+        : "",
+      checksum1: isSet(object.checksum1) ? globalThis.String(object.checksum1) : "",
+      checksum2: isSet(object.checksum2) ? globalThis.String(object.checksum2) : "",
+      checksumsMatch: isSet(object.checksumsMatch)
+        ? globalThis.Boolean(object.checksumsMatch)
+        : isSet(object.checksums_match)
+        ? globalThis.Boolean(object.checksums_match)
+        : false,
+      checksumAlgo: isSet(object.checksumAlgo)
+        ? globalThis.String(object.checksumAlgo)
+        : isSet(object.checksum_algo)
+        ? globalThis.String(object.checksum_algo)
+        : "",
+      message: isSet(object.message) ? globalThis.String(object.message) : "",
+      error: isSet(object.error) ? globalThis.String(object.error) : "",
+    };
+  },
+
+  toJSON(message: DiffFilesResponse): unknown {
+    const obj: any = {};
+    if (message.isText !== false) {
+      obj.isText = message.isText;
+    }
+    if (message.diffHtml !== "") {
+      obj.diffHtml = message.diffHtml;
+    }
+    if (message.checksum1 !== "") {
+      obj.checksum1 = message.checksum1;
+    }
+    if (message.checksum2 !== "") {
+      obj.checksum2 = message.checksum2;
+    }
+    if (message.checksumsMatch !== false) {
+      obj.checksumsMatch = message.checksumsMatch;
+    }
+    if (message.checksumAlgo !== "") {
+      obj.checksumAlgo = message.checksumAlgo;
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
+    if (message.error !== "") {
+      obj.error = message.error;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DiffFilesResponse>, I>>(base?: I): DiffFilesResponse {
+    return DiffFilesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DiffFilesResponse>, I>>(object: I): DiffFilesResponse {
+    const message = createBaseDiffFilesResponse();
+    message.isText = object.isText ?? false;
+    message.diffHtml = object.diffHtml ?? "";
+    message.checksum1 = object.checksum1 ?? "";
+    message.checksum2 = object.checksum2 ?? "";
+    message.checksumsMatch = object.checksumsMatch ?? false;
+    message.checksumAlgo = object.checksumAlgo ?? "";
+    message.message = object.message ?? "";
+    message.error = object.error ?? "";
     return message;
   },
 };
@@ -16895,6 +17190,14 @@ export const PrivUtilServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    diffFiles: {
+      name: "DiffFiles",
+      requestType: DiffFilesRequest as typeof DiffFilesRequest,
+      requestStream: false,
+      responseType: DiffFilesResponse as typeof DiffFilesResponse,
+      responseStream: false,
+      options: {},
+    },
     base64Encode: {
       name: "Base64Encode",
       requestType: Base64Request as typeof Base64Request,
@@ -17508,6 +17811,7 @@ export const PrivUtilServiceDefinition = {
 
 export interface PrivUtilServiceImplementation<CallContextExt = {}> {
   diff(request: DiffRequest, context: CallContext & CallContextExt): Promise<DeepPartial<DiffResponse>>;
+  diffFiles(request: DiffFilesRequest, context: CallContext & CallContextExt): Promise<DeepPartial<DiffFilesResponse>>;
   base64Encode(request: Base64Request, context: CallContext & CallContextExt): Promise<DeepPartial<Base64Response>>;
   base64Decode(request: Base64Request, context: CallContext & CallContextExt): Promise<DeepPartial<Base64Response>>;
   jsonFormat(
@@ -17690,6 +17994,7 @@ export interface PrivUtilServiceImplementation<CallContextExt = {}> {
 
 export interface PrivUtilServiceClient<CallOptionsExt = {}> {
   diff(request: DeepPartial<DiffRequest>, options?: CallOptions & CallOptionsExt): Promise<DiffResponse>;
+  diffFiles(request: DeepPartial<DiffFilesRequest>, options?: CallOptions & CallOptionsExt): Promise<DiffFilesResponse>;
   base64Encode(request: DeepPartial<Base64Request>, options?: CallOptions & CallOptionsExt): Promise<Base64Response>;
   base64Decode(request: DeepPartial<Base64Request>, options?: CallOptions & CallOptionsExt): Promise<Base64Response>;
   jsonFormat(

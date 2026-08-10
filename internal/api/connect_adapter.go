@@ -47,6 +47,14 @@ func (a *ConnectServer) Diff(ctx context.Context, r *connect.Request[pb.DiffRequ
 	return connect.NewResponse(resp), nil
 }
 
+func (a *ConnectServer) DiffFiles(ctx context.Context, r *connect.Request[pb.DiffFilesRequest]) (*connect.Response[pb.DiffFilesResponse], error) {
+	resp, err := a.s.DiffFiles(ctx, r.Msg)
+	if err != nil {
+		return nil, toConnectError(err)
+	}
+	return connect.NewResponse(resp), nil
+}
+
 func (a *ConnectServer) Base64Encode(ctx context.Context, r *connect.Request[pb.Base64Request]) (*connect.Response[pb.Base64Response], error) {
 	resp, err := a.s.Base64Encode(ctx, r.Msg)
 	if err != nil {

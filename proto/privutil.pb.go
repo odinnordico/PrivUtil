@@ -416,6 +416,158 @@ func (x *DiffResponse) GetDiffHtml() string {
 	return ""
 }
 
+type DiffFilesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	File1         []byte                 `protobuf:"bytes,1,opt,name=file1,proto3" json:"file1,omitempty"`
+	File2         []byte                 `protobuf:"bytes,2,opt,name=file2,proto3" json:"file2,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DiffFilesRequest) Reset() {
+	*x = DiffFilesRequest{}
+	mi := &file_proto_privutil_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DiffFilesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DiffFilesRequest) ProtoMessage() {}
+
+func (x *DiffFilesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_privutil_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DiffFilesRequest.ProtoReflect.Descriptor instead.
+func (*DiffFilesRequest) Descriptor() ([]byte, []int) {
+	return file_proto_privutil_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DiffFilesRequest) GetFile1() []byte {
+	if x != nil {
+		return x.File1
+	}
+	return nil
+}
+
+func (x *DiffFilesRequest) GetFile2() []byte {
+	if x != nil {
+		return x.File2
+	}
+	return nil
+}
+
+type DiffFilesResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	IsText         bool                   `protobuf:"varint,1,opt,name=is_text,json=isText,proto3" json:"is_text,omitempty"`      // both files are readable text → diff_html is populated
+	DiffHtml       string                 `protobuf:"bytes,2,opt,name=diff_html,json=diffHtml,proto3" json:"diff_html,omitempty"` // inline diff HTML (only when is_text)
+	Checksum1      string                 `protobuf:"bytes,3,opt,name=checksum1,proto3" json:"checksum1,omitempty"`               // SHA-256 hex of file1
+	Checksum2      string                 `protobuf:"bytes,4,opt,name=checksum2,proto3" json:"checksum2,omitempty"`               // SHA-256 hex of file2
+	ChecksumsMatch bool                   `protobuf:"varint,5,opt,name=checksums_match,json=checksumsMatch,proto3" json:"checksums_match,omitempty"`
+	ChecksumAlgo   string                 `protobuf:"bytes,6,opt,name=checksum_algo,json=checksumAlgo,proto3" json:"checksum_algo,omitempty"` // e.g. "SHA-256"
+	Message        string                 `protobuf:"bytes,7,opt,name=message,proto3" json:"message,omitempty"`                               // note shown for the binary/checksum path
+	Error          string                 `protobuf:"bytes,8,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *DiffFilesResponse) Reset() {
+	*x = DiffFilesResponse{}
+	mi := &file_proto_privutil_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DiffFilesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DiffFilesResponse) ProtoMessage() {}
+
+func (x *DiffFilesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_privutil_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DiffFilesResponse.ProtoReflect.Descriptor instead.
+func (*DiffFilesResponse) Descriptor() ([]byte, []int) {
+	return file_proto_privutil_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DiffFilesResponse) GetIsText() bool {
+	if x != nil {
+		return x.IsText
+	}
+	return false
+}
+
+func (x *DiffFilesResponse) GetDiffHtml() string {
+	if x != nil {
+		return x.DiffHtml
+	}
+	return ""
+}
+
+func (x *DiffFilesResponse) GetChecksum1() string {
+	if x != nil {
+		return x.Checksum1
+	}
+	return ""
+}
+
+func (x *DiffFilesResponse) GetChecksum2() string {
+	if x != nil {
+		return x.Checksum2
+	}
+	return ""
+}
+
+func (x *DiffFilesResponse) GetChecksumsMatch() bool {
+	if x != nil {
+		return x.ChecksumsMatch
+	}
+	return false
+}
+
+func (x *DiffFilesResponse) GetChecksumAlgo() string {
+	if x != nil {
+		return x.ChecksumAlgo
+	}
+	return ""
+}
+
+func (x *DiffFilesResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *DiffFilesResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 type Base64Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Text          string                 `protobuf:"bytes,1,opt,name=text,proto3" json:"text,omitempty"`
@@ -426,7 +578,7 @@ type Base64Request struct {
 
 func (x *Base64Request) Reset() {
 	*x = Base64Request{}
-	mi := &file_proto_privutil_proto_msgTypes[2]
+	mi := &file_proto_privutil_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -438,7 +590,7 @@ func (x *Base64Request) String() string {
 func (*Base64Request) ProtoMessage() {}
 
 func (x *Base64Request) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[2]
+	mi := &file_proto_privutil_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -451,7 +603,7 @@ func (x *Base64Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Base64Request.ProtoReflect.Descriptor instead.
 func (*Base64Request) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{2}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Base64Request) GetText() string {
@@ -480,7 +632,7 @@ type Base64Response struct {
 
 func (x *Base64Response) Reset() {
 	*x = Base64Response{}
-	mi := &file_proto_privutil_proto_msgTypes[3]
+	mi := &file_proto_privutil_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -492,7 +644,7 @@ func (x *Base64Response) String() string {
 func (*Base64Response) ProtoMessage() {}
 
 func (x *Base64Response) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[3]
+	mi := &file_proto_privutil_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -505,7 +657,7 @@ func (x *Base64Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Base64Response.ProtoReflect.Descriptor instead.
 func (*Base64Response) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{3}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Base64Response) GetText() string {
@@ -547,7 +699,7 @@ type JsonFormatRequest struct {
 
 func (x *JsonFormatRequest) Reset() {
 	*x = JsonFormatRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[4]
+	mi := &file_proto_privutil_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -559,7 +711,7 @@ func (x *JsonFormatRequest) String() string {
 func (*JsonFormatRequest) ProtoMessage() {}
 
 func (x *JsonFormatRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[4]
+	mi := &file_proto_privutil_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -572,7 +724,7 @@ func (x *JsonFormatRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JsonFormatRequest.ProtoReflect.Descriptor instead.
 func (*JsonFormatRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{4}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *JsonFormatRequest) GetText() string {
@@ -606,7 +758,7 @@ type JsonFormatResponse struct {
 
 func (x *JsonFormatResponse) Reset() {
 	*x = JsonFormatResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[5]
+	mi := &file_proto_privutil_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -618,7 +770,7 @@ func (x *JsonFormatResponse) String() string {
 func (*JsonFormatResponse) ProtoMessage() {}
 
 func (x *JsonFormatResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[5]
+	mi := &file_proto_privutil_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -631,7 +783,7 @@ func (x *JsonFormatResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JsonFormatResponse.ProtoReflect.Descriptor instead.
 func (*JsonFormatResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{5}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *JsonFormatResponse) GetText() string {
@@ -661,7 +813,7 @@ type ConvertRequest struct {
 
 func (x *ConvertRequest) Reset() {
 	*x = ConvertRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[6]
+	mi := &file_proto_privutil_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -673,7 +825,7 @@ func (x *ConvertRequest) String() string {
 func (*ConvertRequest) ProtoMessage() {}
 
 func (x *ConvertRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[6]
+	mi := &file_proto_privutil_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -686,7 +838,7 @@ func (x *ConvertRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConvertRequest.ProtoReflect.Descriptor instead.
 func (*ConvertRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{6}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ConvertRequest) GetData() string {
@@ -734,7 +886,7 @@ type ConvertResponse struct {
 
 func (x *ConvertResponse) Reset() {
 	*x = ConvertResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[7]
+	mi := &file_proto_privutil_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -746,7 +898,7 @@ func (x *ConvertResponse) String() string {
 func (*ConvertResponse) ProtoMessage() {}
 
 func (x *ConvertResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[7]
+	mi := &file_proto_privutil_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -759,7 +911,7 @@ func (x *ConvertResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConvertResponse.ProtoReflect.Descriptor instead.
 func (*ConvertResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{7}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ConvertResponse) GetData() string {
@@ -786,7 +938,7 @@ type ValidateRequest struct {
 
 func (x *ValidateRequest) Reset() {
 	*x = ValidateRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[8]
+	mi := &file_proto_privutil_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -798,7 +950,7 @@ func (x *ValidateRequest) String() string {
 func (*ValidateRequest) ProtoMessage() {}
 
 func (x *ValidateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[8]
+	mi := &file_proto_privutil_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -811,7 +963,7 @@ func (x *ValidateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateRequest.ProtoReflect.Descriptor instead.
 func (*ValidateRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{8}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ValidateRequest) GetData() string {
@@ -840,7 +992,7 @@ type ValidateResponse struct {
 
 func (x *ValidateResponse) Reset() {
 	*x = ValidateResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[9]
+	mi := &file_proto_privutil_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -852,7 +1004,7 @@ func (x *ValidateResponse) String() string {
 func (*ValidateResponse) ProtoMessage() {}
 
 func (x *ValidateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[9]
+	mi := &file_proto_privutil_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -865,7 +1017,7 @@ func (x *ValidateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateResponse.ProtoReflect.Descriptor instead.
 func (*ValidateResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{9}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ValidateResponse) GetValid() bool {
@@ -909,7 +1061,7 @@ type UuidRequest struct {
 
 func (x *UuidRequest) Reset() {
 	*x = UuidRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[10]
+	mi := &file_proto_privutil_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -921,7 +1073,7 @@ func (x *UuidRequest) String() string {
 func (*UuidRequest) ProtoMessage() {}
 
 func (x *UuidRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[10]
+	mi := &file_proto_privutil_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -934,7 +1086,7 @@ func (x *UuidRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UuidRequest.ProtoReflect.Descriptor instead.
 func (*UuidRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{10}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *UuidRequest) GetHyphen() bool {
@@ -981,7 +1133,7 @@ type UuidResponse struct {
 
 func (x *UuidResponse) Reset() {
 	*x = UuidResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[11]
+	mi := &file_proto_privutil_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -993,7 +1145,7 @@ func (x *UuidResponse) String() string {
 func (*UuidResponse) ProtoMessage() {}
 
 func (x *UuidResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[11]
+	mi := &file_proto_privutil_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1006,7 +1158,7 @@ func (x *UuidResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UuidResponse.ProtoReflect.Descriptor instead.
 func (*UuidResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{11}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *UuidResponse) GetUuids() []string {
@@ -1026,7 +1178,7 @@ type LoremRequest struct {
 
 func (x *LoremRequest) Reset() {
 	*x = LoremRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[12]
+	mi := &file_proto_privutil_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1038,7 +1190,7 @@ func (x *LoremRequest) String() string {
 func (*LoremRequest) ProtoMessage() {}
 
 func (x *LoremRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[12]
+	mi := &file_proto_privutil_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1051,7 +1203,7 @@ func (x *LoremRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoremRequest.ProtoReflect.Descriptor instead.
 func (*LoremRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{12}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *LoremRequest) GetType() string {
@@ -1077,7 +1229,7 @@ type LoremResponse struct {
 
 func (x *LoremResponse) Reset() {
 	*x = LoremResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[13]
+	mi := &file_proto_privutil_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1089,7 +1241,7 @@ func (x *LoremResponse) String() string {
 func (*LoremResponse) ProtoMessage() {}
 
 func (x *LoremResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[13]
+	mi := &file_proto_privutil_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1102,7 +1254,7 @@ func (x *LoremResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoremResponse.ProtoReflect.Descriptor instead.
 func (*LoremResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{13}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *LoremResponse) GetText() string {
@@ -1123,7 +1275,7 @@ type HashRequest struct {
 
 func (x *HashRequest) Reset() {
 	*x = HashRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[14]
+	mi := &file_proto_privutil_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1135,7 +1287,7 @@ func (x *HashRequest) String() string {
 func (*HashRequest) ProtoMessage() {}
 
 func (x *HashRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[14]
+	mi := &file_proto_privutil_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1148,7 +1300,7 @@ func (x *HashRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HashRequest.ProtoReflect.Descriptor instead.
 func (*HashRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{14}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *HashRequest) GetText() string {
@@ -1181,7 +1333,7 @@ type HashResponse struct {
 
 func (x *HashResponse) Reset() {
 	*x = HashResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[15]
+	mi := &file_proto_privutil_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1193,7 +1345,7 @@ func (x *HashResponse) String() string {
 func (*HashResponse) ProtoMessage() {}
 
 func (x *HashResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[15]
+	mi := &file_proto_privutil_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1206,7 +1358,7 @@ func (x *HashResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HashResponse.ProtoReflect.Descriptor instead.
 func (*HashResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{15}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *HashResponse) GetHash() string {
@@ -1225,7 +1377,7 @@ type TextRequest struct {
 
 func (x *TextRequest) Reset() {
 	*x = TextRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[16]
+	mi := &file_proto_privutil_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1237,7 +1389,7 @@ func (x *TextRequest) String() string {
 func (*TextRequest) ProtoMessage() {}
 
 func (x *TextRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[16]
+	mi := &file_proto_privutil_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1250,7 +1402,7 @@ func (x *TextRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextRequest.ProtoReflect.Descriptor instead.
 func (*TextRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{16}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *TextRequest) GetText() string {
@@ -1269,7 +1421,7 @@ type TextResponse struct {
 
 func (x *TextResponse) Reset() {
 	*x = TextResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[17]
+	mi := &file_proto_privutil_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1281,7 +1433,7 @@ func (x *TextResponse) String() string {
 func (*TextResponse) ProtoMessage() {}
 
 func (x *TextResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[17]
+	mi := &file_proto_privutil_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1294,7 +1446,7 @@ func (x *TextResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextResponse.ProtoReflect.Descriptor instead.
 func (*TextResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{17}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *TextResponse) GetText() string {
@@ -1313,7 +1465,7 @@ type TimeRequest struct {
 
 func (x *TimeRequest) Reset() {
 	*x = TimeRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[18]
+	mi := &file_proto_privutil_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1325,7 +1477,7 @@ func (x *TimeRequest) String() string {
 func (*TimeRequest) ProtoMessage() {}
 
 func (x *TimeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[18]
+	mi := &file_proto_privutil_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1338,7 +1490,7 @@ func (x *TimeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TimeRequest.ProtoReflect.Descriptor instead.
 func (*TimeRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{18}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *TimeRequest) GetInput() string {
@@ -1360,7 +1512,7 @@ type TimeResponse struct {
 
 func (x *TimeResponse) Reset() {
 	*x = TimeResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[19]
+	mi := &file_proto_privutil_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1372,7 +1524,7 @@ func (x *TimeResponse) String() string {
 func (*TimeResponse) ProtoMessage() {}
 
 func (x *TimeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[19]
+	mi := &file_proto_privutil_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1385,7 +1537,7 @@ func (x *TimeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TimeResponse.ProtoReflect.Descriptor instead.
 func (*TimeResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{19}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *TimeResponse) GetUnix() int64 {
@@ -1425,7 +1577,7 @@ type JwtRequest struct {
 
 func (x *JwtRequest) Reset() {
 	*x = JwtRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[20]
+	mi := &file_proto_privutil_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1437,7 +1589,7 @@ func (x *JwtRequest) String() string {
 func (*JwtRequest) ProtoMessage() {}
 
 func (x *JwtRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[20]
+	mi := &file_proto_privutil_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1450,7 +1602,7 @@ func (x *JwtRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JwtRequest.ProtoReflect.Descriptor instead.
 func (*JwtRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{20}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *JwtRequest) GetToken() string {
@@ -1471,7 +1623,7 @@ type JwtResponse struct {
 
 func (x *JwtResponse) Reset() {
 	*x = JwtResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[21]
+	mi := &file_proto_privutil_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1483,7 +1635,7 @@ func (x *JwtResponse) String() string {
 func (*JwtResponse) ProtoMessage() {}
 
 func (x *JwtResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[21]
+	mi := &file_proto_privutil_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1496,7 +1648,7 @@ func (x *JwtResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JwtResponse.ProtoReflect.Descriptor instead.
 func (*JwtResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{21}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *JwtResponse) GetHeader() string {
@@ -1530,7 +1682,7 @@ type RegexRequest struct {
 
 func (x *RegexRequest) Reset() {
 	*x = RegexRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[22]
+	mi := &file_proto_privutil_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1542,7 +1694,7 @@ func (x *RegexRequest) String() string {
 func (*RegexRequest) ProtoMessage() {}
 
 func (x *RegexRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[22]
+	mi := &file_proto_privutil_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1555,7 +1707,7 @@ func (x *RegexRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegexRequest.ProtoReflect.Descriptor instead.
 func (*RegexRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{22}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *RegexRequest) GetPattern() string {
@@ -1583,7 +1735,7 @@ type RegexResponse struct {
 
 func (x *RegexResponse) Reset() {
 	*x = RegexResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[23]
+	mi := &file_proto_privutil_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1595,7 +1747,7 @@ func (x *RegexResponse) String() string {
 func (*RegexResponse) ProtoMessage() {}
 
 func (x *RegexResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[23]
+	mi := &file_proto_privutil_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1608,7 +1760,7 @@ func (x *RegexResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegexResponse.ProtoReflect.Descriptor instead.
 func (*RegexResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{23}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *RegexResponse) GetMatch() bool {
@@ -1642,7 +1794,7 @@ type JsonToGoRequest struct {
 
 func (x *JsonToGoRequest) Reset() {
 	*x = JsonToGoRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[24]
+	mi := &file_proto_privutil_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1654,7 +1806,7 @@ func (x *JsonToGoRequest) String() string {
 func (*JsonToGoRequest) ProtoMessage() {}
 
 func (x *JsonToGoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[24]
+	mi := &file_proto_privutil_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1667,7 +1819,7 @@ func (x *JsonToGoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JsonToGoRequest.ProtoReflect.Descriptor instead.
 func (*JsonToGoRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{24}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *JsonToGoRequest) GetJson() string {
@@ -1694,7 +1846,7 @@ type JsonToGoResponse struct {
 
 func (x *JsonToGoResponse) Reset() {
 	*x = JsonToGoResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[25]
+	mi := &file_proto_privutil_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1706,7 +1858,7 @@ func (x *JsonToGoResponse) String() string {
 func (*JsonToGoResponse) ProtoMessage() {}
 
 func (x *JsonToGoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[25]
+	mi := &file_proto_privutil_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1719,7 +1871,7 @@ func (x *JsonToGoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JsonToGoResponse.ProtoReflect.Descriptor instead.
 func (*JsonToGoResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{25}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *JsonToGoResponse) GetGoCode() string {
@@ -1745,7 +1897,7 @@ type CronRequest struct {
 
 func (x *CronRequest) Reset() {
 	*x = CronRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[26]
+	mi := &file_proto_privutil_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1757,7 +1909,7 @@ func (x *CronRequest) String() string {
 func (*CronRequest) ProtoMessage() {}
 
 func (x *CronRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[26]
+	mi := &file_proto_privutil_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1770,7 +1922,7 @@ func (x *CronRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CronRequest.ProtoReflect.Descriptor instead.
 func (*CronRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{26}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *CronRequest) GetExpression() string {
@@ -1791,7 +1943,7 @@ type CronResponse struct {
 
 func (x *CronResponse) Reset() {
 	*x = CronResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[27]
+	mi := &file_proto_privutil_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1803,7 +1955,7 @@ func (x *CronResponse) String() string {
 func (*CronResponse) ProtoMessage() {}
 
 func (x *CronResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[27]
+	mi := &file_proto_privutil_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1816,7 +1968,7 @@ func (x *CronResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CronResponse.ProtoReflect.Descriptor instead.
 func (*CronResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{27}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *CronResponse) GetDescription() string {
@@ -1849,7 +2001,7 @@ type CertRequest struct {
 
 func (x *CertRequest) Reset() {
 	*x = CertRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[28]
+	mi := &file_proto_privutil_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1861,7 +2013,7 @@ func (x *CertRequest) String() string {
 func (*CertRequest) ProtoMessage() {}
 
 func (x *CertRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[28]
+	mi := &file_proto_privutil_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1874,7 +2026,7 @@ func (x *CertRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertRequest.ProtoReflect.Descriptor instead.
 func (*CertRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{28}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *CertRequest) GetData() string {
@@ -1898,7 +2050,7 @@ type CertResponse struct {
 
 func (x *CertResponse) Reset() {
 	*x = CertResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[29]
+	mi := &file_proto_privutil_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1910,7 +2062,7 @@ func (x *CertResponse) String() string {
 func (*CertResponse) ProtoMessage() {}
 
 func (x *CertResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[29]
+	mi := &file_proto_privutil_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1923,7 +2075,7 @@ func (x *CertResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertResponse.ProtoReflect.Descriptor instead.
 func (*CertResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{29}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *CertResponse) GetSubject() string {
@@ -1977,7 +2129,7 @@ type ColorRequest struct {
 
 func (x *ColorRequest) Reset() {
 	*x = ColorRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[30]
+	mi := &file_proto_privutil_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1989,7 +2141,7 @@ func (x *ColorRequest) String() string {
 func (*ColorRequest) ProtoMessage() {}
 
 func (x *ColorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[30]
+	mi := &file_proto_privutil_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2002,7 +2154,7 @@ func (x *ColorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ColorRequest.ProtoReflect.Descriptor instead.
 func (*ColorRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{30}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *ColorRequest) GetInput() string {
@@ -2024,7 +2176,7 @@ type ColorResponse struct {
 
 func (x *ColorResponse) Reset() {
 	*x = ColorResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[31]
+	mi := &file_proto_privutil_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2036,7 +2188,7 @@ func (x *ColorResponse) String() string {
 func (*ColorResponse) ProtoMessage() {}
 
 func (x *ColorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[31]
+	mi := &file_proto_privutil_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2049,7 +2201,7 @@ func (x *ColorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ColorResponse.ProtoReflect.Descriptor instead.
 func (*ColorResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{31}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *ColorResponse) GetHex() string {
@@ -2089,7 +2241,7 @@ type CaseRequest struct {
 
 func (x *CaseRequest) Reset() {
 	*x = CaseRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[32]
+	mi := &file_proto_privutil_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2101,7 +2253,7 @@ func (x *CaseRequest) String() string {
 func (*CaseRequest) ProtoMessage() {}
 
 func (x *CaseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[32]
+	mi := &file_proto_privutil_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2114,7 +2266,7 @@ func (x *CaseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseRequest.ProtoReflect.Descriptor instead.
 func (*CaseRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{32}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *CaseRequest) GetText() string {
@@ -2139,7 +2291,7 @@ type CaseResponse struct {
 
 func (x *CaseResponse) Reset() {
 	*x = CaseResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[33]
+	mi := &file_proto_privutil_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2151,7 +2303,7 @@ func (x *CaseResponse) String() string {
 func (*CaseResponse) ProtoMessage() {}
 
 func (x *CaseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[33]
+	mi := &file_proto_privutil_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2164,7 +2316,7 @@ func (x *CaseResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaseResponse.ProtoReflect.Descriptor instead.
 func (*CaseResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{33}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *CaseResponse) GetCamel() string {
@@ -2227,7 +2379,7 @@ type EscapeRequest struct {
 
 func (x *EscapeRequest) Reset() {
 	*x = EscapeRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[34]
+	mi := &file_proto_privutil_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2239,7 +2391,7 @@ func (x *EscapeRequest) String() string {
 func (*EscapeRequest) ProtoMessage() {}
 
 func (x *EscapeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[34]
+	mi := &file_proto_privutil_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2252,7 +2404,7 @@ func (x *EscapeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EscapeRequest.ProtoReflect.Descriptor instead.
 func (*EscapeRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{34}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *EscapeRequest) GetText() string {
@@ -2286,7 +2438,7 @@ type EscapeResponse struct {
 
 func (x *EscapeResponse) Reset() {
 	*x = EscapeResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[35]
+	mi := &file_proto_privutil_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2298,7 +2450,7 @@ func (x *EscapeResponse) String() string {
 func (*EscapeResponse) ProtoMessage() {}
 
 func (x *EscapeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[35]
+	mi := &file_proto_privutil_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2311,7 +2463,7 @@ func (x *EscapeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EscapeResponse.ProtoReflect.Descriptor instead.
 func (*EscapeResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{35}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *EscapeResponse) GetResult() string {
@@ -2338,7 +2490,7 @@ type SimilarityRequest struct {
 
 func (x *SimilarityRequest) Reset() {
 	*x = SimilarityRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[36]
+	mi := &file_proto_privutil_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2350,7 +2502,7 @@ func (x *SimilarityRequest) String() string {
 func (*SimilarityRequest) ProtoMessage() {}
 
 func (x *SimilarityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[36]
+	mi := &file_proto_privutil_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2363,7 +2515,7 @@ func (x *SimilarityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SimilarityRequest.ProtoReflect.Descriptor instead.
 func (*SimilarityRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{36}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *SimilarityRequest) GetText1() string {
@@ -2391,7 +2543,7 @@ type SimilarityResponse struct {
 
 func (x *SimilarityResponse) Reset() {
 	*x = SimilarityResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[37]
+	mi := &file_proto_privutil_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2403,7 +2555,7 @@ func (x *SimilarityResponse) String() string {
 func (*SimilarityResponse) ProtoMessage() {}
 
 func (x *SimilarityResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[37]
+	mi := &file_proto_privutil_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2416,7 +2568,7 @@ func (x *SimilarityResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SimilarityResponse.ProtoReflect.Descriptor instead.
 func (*SimilarityResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{37}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *SimilarityResponse) GetDistance() int32 {
@@ -2449,7 +2601,7 @@ type SqlRequest struct {
 
 func (x *SqlRequest) Reset() {
 	*x = SqlRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[38]
+	mi := &file_proto_privutil_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2461,7 +2613,7 @@ func (x *SqlRequest) String() string {
 func (*SqlRequest) ProtoMessage() {}
 
 func (x *SqlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[38]
+	mi := &file_proto_privutil_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2474,7 +2626,7 @@ func (x *SqlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SqlRequest.ProtoReflect.Descriptor instead.
 func (*SqlRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{38}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *SqlRequest) GetQuery() string {
@@ -2494,7 +2646,7 @@ type SqlResponse struct {
 
 func (x *SqlResponse) Reset() {
 	*x = SqlResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[39]
+	mi := &file_proto_privutil_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2506,7 +2658,7 @@ func (x *SqlResponse) String() string {
 func (*SqlResponse) ProtoMessage() {}
 
 func (x *SqlResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[39]
+	mi := &file_proto_privutil_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2519,7 +2671,7 @@ func (x *SqlResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SqlResponse.ProtoReflect.Descriptor instead.
 func (*SqlResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{39}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *SqlResponse) GetFormatted() string {
@@ -2545,7 +2697,7 @@ type IpRequest struct {
 
 func (x *IpRequest) Reset() {
 	*x = IpRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[40]
+	mi := &file_proto_privutil_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2557,7 +2709,7 @@ func (x *IpRequest) String() string {
 func (*IpRequest) ProtoMessage() {}
 
 func (x *IpRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[40]
+	mi := &file_proto_privutil_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2570,7 +2722,7 @@ func (x *IpRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpRequest.ProtoReflect.Descriptor instead.
 func (*IpRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{40}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *IpRequest) GetCidr() string {
@@ -2595,7 +2747,7 @@ type IpResponse struct {
 
 func (x *IpResponse) Reset() {
 	*x = IpResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[41]
+	mi := &file_proto_privutil_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2607,7 +2759,7 @@ func (x *IpResponse) String() string {
 func (*IpResponse) ProtoMessage() {}
 
 func (x *IpResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[41]
+	mi := &file_proto_privutil_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2620,7 +2772,7 @@ func (x *IpResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpResponse.ProtoReflect.Descriptor instead.
 func (*IpResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{41}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *IpResponse) GetNetwork() string {
@@ -2681,7 +2833,7 @@ type TextInspectRequest struct {
 
 func (x *TextInspectRequest) Reset() {
 	*x = TextInspectRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[42]
+	mi := &file_proto_privutil_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2693,7 +2845,7 @@ func (x *TextInspectRequest) String() string {
 func (*TextInspectRequest) ProtoMessage() {}
 
 func (x *TextInspectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[42]
+	mi := &file_proto_privutil_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2706,7 +2858,7 @@ func (x *TextInspectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextInspectRequest.ProtoReflect.Descriptor instead.
 func (*TextInspectRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{42}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *TextInspectRequest) GetText() string {
@@ -2728,7 +2880,7 @@ type TextInspectResponse struct {
 
 func (x *TextInspectResponse) Reset() {
 	*x = TextInspectResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[43]
+	mi := &file_proto_privutil_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2740,7 +2892,7 @@ func (x *TextInspectResponse) String() string {
 func (*TextInspectResponse) ProtoMessage() {}
 
 func (x *TextInspectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[43]
+	mi := &file_proto_privutil_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2753,7 +2905,7 @@ func (x *TextInspectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextInspectResponse.ProtoReflect.Descriptor instead.
 func (*TextInspectResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{43}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *TextInspectResponse) GetCharCount() int32 {
@@ -2794,7 +2946,7 @@ type TextManipulateRequest struct {
 
 func (x *TextManipulateRequest) Reset() {
 	*x = TextManipulateRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[44]
+	mi := &file_proto_privutil_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2806,7 +2958,7 @@ func (x *TextManipulateRequest) String() string {
 func (*TextManipulateRequest) ProtoMessage() {}
 
 func (x *TextManipulateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[44]
+	mi := &file_proto_privutil_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2819,7 +2971,7 @@ func (x *TextManipulateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextManipulateRequest.ProtoReflect.Descriptor instead.
 func (*TextManipulateRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{44}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *TextManipulateRequest) GetText() string {
@@ -2845,7 +2997,7 @@ type TextManipulateResponse struct {
 
 func (x *TextManipulateResponse) Reset() {
 	*x = TextManipulateResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[45]
+	mi := &file_proto_privutil_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2857,7 +3009,7 @@ func (x *TextManipulateResponse) String() string {
 func (*TextManipulateResponse) ProtoMessage() {}
 
 func (x *TextManipulateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[45]
+	mi := &file_proto_privutil_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2870,7 +3022,7 @@ func (x *TextManipulateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextManipulateResponse.ProtoReflect.Descriptor instead.
 func (*TextManipulateResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{45}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *TextManipulateResponse) GetText() string {
@@ -2895,7 +3047,7 @@ type PasswordRequest struct {
 
 func (x *PasswordRequest) Reset() {
 	*x = PasswordRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[46]
+	mi := &file_proto_privutil_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2907,7 +3059,7 @@ func (x *PasswordRequest) String() string {
 func (*PasswordRequest) ProtoMessage() {}
 
 func (x *PasswordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[46]
+	mi := &file_proto_privutil_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2920,7 +3072,7 @@ func (x *PasswordRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordRequest.ProtoReflect.Descriptor instead.
 func (*PasswordRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{46}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *PasswordRequest) GetLength() int32 {
@@ -2982,7 +3134,7 @@ type PasswordResponse struct {
 
 func (x *PasswordResponse) Reset() {
 	*x = PasswordResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[47]
+	mi := &file_proto_privutil_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2994,7 +3146,7 @@ func (x *PasswordResponse) String() string {
 func (*PasswordResponse) ProtoMessage() {}
 
 func (x *PasswordResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[47]
+	mi := &file_proto_privutil_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3007,7 +3159,7 @@ func (x *PasswordResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PasswordResponse.ProtoReflect.Descriptor instead.
 func (*PasswordResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{47}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *PasswordResponse) GetPasswords() []string {
@@ -3033,7 +3185,7 @@ type RsaKeyRequest struct {
 
 func (x *RsaKeyRequest) Reset() {
 	*x = RsaKeyRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[48]
+	mi := &file_proto_privutil_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3045,7 +3197,7 @@ func (x *RsaKeyRequest) String() string {
 func (*RsaKeyRequest) ProtoMessage() {}
 
 func (x *RsaKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[48]
+	mi := &file_proto_privutil_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3058,7 +3210,7 @@ func (x *RsaKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RsaKeyRequest.ProtoReflect.Descriptor instead.
 func (*RsaKeyRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{48}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *RsaKeyRequest) GetBits() int32 {
@@ -3079,7 +3231,7 @@ type RsaKeyResponse struct {
 
 func (x *RsaKeyResponse) Reset() {
 	*x = RsaKeyResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[49]
+	mi := &file_proto_privutil_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3091,7 +3243,7 @@ func (x *RsaKeyResponse) String() string {
 func (*RsaKeyResponse) ProtoMessage() {}
 
 func (x *RsaKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[49]
+	mi := &file_proto_privutil_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3104,7 +3256,7 @@ func (x *RsaKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RsaKeyResponse.ProtoReflect.Descriptor instead.
 func (*RsaKeyResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{49}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *RsaKeyResponse) GetPrivateKey() string {
@@ -3138,7 +3290,7 @@ type BaseConvertRequest struct {
 
 func (x *BaseConvertRequest) Reset() {
 	*x = BaseConvertRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[50]
+	mi := &file_proto_privutil_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3150,7 +3302,7 @@ func (x *BaseConvertRequest) String() string {
 func (*BaseConvertRequest) ProtoMessage() {}
 
 func (x *BaseConvertRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[50]
+	mi := &file_proto_privutil_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3163,7 +3315,7 @@ func (x *BaseConvertRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BaseConvertRequest.ProtoReflect.Descriptor instead.
 func (*BaseConvertRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{50}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *BaseConvertRequest) GetInput() string {
@@ -3194,7 +3346,7 @@ type BaseConvertResponse struct {
 
 func (x *BaseConvertResponse) Reset() {
 	*x = BaseConvertResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[51]
+	mi := &file_proto_privutil_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3206,7 +3358,7 @@ func (x *BaseConvertResponse) String() string {
 func (*BaseConvertResponse) ProtoMessage() {}
 
 func (x *BaseConvertResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[51]
+	mi := &file_proto_privutil_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3219,7 +3371,7 @@ func (x *BaseConvertResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BaseConvertResponse.ProtoReflect.Descriptor instead.
 func (*BaseConvertResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{51}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *BaseConvertResponse) GetDecimal() string {
@@ -3273,7 +3425,7 @@ type ChmodRequest struct {
 
 func (x *ChmodRequest) Reset() {
 	*x = ChmodRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[52]
+	mi := &file_proto_privutil_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3285,7 +3437,7 @@ func (x *ChmodRequest) String() string {
 func (*ChmodRequest) ProtoMessage() {}
 
 func (x *ChmodRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[52]
+	mi := &file_proto_privutil_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3298,7 +3450,7 @@ func (x *ChmodRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChmodRequest.ProtoReflect.Descriptor instead.
 func (*ChmodRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{52}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *ChmodRequest) GetInput() string {
@@ -3333,7 +3485,7 @@ type ChmodResponse struct {
 
 func (x *ChmodResponse) Reset() {
 	*x = ChmodResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[53]
+	mi := &file_proto_privutil_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3345,7 +3497,7 @@ func (x *ChmodResponse) String() string {
 func (*ChmodResponse) ProtoMessage() {}
 
 func (x *ChmodResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[53]
+	mi := &file_proto_privutil_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3358,7 +3510,7 @@ func (x *ChmodResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChmodResponse.ProtoReflect.Descriptor instead.
 func (*ChmodResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{53}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *ChmodResponse) GetOctal() string {
@@ -3489,7 +3641,7 @@ type Ipv4ConvertRequest struct {
 
 func (x *Ipv4ConvertRequest) Reset() {
 	*x = Ipv4ConvertRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[54]
+	mi := &file_proto_privutil_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3501,7 +3653,7 @@ func (x *Ipv4ConvertRequest) String() string {
 func (*Ipv4ConvertRequest) ProtoMessage() {}
 
 func (x *Ipv4ConvertRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[54]
+	mi := &file_proto_privutil_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3514,7 +3666,7 @@ func (x *Ipv4ConvertRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ipv4ConvertRequest.ProtoReflect.Descriptor instead.
 func (*Ipv4ConvertRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{54}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *Ipv4ConvertRequest) GetInput() string {
@@ -3537,7 +3689,7 @@ type Ipv4ConvertResponse struct {
 
 func (x *Ipv4ConvertResponse) Reset() {
 	*x = Ipv4ConvertResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[55]
+	mi := &file_proto_privutil_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3549,7 +3701,7 @@ func (x *Ipv4ConvertResponse) String() string {
 func (*Ipv4ConvertResponse) ProtoMessage() {}
 
 func (x *Ipv4ConvertResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[55]
+	mi := &file_proto_privutil_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3562,7 +3714,7 @@ func (x *Ipv4ConvertResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ipv4ConvertResponse.ProtoReflect.Descriptor instead.
 func (*Ipv4ConvertResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{55}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *Ipv4ConvertResponse) GetDotted() string {
@@ -3610,7 +3762,7 @@ type Ipv4RangeRequest struct {
 
 func (x *Ipv4RangeRequest) Reset() {
 	*x = Ipv4RangeRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[56]
+	mi := &file_proto_privutil_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3622,7 +3774,7 @@ func (x *Ipv4RangeRequest) String() string {
 func (*Ipv4RangeRequest) ProtoMessage() {}
 
 func (x *Ipv4RangeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[56]
+	mi := &file_proto_privutil_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3635,7 +3787,7 @@ func (x *Ipv4RangeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ipv4RangeRequest.ProtoReflect.Descriptor instead.
 func (*Ipv4RangeRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{56}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *Ipv4RangeRequest) GetStart() string {
@@ -3664,7 +3816,7 @@ type Ipv4RangeResponse struct {
 
 func (x *Ipv4RangeResponse) Reset() {
 	*x = Ipv4RangeResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[57]
+	mi := &file_proto_privutil_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3676,7 +3828,7 @@ func (x *Ipv4RangeResponse) String() string {
 func (*Ipv4RangeResponse) ProtoMessage() {}
 
 func (x *Ipv4RangeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[57]
+	mi := &file_proto_privutil_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3689,7 +3841,7 @@ func (x *Ipv4RangeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ipv4RangeResponse.ProtoReflect.Descriptor instead.
 func (*Ipv4RangeResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{57}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *Ipv4RangeResponse) GetAddresses() []string {
@@ -3732,7 +3884,7 @@ type PortRequest struct {
 
 func (x *PortRequest) Reset() {
 	*x = PortRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[58]
+	mi := &file_proto_privutil_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3744,7 +3896,7 @@ func (x *PortRequest) String() string {
 func (*PortRequest) ProtoMessage() {}
 
 func (x *PortRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[58]
+	mi := &file_proto_privutil_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3757,7 +3909,7 @@ func (x *PortRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PortRequest.ProtoReflect.Descriptor instead.
 func (*PortRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{58}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *PortRequest) GetCount() int32 {
@@ -3798,7 +3950,7 @@ type PortResponse struct {
 
 func (x *PortResponse) Reset() {
 	*x = PortResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[59]
+	mi := &file_proto_privutil_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3810,7 +3962,7 @@ func (x *PortResponse) String() string {
 func (*PortResponse) ProtoMessage() {}
 
 func (x *PortResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[59]
+	mi := &file_proto_privutil_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3823,7 +3975,7 @@ func (x *PortResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PortResponse.ProtoReflect.Descriptor instead.
 func (*PortResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{59}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *PortResponse) GetPorts() []int32 {
@@ -3854,7 +4006,7 @@ type MacRequest struct {
 
 func (x *MacRequest) Reset() {
 	*x = MacRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[60]
+	mi := &file_proto_privutil_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3866,7 +4018,7 @@ func (x *MacRequest) String() string {
 func (*MacRequest) ProtoMessage() {}
 
 func (x *MacRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[60]
+	mi := &file_proto_privutil_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3879,7 +4031,7 @@ func (x *MacRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MacRequest.ProtoReflect.Descriptor instead.
 func (*MacRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{60}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *MacRequest) GetCount() int32 {
@@ -3934,7 +4086,7 @@ type MacResponse struct {
 
 func (x *MacResponse) Reset() {
 	*x = MacResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[61]
+	mi := &file_proto_privutil_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3946,7 +4098,7 @@ func (x *MacResponse) String() string {
 func (*MacResponse) ProtoMessage() {}
 
 func (x *MacResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[61]
+	mi := &file_proto_privutil_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3959,7 +4111,7 @@ func (x *MacResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MacResponse.ProtoReflect.Descriptor instead.
 func (*MacResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{61}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *MacResponse) GetAddresses() []string {
@@ -3987,7 +4139,7 @@ type HmacRequest struct {
 
 func (x *HmacRequest) Reset() {
 	*x = HmacRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[62]
+	mi := &file_proto_privutil_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3999,7 +4151,7 @@ func (x *HmacRequest) String() string {
 func (*HmacRequest) ProtoMessage() {}
 
 func (x *HmacRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[62]
+	mi := &file_proto_privutil_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4012,7 +4164,7 @@ func (x *HmacRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HmacRequest.ProtoReflect.Descriptor instead.
 func (*HmacRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{62}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *HmacRequest) GetMessage() string {
@@ -4047,7 +4199,7 @@ type HmacResponse struct {
 
 func (x *HmacResponse) Reset() {
 	*x = HmacResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[63]
+	mi := &file_proto_privutil_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4059,7 +4211,7 @@ func (x *HmacResponse) String() string {
 func (*HmacResponse) ProtoMessage() {}
 
 func (x *HmacResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[63]
+	mi := &file_proto_privutil_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4072,7 +4224,7 @@ func (x *HmacResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HmacResponse.ProtoReflect.Descriptor instead.
 func (*HmacResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{63}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *HmacResponse) GetHex() string {
@@ -4111,7 +4263,7 @@ type OtpRequest struct {
 
 func (x *OtpRequest) Reset() {
 	*x = OtpRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[64]
+	mi := &file_proto_privutil_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4123,7 +4275,7 @@ func (x *OtpRequest) String() string {
 func (*OtpRequest) ProtoMessage() {}
 
 func (x *OtpRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[64]
+	mi := &file_proto_privutil_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4136,7 +4288,7 @@ func (x *OtpRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OtpRequest.ProtoReflect.Descriptor instead.
 func (*OtpRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{64}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *OtpRequest) GetSecret() string {
@@ -4202,7 +4354,7 @@ type OtpResponse struct {
 
 func (x *OtpResponse) Reset() {
 	*x = OtpResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[65]
+	mi := &file_proto_privutil_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4214,7 +4366,7 @@ func (x *OtpResponse) String() string {
 func (*OtpResponse) ProtoMessage() {}
 
 func (x *OtpResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[65]
+	mi := &file_proto_privutil_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4227,7 +4379,7 @@ func (x *OtpResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OtpResponse.ProtoReflect.Descriptor instead.
 func (*OtpResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{65}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *OtpResponse) GetCode() string {
@@ -4286,7 +4438,7 @@ type OtpValidateRequest struct {
 
 func (x *OtpValidateRequest) Reset() {
 	*x = OtpValidateRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[66]
+	mi := &file_proto_privutil_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4298,7 +4450,7 @@ func (x *OtpValidateRequest) String() string {
 func (*OtpValidateRequest) ProtoMessage() {}
 
 func (x *OtpValidateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[66]
+	mi := &file_proto_privutil_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4311,7 +4463,7 @@ func (x *OtpValidateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OtpValidateRequest.ProtoReflect.Descriptor instead.
 func (*OtpValidateRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{66}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *OtpValidateRequest) GetSecret() string {
@@ -4366,7 +4518,7 @@ type OtpValidateResponse struct {
 
 func (x *OtpValidateResponse) Reset() {
 	*x = OtpValidateResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[67]
+	mi := &file_proto_privutil_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4378,7 +4530,7 @@ func (x *OtpValidateResponse) String() string {
 func (*OtpValidateResponse) ProtoMessage() {}
 
 func (x *OtpValidateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[67]
+	mi := &file_proto_privutil_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4391,7 +4543,7 @@ func (x *OtpValidateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OtpValidateResponse.ProtoReflect.Descriptor instead.
 func (*OtpValidateResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{67}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *OtpValidateResponse) GetValid() bool {
@@ -4418,7 +4570,7 @@ type UlidRequest struct {
 
 func (x *UlidRequest) Reset() {
 	*x = UlidRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[68]
+	mi := &file_proto_privutil_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4430,7 +4582,7 @@ func (x *UlidRequest) String() string {
 func (*UlidRequest) ProtoMessage() {}
 
 func (x *UlidRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[68]
+	mi := &file_proto_privutil_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4443,7 +4595,7 @@ func (x *UlidRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UlidRequest.ProtoReflect.Descriptor instead.
 func (*UlidRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{68}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *UlidRequest) GetCount() int32 {
@@ -4470,7 +4622,7 @@ type UlidResponse struct {
 
 func (x *UlidResponse) Reset() {
 	*x = UlidResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[69]
+	mi := &file_proto_privutil_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4482,7 +4634,7 @@ func (x *UlidResponse) String() string {
 func (*UlidResponse) ProtoMessage() {}
 
 func (x *UlidResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[69]
+	mi := &file_proto_privutil_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4495,7 +4647,7 @@ func (x *UlidResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UlidResponse.ProtoReflect.Descriptor instead.
 func (*UlidResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{69}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *UlidResponse) GetUlids() []string {
@@ -4523,7 +4675,7 @@ type CaesarRequest struct {
 
 func (x *CaesarRequest) Reset() {
 	*x = CaesarRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[70]
+	mi := &file_proto_privutil_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4535,7 +4687,7 @@ func (x *CaesarRequest) String() string {
 func (*CaesarRequest) ProtoMessage() {}
 
 func (x *CaesarRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[70]
+	mi := &file_proto_privutil_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4548,7 +4700,7 @@ func (x *CaesarRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaesarRequest.ProtoReflect.Descriptor instead.
 func (*CaesarRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{70}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *CaesarRequest) GetText() string {
@@ -4582,7 +4734,7 @@ type CaesarResponse struct {
 
 func (x *CaesarResponse) Reset() {
 	*x = CaesarResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[71]
+	mi := &file_proto_privutil_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4594,7 +4746,7 @@ func (x *CaesarResponse) String() string {
 func (*CaesarResponse) ProtoMessage() {}
 
 func (x *CaesarResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[71]
+	mi := &file_proto_privutil_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4607,7 +4759,7 @@ func (x *CaesarResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CaesarResponse.ProtoReflect.Descriptor instead.
 func (*CaesarResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{71}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *CaesarResponse) GetResult() string {
@@ -4635,7 +4787,7 @@ type TextEncodeRequest struct {
 
 func (x *TextEncodeRequest) Reset() {
 	*x = TextEncodeRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[72]
+	mi := &file_proto_privutil_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4647,7 +4799,7 @@ func (x *TextEncodeRequest) String() string {
 func (*TextEncodeRequest) ProtoMessage() {}
 
 func (x *TextEncodeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[72]
+	mi := &file_proto_privutil_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4660,7 +4812,7 @@ func (x *TextEncodeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextEncodeRequest.ProtoReflect.Descriptor instead.
 func (*TextEncodeRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{72}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *TextEncodeRequest) GetText() string {
@@ -4694,7 +4846,7 @@ type TextEncodeResponse struct {
 
 func (x *TextEncodeResponse) Reset() {
 	*x = TextEncodeResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[73]
+	mi := &file_proto_privutil_proto_msgTypes[75]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4706,7 +4858,7 @@ func (x *TextEncodeResponse) String() string {
 func (*TextEncodeResponse) ProtoMessage() {}
 
 func (x *TextEncodeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[73]
+	mi := &file_proto_privutil_proto_msgTypes[75]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4719,7 +4871,7 @@ func (x *TextEncodeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextEncodeResponse.ProtoReflect.Descriptor instead.
 func (*TextEncodeResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{73}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *TextEncodeResponse) GetResult() string {
@@ -4746,7 +4898,7 @@ type MorseRequest struct {
 
 func (x *MorseRequest) Reset() {
 	*x = MorseRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[74]
+	mi := &file_proto_privutil_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4758,7 +4910,7 @@ func (x *MorseRequest) String() string {
 func (*MorseRequest) ProtoMessage() {}
 
 func (x *MorseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[74]
+	mi := &file_proto_privutil_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4771,7 +4923,7 @@ func (x *MorseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MorseRequest.ProtoReflect.Descriptor instead.
 func (*MorseRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{74}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *MorseRequest) GetText() string {
@@ -4798,7 +4950,7 @@ type MorseResponse struct {
 
 func (x *MorseResponse) Reset() {
 	*x = MorseResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[75]
+	mi := &file_proto_privutil_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4810,7 +4962,7 @@ func (x *MorseResponse) String() string {
 func (*MorseResponse) ProtoMessage() {}
 
 func (x *MorseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[75]
+	mi := &file_proto_privutil_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4823,7 +4975,7 @@ func (x *MorseResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MorseResponse.ProtoReflect.Descriptor instead.
 func (*MorseResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{75}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *MorseResponse) GetResult() string {
@@ -4850,7 +5002,7 @@ type BasicAuthRequest struct {
 
 func (x *BasicAuthRequest) Reset() {
 	*x = BasicAuthRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[76]
+	mi := &file_proto_privutil_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4862,7 +5014,7 @@ func (x *BasicAuthRequest) String() string {
 func (*BasicAuthRequest) ProtoMessage() {}
 
 func (x *BasicAuthRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[76]
+	mi := &file_proto_privutil_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4875,7 +5027,7 @@ func (x *BasicAuthRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BasicAuthRequest.ProtoReflect.Descriptor instead.
 func (*BasicAuthRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{76}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *BasicAuthRequest) GetUsername() string {
@@ -4904,7 +5056,7 @@ type BasicAuthResponse struct {
 
 func (x *BasicAuthResponse) Reset() {
 	*x = BasicAuthResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[77]
+	mi := &file_proto_privutil_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4916,7 +5068,7 @@ func (x *BasicAuthResponse) String() string {
 func (*BasicAuthResponse) ProtoMessage() {}
 
 func (x *BasicAuthResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[77]
+	mi := &file_proto_privutil_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4929,7 +5081,7 @@ func (x *BasicAuthResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BasicAuthResponse.ProtoReflect.Descriptor instead.
 func (*BasicAuthResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{77}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *BasicAuthResponse) GetHeader() string {
@@ -4972,7 +5124,7 @@ type SlugifyRequest struct {
 
 func (x *SlugifyRequest) Reset() {
 	*x = SlugifyRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[78]
+	mi := &file_proto_privutil_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4984,7 +5136,7 @@ func (x *SlugifyRequest) String() string {
 func (*SlugifyRequest) ProtoMessage() {}
 
 func (x *SlugifyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[78]
+	mi := &file_proto_privutil_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4997,7 +5149,7 @@ func (x *SlugifyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SlugifyRequest.ProtoReflect.Descriptor instead.
 func (*SlugifyRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{78}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *SlugifyRequest) GetText() string {
@@ -5038,7 +5190,7 @@ type SlugifyResponse struct {
 
 func (x *SlugifyResponse) Reset() {
 	*x = SlugifyResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[79]
+	mi := &file_proto_privutil_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5050,7 +5202,7 @@ func (x *SlugifyResponse) String() string {
 func (*SlugifyResponse) ProtoMessage() {}
 
 func (x *SlugifyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[79]
+	mi := &file_proto_privutil_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5063,7 +5215,7 @@ func (x *SlugifyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SlugifyResponse.ProtoReflect.Descriptor instead.
 func (*SlugifyResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{79}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *SlugifyResponse) GetResult() string {
@@ -5089,7 +5241,7 @@ type HiddenCharsRequest struct {
 
 func (x *HiddenCharsRequest) Reset() {
 	*x = HiddenCharsRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[80]
+	mi := &file_proto_privutil_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5101,7 +5253,7 @@ func (x *HiddenCharsRequest) String() string {
 func (*HiddenCharsRequest) ProtoMessage() {}
 
 func (x *HiddenCharsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[80]
+	mi := &file_proto_privutil_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5114,7 +5266,7 @@ func (x *HiddenCharsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HiddenCharsRequest.ProtoReflect.Descriptor instead.
 func (*HiddenCharsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{80}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *HiddenCharsRequest) GetText() string {
@@ -5135,7 +5287,7 @@ type HiddenCharInfo struct {
 
 func (x *HiddenCharInfo) Reset() {
 	*x = HiddenCharInfo{}
-	mi := &file_proto_privutil_proto_msgTypes[81]
+	mi := &file_proto_privutil_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5147,7 +5299,7 @@ func (x *HiddenCharInfo) String() string {
 func (*HiddenCharInfo) ProtoMessage() {}
 
 func (x *HiddenCharInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[81]
+	mi := &file_proto_privutil_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5160,7 +5312,7 @@ func (x *HiddenCharInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HiddenCharInfo.ProtoReflect.Descriptor instead.
 func (*HiddenCharInfo) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{81}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *HiddenCharInfo) GetName() string {
@@ -5197,7 +5349,7 @@ type HiddenCharsResponse struct {
 
 func (x *HiddenCharsResponse) Reset() {
 	*x = HiddenCharsResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[82]
+	mi := &file_proto_privutil_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5209,7 +5361,7 @@ func (x *HiddenCharsResponse) String() string {
 func (*HiddenCharsResponse) ProtoMessage() {}
 
 func (x *HiddenCharsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[82]
+	mi := &file_proto_privutil_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5222,7 +5374,7 @@ func (x *HiddenCharsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HiddenCharsResponse.ProtoReflect.Descriptor instead.
 func (*HiddenCharsResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{82}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{84}
 }
 
 func (x *HiddenCharsResponse) GetHasHidden() bool {
@@ -5273,7 +5425,7 @@ type TextReplaceRequest struct {
 
 func (x *TextReplaceRequest) Reset() {
 	*x = TextReplaceRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[83]
+	mi := &file_proto_privutil_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5285,7 +5437,7 @@ func (x *TextReplaceRequest) String() string {
 func (*TextReplaceRequest) ProtoMessage() {}
 
 func (x *TextReplaceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[83]
+	mi := &file_proto_privutil_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5298,7 +5450,7 @@ func (x *TextReplaceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextReplaceRequest.ProtoReflect.Descriptor instead.
 func (*TextReplaceRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{83}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *TextReplaceRequest) GetText() string {
@@ -5347,7 +5499,7 @@ type TextReplaceResponse struct {
 
 func (x *TextReplaceResponse) Reset() {
 	*x = TextReplaceResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[84]
+	mi := &file_proto_privutil_proto_msgTypes[86]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5359,7 +5511,7 @@ func (x *TextReplaceResponse) String() string {
 func (*TextReplaceResponse) ProtoMessage() {}
 
 func (x *TextReplaceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[84]
+	mi := &file_proto_privutil_proto_msgTypes[86]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5372,7 +5524,7 @@ func (x *TextReplaceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextReplaceResponse.ProtoReflect.Descriptor instead.
 func (*TextReplaceResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{84}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{86}
 }
 
 func (x *TextReplaceResponse) GetResult() string {
@@ -5408,7 +5560,7 @@ type StringObfuscateRequest struct {
 
 func (x *StringObfuscateRequest) Reset() {
 	*x = StringObfuscateRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[85]
+	mi := &file_proto_privutil_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5420,7 +5572,7 @@ func (x *StringObfuscateRequest) String() string {
 func (*StringObfuscateRequest) ProtoMessage() {}
 
 func (x *StringObfuscateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[85]
+	mi := &file_proto_privutil_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5433,7 +5585,7 @@ func (x *StringObfuscateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StringObfuscateRequest.ProtoReflect.Descriptor instead.
 func (*StringObfuscateRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{85}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *StringObfuscateRequest) GetText() string {
@@ -5474,7 +5626,7 @@ type StringObfuscateResponse struct {
 
 func (x *StringObfuscateResponse) Reset() {
 	*x = StringObfuscateResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[86]
+	mi := &file_proto_privutil_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5486,7 +5638,7 @@ func (x *StringObfuscateResponse) String() string {
 func (*StringObfuscateResponse) ProtoMessage() {}
 
 func (x *StringObfuscateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[86]
+	mi := &file_proto_privutil_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5499,7 +5651,7 @@ func (x *StringObfuscateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StringObfuscateResponse.ProtoReflect.Descriptor instead.
 func (*StringObfuscateResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{86}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *StringObfuscateResponse) GetResult() string {
@@ -5525,7 +5677,7 @@ type NumeronymRequest struct {
 
 func (x *NumeronymRequest) Reset() {
 	*x = NumeronymRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[87]
+	mi := &file_proto_privutil_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5537,7 +5689,7 @@ func (x *NumeronymRequest) String() string {
 func (*NumeronymRequest) ProtoMessage() {}
 
 func (x *NumeronymRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[87]
+	mi := &file_proto_privutil_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5550,7 +5702,7 @@ func (x *NumeronymRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NumeronymRequest.ProtoReflect.Descriptor instead.
 func (*NumeronymRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{87}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{89}
 }
 
 func (x *NumeronymRequest) GetText() string {
@@ -5571,7 +5723,7 @@ type NumeronymResponse struct {
 
 func (x *NumeronymResponse) Reset() {
 	*x = NumeronymResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[88]
+	mi := &file_proto_privutil_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5583,7 +5735,7 @@ func (x *NumeronymResponse) String() string {
 func (*NumeronymResponse) ProtoMessage() {}
 
 func (x *NumeronymResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[88]
+	mi := &file_proto_privutil_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5596,7 +5748,7 @@ func (x *NumeronymResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NumeronymResponse.ProtoReflect.Descriptor instead.
 func (*NumeronymResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{88}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *NumeronymResponse) GetWords() []string {
@@ -5630,7 +5782,7 @@ type NatoRequest struct {
 
 func (x *NatoRequest) Reset() {
 	*x = NatoRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[89]
+	mi := &file_proto_privutil_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5642,7 +5794,7 @@ func (x *NatoRequest) String() string {
 func (*NatoRequest) ProtoMessage() {}
 
 func (x *NatoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[89]
+	mi := &file_proto_privutil_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5655,7 +5807,7 @@ func (x *NatoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NatoRequest.ProtoReflect.Descriptor instead.
 func (*NatoRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{89}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *NatoRequest) GetText() string {
@@ -5682,7 +5834,7 @@ type NatoResponse struct {
 
 func (x *NatoResponse) Reset() {
 	*x = NatoResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[90]
+	mi := &file_proto_privutil_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5694,7 +5846,7 @@ func (x *NatoResponse) String() string {
 func (*NatoResponse) ProtoMessage() {}
 
 func (x *NatoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[90]
+	mi := &file_proto_privutil_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5707,7 +5859,7 @@ func (x *NatoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NatoResponse.ProtoReflect.Descriptor instead.
 func (*NatoResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{90}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *NatoResponse) GetResult() string {
@@ -5735,7 +5887,7 @@ type ListRequest struct {
 
 func (x *ListRequest) Reset() {
 	*x = ListRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[91]
+	mi := &file_proto_privutil_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5747,7 +5899,7 @@ func (x *ListRequest) String() string {
 func (*ListRequest) ProtoMessage() {}
 
 func (x *ListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[91]
+	mi := &file_proto_privutil_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5760,7 +5912,7 @@ func (x *ListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
 func (*ListRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{91}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *ListRequest) GetText() string {
@@ -5794,7 +5946,7 @@ type ListFreqItem struct {
 
 func (x *ListFreqItem) Reset() {
 	*x = ListFreqItem{}
-	mi := &file_proto_privutil_proto_msgTypes[92]
+	mi := &file_proto_privutil_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5806,7 +5958,7 @@ func (x *ListFreqItem) String() string {
 func (*ListFreqItem) ProtoMessage() {}
 
 func (x *ListFreqItem) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[92]
+	mi := &file_proto_privutil_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5819,7 +5971,7 @@ func (x *ListFreqItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFreqItem.ProtoReflect.Descriptor instead.
 func (*ListFreqItem) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{92}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *ListFreqItem) GetLine() string {
@@ -5849,7 +6001,7 @@ type ListResponse struct {
 
 func (x *ListResponse) Reset() {
 	*x = ListResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[93]
+	mi := &file_proto_privutil_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5861,7 +6013,7 @@ func (x *ListResponse) String() string {
 func (*ListResponse) ProtoMessage() {}
 
 func (x *ListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[93]
+	mi := &file_proto_privutil_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5874,7 +6026,7 @@ func (x *ListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
 func (*ListResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{93}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *ListResponse) GetResult() string {
@@ -5922,7 +6074,7 @@ type MathVariable struct {
 
 func (x *MathVariable) Reset() {
 	*x = MathVariable{}
-	mi := &file_proto_privutil_proto_msgTypes[94]
+	mi := &file_proto_privutil_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5934,7 +6086,7 @@ func (x *MathVariable) String() string {
 func (*MathVariable) ProtoMessage() {}
 
 func (x *MathVariable) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[94]
+	mi := &file_proto_privutil_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5947,7 +6099,7 @@ func (x *MathVariable) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MathVariable.ProtoReflect.Descriptor instead.
 func (*MathVariable) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{94}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *MathVariable) GetName() string {
@@ -5976,7 +6128,7 @@ type MathEvalRequest struct {
 
 func (x *MathEvalRequest) Reset() {
 	*x = MathEvalRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[95]
+	mi := &file_proto_privutil_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5988,7 +6140,7 @@ func (x *MathEvalRequest) String() string {
 func (*MathEvalRequest) ProtoMessage() {}
 
 func (x *MathEvalRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[95]
+	mi := &file_proto_privutil_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6001,7 +6153,7 @@ func (x *MathEvalRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MathEvalRequest.ProtoReflect.Descriptor instead.
 func (*MathEvalRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{95}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *MathEvalRequest) GetExpression() string {
@@ -6043,7 +6195,7 @@ type MathEvalResponse struct {
 
 func (x *MathEvalResponse) Reset() {
 	*x = MathEvalResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[96]
+	mi := &file_proto_privutil_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6055,7 +6207,7 @@ func (x *MathEvalResponse) String() string {
 func (*MathEvalResponse) ProtoMessage() {}
 
 func (x *MathEvalResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[96]
+	mi := &file_proto_privutil_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6068,7 +6220,7 @@ func (x *MathEvalResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MathEvalResponse.ProtoReflect.Descriptor instead.
 func (*MathEvalResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{96}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *MathEvalResponse) GetResult() string {
@@ -6103,7 +6255,7 @@ type PercentageRequest struct {
 
 func (x *PercentageRequest) Reset() {
 	*x = PercentageRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[97]
+	mi := &file_proto_privutil_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6115,7 +6267,7 @@ func (x *PercentageRequest) String() string {
 func (*PercentageRequest) ProtoMessage() {}
 
 func (x *PercentageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[97]
+	mi := &file_proto_privutil_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6128,7 +6280,7 @@ func (x *PercentageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PercentageRequest.ProtoReflect.Descriptor instead.
 func (*PercentageRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{97}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *PercentageRequest) GetMode() PercentMode {
@@ -6164,7 +6316,7 @@ type PercentageResponse struct {
 
 func (x *PercentageResponse) Reset() {
 	*x = PercentageResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[98]
+	mi := &file_proto_privutil_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6176,7 +6328,7 @@ func (x *PercentageResponse) String() string {
 func (*PercentageResponse) ProtoMessage() {}
 
 func (x *PercentageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[98]
+	mi := &file_proto_privutil_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6189,7 +6341,7 @@ func (x *PercentageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PercentageResponse.ProtoReflect.Descriptor instead.
 func (*PercentageResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{98}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{100}
 }
 
 func (x *PercentageResponse) GetResult() float64 {
@@ -6230,7 +6382,7 @@ type TempConvertRequest struct {
 
 func (x *TempConvertRequest) Reset() {
 	*x = TempConvertRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[99]
+	mi := &file_proto_privutil_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6242,7 +6394,7 @@ func (x *TempConvertRequest) String() string {
 func (*TempConvertRequest) ProtoMessage() {}
 
 func (x *TempConvertRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[99]
+	mi := &file_proto_privutil_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6255,7 +6407,7 @@ func (x *TempConvertRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TempConvertRequest.ProtoReflect.Descriptor instead.
 func (*TempConvertRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{99}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *TempConvertRequest) GetValue() float64 {
@@ -6284,7 +6436,7 @@ type TempConvertResponse struct {
 
 func (x *TempConvertResponse) Reset() {
 	*x = TempConvertResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[100]
+	mi := &file_proto_privutil_proto_msgTypes[102]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6296,7 +6448,7 @@ func (x *TempConvertResponse) String() string {
 func (*TempConvertResponse) ProtoMessage() {}
 
 func (x *TempConvertResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[100]
+	mi := &file_proto_privutil_proto_msgTypes[102]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6309,7 +6461,7 @@ func (x *TempConvertResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TempConvertResponse.ProtoReflect.Descriptor instead.
 func (*TempConvertResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{100}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{102}
 }
 
 func (x *TempConvertResponse) GetCelsius() float64 {
@@ -6351,7 +6503,7 @@ type UnitConvertRequest struct {
 
 func (x *UnitConvertRequest) Reset() {
 	*x = UnitConvertRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[101]
+	mi := &file_proto_privutil_proto_msgTypes[103]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6363,7 +6515,7 @@ func (x *UnitConvertRequest) String() string {
 func (*UnitConvertRequest) ProtoMessage() {}
 
 func (x *UnitConvertRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[101]
+	mi := &file_proto_privutil_proto_msgTypes[103]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6376,7 +6528,7 @@ func (x *UnitConvertRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnitConvertRequest.ProtoReflect.Descriptor instead.
 func (*UnitConvertRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{101}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{103}
 }
 
 func (x *UnitConvertRequest) GetValue() float64 {
@@ -6412,7 +6564,7 @@ type UnitResult struct {
 
 func (x *UnitResult) Reset() {
 	*x = UnitResult{}
-	mi := &file_proto_privutil_proto_msgTypes[102]
+	mi := &file_proto_privutil_proto_msgTypes[104]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6424,7 +6576,7 @@ func (x *UnitResult) String() string {
 func (*UnitResult) ProtoMessage() {}
 
 func (x *UnitResult) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[102]
+	mi := &file_proto_privutil_proto_msgTypes[104]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6437,7 +6589,7 @@ func (x *UnitResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnitResult.ProtoReflect.Descriptor instead.
 func (*UnitResult) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{102}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{104}
 }
 
 func (x *UnitResult) GetUnit() string {
@@ -6478,7 +6630,7 @@ type UnitConvertResponse struct {
 
 func (x *UnitConvertResponse) Reset() {
 	*x = UnitConvertResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[103]
+	mi := &file_proto_privutil_proto_msgTypes[105]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6490,7 +6642,7 @@ func (x *UnitConvertResponse) String() string {
 func (*UnitConvertResponse) ProtoMessage() {}
 
 func (x *UnitConvertResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[103]
+	mi := &file_proto_privutil_proto_msgTypes[105]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6503,7 +6655,7 @@ func (x *UnitConvertResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnitConvertResponse.ProtoReflect.Descriptor instead.
 func (*UnitConvertResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{103}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{105}
 }
 
 func (x *UnitConvertResponse) GetResults() []*UnitResult {
@@ -6530,7 +6682,7 @@ type DateDiffRequest struct {
 
 func (x *DateDiffRequest) Reset() {
 	*x = DateDiffRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[104]
+	mi := &file_proto_privutil_proto_msgTypes[106]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6542,7 +6694,7 @@ func (x *DateDiffRequest) String() string {
 func (*DateDiffRequest) ProtoMessage() {}
 
 func (x *DateDiffRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[104]
+	mi := &file_proto_privutil_proto_msgTypes[106]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6555,7 +6707,7 @@ func (x *DateDiffRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateDiffRequest.ProtoReflect.Descriptor instead.
 func (*DateDiffRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{104}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{106}
 }
 
 func (x *DateDiffRequest) GetFromDate() string {
@@ -6593,7 +6745,7 @@ type DateDiffResponse struct {
 
 func (x *DateDiffResponse) Reset() {
 	*x = DateDiffResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[105]
+	mi := &file_proto_privutil_proto_msgTypes[107]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6605,7 +6757,7 @@ func (x *DateDiffResponse) String() string {
 func (*DateDiffResponse) ProtoMessage() {}
 
 func (x *DateDiffResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[105]
+	mi := &file_proto_privutil_proto_msgTypes[107]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6618,7 +6770,7 @@ func (x *DateDiffResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateDiffResponse.ProtoReflect.Descriptor instead.
 func (*DateDiffResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{105}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{107}
 }
 
 func (x *DateDiffResponse) GetYears() int64 {
@@ -6721,7 +6873,7 @@ type LeapYearRequest struct {
 
 func (x *LeapYearRequest) Reset() {
 	*x = LeapYearRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[106]
+	mi := &file_proto_privutil_proto_msgTypes[108]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6733,7 +6885,7 @@ func (x *LeapYearRequest) String() string {
 func (*LeapYearRequest) ProtoMessage() {}
 
 func (x *LeapYearRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[106]
+	mi := &file_proto_privutil_proto_msgTypes[108]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6746,7 +6898,7 @@ func (x *LeapYearRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LeapYearRequest.ProtoReflect.Descriptor instead.
 func (*LeapYearRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{106}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{108}
 }
 
 func (x *LeapYearRequest) GetInput() string {
@@ -6766,7 +6918,7 @@ type LeapYearEntry struct {
 
 func (x *LeapYearEntry) Reset() {
 	*x = LeapYearEntry{}
-	mi := &file_proto_privutil_proto_msgTypes[107]
+	mi := &file_proto_privutil_proto_msgTypes[109]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6778,7 +6930,7 @@ func (x *LeapYearEntry) String() string {
 func (*LeapYearEntry) ProtoMessage() {}
 
 func (x *LeapYearEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[107]
+	mi := &file_proto_privutil_proto_msgTypes[109]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6791,7 +6943,7 @@ func (x *LeapYearEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LeapYearEntry.ProtoReflect.Descriptor instead.
 func (*LeapYearEntry) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{107}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{109}
 }
 
 func (x *LeapYearEntry) GetYear() int32 {
@@ -6819,7 +6971,7 @@ type LeapYearResponse struct {
 
 func (x *LeapYearResponse) Reset() {
 	*x = LeapYearResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[108]
+	mi := &file_proto_privutil_proto_msgTypes[110]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6831,7 +6983,7 @@ func (x *LeapYearResponse) String() string {
 func (*LeapYearResponse) ProtoMessage() {}
 
 func (x *LeapYearResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[108]
+	mi := &file_proto_privutil_proto_msgTypes[110]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6844,7 +6996,7 @@ func (x *LeapYearResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LeapYearResponse.ProtoReflect.Descriptor instead.
 func (*LeapYearResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{108}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{110}
 }
 
 func (x *LeapYearResponse) GetResults() []*LeapYearEntry {
@@ -6884,7 +7036,7 @@ type DateAddRequest struct {
 
 func (x *DateAddRequest) Reset() {
 	*x = DateAddRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[109]
+	mi := &file_proto_privutil_proto_msgTypes[111]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6896,7 +7048,7 @@ func (x *DateAddRequest) String() string {
 func (*DateAddRequest) ProtoMessage() {}
 
 func (x *DateAddRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[109]
+	mi := &file_proto_privutil_proto_msgTypes[111]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6909,7 +7061,7 @@ func (x *DateAddRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateAddRequest.ProtoReflect.Descriptor instead.
 func (*DateAddRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{109}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{111}
 }
 
 func (x *DateAddRequest) GetDate() string {
@@ -6984,7 +7136,7 @@ type DateAddResponse struct {
 
 func (x *DateAddResponse) Reset() {
 	*x = DateAddResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[110]
+	mi := &file_proto_privutil_proto_msgTypes[112]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6996,7 +7148,7 @@ func (x *DateAddResponse) String() string {
 func (*DateAddResponse) ProtoMessage() {}
 
 func (x *DateAddResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[110]
+	mi := &file_proto_privutil_proto_msgTypes[112]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7009,7 +7161,7 @@ func (x *DateAddResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateAddResponse.ProtoReflect.Descriptor instead.
 func (*DateAddResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{110}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{112}
 }
 
 func (x *DateAddResponse) GetIso() string {
@@ -7078,7 +7230,7 @@ type DateFormatRequest struct {
 
 func (x *DateFormatRequest) Reset() {
 	*x = DateFormatRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[111]
+	mi := &file_proto_privutil_proto_msgTypes[113]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7090,7 +7242,7 @@ func (x *DateFormatRequest) String() string {
 func (*DateFormatRequest) ProtoMessage() {}
 
 func (x *DateFormatRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[111]
+	mi := &file_proto_privutil_proto_msgTypes[113]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7103,7 +7255,7 @@ func (x *DateFormatRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateFormatRequest.ProtoReflect.Descriptor instead.
 func (*DateFormatRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{111}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{113}
 }
 
 func (x *DateFormatRequest) GetDateStr() string {
@@ -7130,7 +7282,7 @@ type DateFormatEntry struct {
 
 func (x *DateFormatEntry) Reset() {
 	*x = DateFormatEntry{}
-	mi := &file_proto_privutil_proto_msgTypes[112]
+	mi := &file_proto_privutil_proto_msgTypes[114]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7142,7 +7294,7 @@ func (x *DateFormatEntry) String() string {
 func (*DateFormatEntry) ProtoMessage() {}
 
 func (x *DateFormatEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[112]
+	mi := &file_proto_privutil_proto_msgTypes[114]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7155,7 +7307,7 @@ func (x *DateFormatEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateFormatEntry.ProtoReflect.Descriptor instead.
 func (*DateFormatEntry) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{112}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{114}
 }
 
 func (x *DateFormatEntry) GetLabel() string {
@@ -7182,7 +7334,7 @@ type DateFormatResponse struct {
 
 func (x *DateFormatResponse) Reset() {
 	*x = DateFormatResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[113]
+	mi := &file_proto_privutil_proto_msgTypes[115]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7194,7 +7346,7 @@ func (x *DateFormatResponse) String() string {
 func (*DateFormatResponse) ProtoMessage() {}
 
 func (x *DateFormatResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[113]
+	mi := &file_proto_privutil_proto_msgTypes[115]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7207,7 +7359,7 @@ func (x *DateFormatResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateFormatResponse.ProtoReflect.Descriptor instead.
 func (*DateFormatResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{113}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{115}
 }
 
 func (x *DateFormatResponse) GetFormats() []*DateFormatEntry {
@@ -7233,7 +7385,7 @@ type DateInfoRequest struct {
 
 func (x *DateInfoRequest) Reset() {
 	*x = DateInfoRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[114]
+	mi := &file_proto_privutil_proto_msgTypes[116]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7245,7 +7397,7 @@ func (x *DateInfoRequest) String() string {
 func (*DateInfoRequest) ProtoMessage() {}
 
 func (x *DateInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[114]
+	mi := &file_proto_privutil_proto_msgTypes[116]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7258,7 +7410,7 @@ func (x *DateInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateInfoRequest.ProtoReflect.Descriptor instead.
 func (*DateInfoRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{114}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{116}
 }
 
 func (x *DateInfoRequest) GetDate() string {
@@ -7291,7 +7443,7 @@ type DateInfoResponse struct {
 
 func (x *DateInfoResponse) Reset() {
 	*x = DateInfoResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[115]
+	mi := &file_proto_privutil_proto_msgTypes[117]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7303,7 +7455,7 @@ func (x *DateInfoResponse) String() string {
 func (*DateInfoResponse) ProtoMessage() {}
 
 func (x *DateInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[115]
+	mi := &file_proto_privutil_proto_msgTypes[117]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7316,7 +7468,7 @@ func (x *DateInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateInfoResponse.ProtoReflect.Descriptor instead.
 func (*DateInfoResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{115}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{117}
 }
 
 func (x *DateInfoResponse) GetWeekday() string {
@@ -7434,7 +7586,7 @@ type QueryParam struct {
 
 func (x *QueryParam) Reset() {
 	*x = QueryParam{}
-	mi := &file_proto_privutil_proto_msgTypes[116]
+	mi := &file_proto_privutil_proto_msgTypes[118]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7446,7 +7598,7 @@ func (x *QueryParam) String() string {
 func (*QueryParam) ProtoMessage() {}
 
 func (x *QueryParam) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[116]
+	mi := &file_proto_privutil_proto_msgTypes[118]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7459,7 +7611,7 @@ func (x *QueryParam) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QueryParam.ProtoReflect.Descriptor instead.
 func (*QueryParam) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{116}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{118}
 }
 
 func (x *QueryParam) GetKey() string {
@@ -7485,7 +7637,7 @@ type UrlParseRequest struct {
 
 func (x *UrlParseRequest) Reset() {
 	*x = UrlParseRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[117]
+	mi := &file_proto_privutil_proto_msgTypes[119]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7497,7 +7649,7 @@ func (x *UrlParseRequest) String() string {
 func (*UrlParseRequest) ProtoMessage() {}
 
 func (x *UrlParseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[117]
+	mi := &file_proto_privutil_proto_msgTypes[119]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7510,7 +7662,7 @@ func (x *UrlParseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UrlParseRequest.ProtoReflect.Descriptor instead.
 func (*UrlParseRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{117}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{119}
 }
 
 func (x *UrlParseRequest) GetUrl() string {
@@ -7541,7 +7693,7 @@ type UrlParseResponse struct {
 
 func (x *UrlParseResponse) Reset() {
 	*x = UrlParseResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[118]
+	mi := &file_proto_privutil_proto_msgTypes[120]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7553,7 +7705,7 @@ func (x *UrlParseResponse) String() string {
 func (*UrlParseResponse) ProtoMessage() {}
 
 func (x *UrlParseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[118]
+	mi := &file_proto_privutil_proto_msgTypes[120]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7566,7 +7718,7 @@ func (x *UrlParseResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UrlParseResponse.ProtoReflect.Descriptor instead.
 func (*UrlParseResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{118}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{120}
 }
 
 func (x *UrlParseResponse) GetScheme() string {
@@ -7669,7 +7821,7 @@ type UserAgentParseRequest struct {
 
 func (x *UserAgentParseRequest) Reset() {
 	*x = UserAgentParseRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[119]
+	mi := &file_proto_privutil_proto_msgTypes[121]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7681,7 +7833,7 @@ func (x *UserAgentParseRequest) String() string {
 func (*UserAgentParseRequest) ProtoMessage() {}
 
 func (x *UserAgentParseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[119]
+	mi := &file_proto_privutil_proto_msgTypes[121]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7694,7 +7846,7 @@ func (x *UserAgentParseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserAgentParseRequest.ProtoReflect.Descriptor instead.
 func (*UserAgentParseRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{119}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{121}
 }
 
 func (x *UserAgentParseRequest) GetUserAgent() string {
@@ -7714,7 +7866,7 @@ type UAParsedField struct {
 
 func (x *UAParsedField) Reset() {
 	*x = UAParsedField{}
-	mi := &file_proto_privutil_proto_msgTypes[120]
+	mi := &file_proto_privutil_proto_msgTypes[122]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7726,7 +7878,7 @@ func (x *UAParsedField) String() string {
 func (*UAParsedField) ProtoMessage() {}
 
 func (x *UAParsedField) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[120]
+	mi := &file_proto_privutil_proto_msgTypes[122]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7739,7 +7891,7 @@ func (x *UAParsedField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UAParsedField.ProtoReflect.Descriptor instead.
 func (*UAParsedField) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{120}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{122}
 }
 
 func (x *UAParsedField) GetLabel() string {
@@ -7775,7 +7927,7 @@ type UserAgentParseResponse struct {
 
 func (x *UserAgentParseResponse) Reset() {
 	*x = UserAgentParseResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[121]
+	mi := &file_proto_privutil_proto_msgTypes[123]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7787,7 +7939,7 @@ func (x *UserAgentParseResponse) String() string {
 func (*UserAgentParseResponse) ProtoMessage() {}
 
 func (x *UserAgentParseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[121]
+	mi := &file_proto_privutil_proto_msgTypes[123]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7800,7 +7952,7 @@ func (x *UserAgentParseResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserAgentParseResponse.ProtoReflect.Descriptor instead.
 func (*UserAgentParseResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{121}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *UserAgentParseResponse) GetBrowserName() string {
@@ -7890,7 +8042,7 @@ type HttpStatusSearchRequest struct {
 
 func (x *HttpStatusSearchRequest) Reset() {
 	*x = HttpStatusSearchRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[122]
+	mi := &file_proto_privutil_proto_msgTypes[124]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7902,7 +8054,7 @@ func (x *HttpStatusSearchRequest) String() string {
 func (*HttpStatusSearchRequest) ProtoMessage() {}
 
 func (x *HttpStatusSearchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[122]
+	mi := &file_proto_privutil_proto_msgTypes[124]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7915,7 +8067,7 @@ func (x *HttpStatusSearchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HttpStatusSearchRequest.ProtoReflect.Descriptor instead.
 func (*HttpStatusSearchRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{122}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *HttpStatusSearchRequest) GetQuery() string {
@@ -7944,7 +8096,7 @@ type HttpStatusEntry struct {
 
 func (x *HttpStatusEntry) Reset() {
 	*x = HttpStatusEntry{}
-	mi := &file_proto_privutil_proto_msgTypes[123]
+	mi := &file_proto_privutil_proto_msgTypes[125]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7956,7 +8108,7 @@ func (x *HttpStatusEntry) String() string {
 func (*HttpStatusEntry) ProtoMessage() {}
 
 func (x *HttpStatusEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[123]
+	mi := &file_proto_privutil_proto_msgTypes[125]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7969,7 +8121,7 @@ func (x *HttpStatusEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HttpStatusEntry.ProtoReflect.Descriptor instead.
 func (*HttpStatusEntry) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{123}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{125}
 }
 
 func (x *HttpStatusEntry) GetCode() int32 {
@@ -8009,7 +8161,7 @@ type HttpStatusSearchResponse struct {
 
 func (x *HttpStatusSearchResponse) Reset() {
 	*x = HttpStatusSearchResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[124]
+	mi := &file_proto_privutil_proto_msgTypes[126]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8021,7 +8173,7 @@ func (x *HttpStatusSearchResponse) String() string {
 func (*HttpStatusSearchResponse) ProtoMessage() {}
 
 func (x *HttpStatusSearchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[124]
+	mi := &file_proto_privutil_proto_msgTypes[126]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8034,7 +8186,7 @@ func (x *HttpStatusSearchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HttpStatusSearchResponse.ProtoReflect.Descriptor instead.
 func (*HttpStatusSearchResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{124}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{126}
 }
 
 func (x *HttpStatusSearchResponse) GetEntries() []*HttpStatusEntry {
@@ -8053,7 +8205,7 @@ type MimeLookupRequest struct {
 
 func (x *MimeLookupRequest) Reset() {
 	*x = MimeLookupRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[125]
+	mi := &file_proto_privutil_proto_msgTypes[127]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8065,7 +8217,7 @@ func (x *MimeLookupRequest) String() string {
 func (*MimeLookupRequest) ProtoMessage() {}
 
 func (x *MimeLookupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[125]
+	mi := &file_proto_privutil_proto_msgTypes[127]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8078,7 +8230,7 @@ func (x *MimeLookupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MimeLookupRequest.ProtoReflect.Descriptor instead.
 func (*MimeLookupRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{125}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{127}
 }
 
 func (x *MimeLookupRequest) GetQuery() string {
@@ -8100,7 +8252,7 @@ type MimeEntry struct {
 
 func (x *MimeEntry) Reset() {
 	*x = MimeEntry{}
-	mi := &file_proto_privutil_proto_msgTypes[126]
+	mi := &file_proto_privutil_proto_msgTypes[128]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8112,7 +8264,7 @@ func (x *MimeEntry) String() string {
 func (*MimeEntry) ProtoMessage() {}
 
 func (x *MimeEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[126]
+	mi := &file_proto_privutil_proto_msgTypes[128]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8125,7 +8277,7 @@ func (x *MimeEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MimeEntry.ProtoReflect.Descriptor instead.
 func (*MimeEntry) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{126}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{128}
 }
 
 func (x *MimeEntry) GetMimeType() string {
@@ -8166,7 +8318,7 @@ type MimeLookupResponse struct {
 
 func (x *MimeLookupResponse) Reset() {
 	*x = MimeLookupResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[127]
+	mi := &file_proto_privutil_proto_msgTypes[129]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8178,7 +8330,7 @@ func (x *MimeLookupResponse) String() string {
 func (*MimeLookupResponse) ProtoMessage() {}
 
 func (x *MimeLookupResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[127]
+	mi := &file_proto_privutil_proto_msgTypes[129]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8191,7 +8343,7 @@ func (x *MimeLookupResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MimeLookupResponse.ProtoReflect.Descriptor instead.
 func (*MimeLookupResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{127}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{129}
 }
 
 func (x *MimeLookupResponse) GetEntries() []*MimeEntry {
@@ -8217,7 +8369,7 @@ type DockerRunToComposeRequest struct {
 
 func (x *DockerRunToComposeRequest) Reset() {
 	*x = DockerRunToComposeRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[128]
+	mi := &file_proto_privutil_proto_msgTypes[130]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8229,7 +8381,7 @@ func (x *DockerRunToComposeRequest) String() string {
 func (*DockerRunToComposeRequest) ProtoMessage() {}
 
 func (x *DockerRunToComposeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[128]
+	mi := &file_proto_privutil_proto_msgTypes[130]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8242,7 +8394,7 @@ func (x *DockerRunToComposeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DockerRunToComposeRequest.ProtoReflect.Descriptor instead.
 func (*DockerRunToComposeRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{128}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{130}
 }
 
 func (x *DockerRunToComposeRequest) GetCommand() string {
@@ -8265,7 +8417,7 @@ type DockerRunToComposeResponse struct {
 
 func (x *DockerRunToComposeResponse) Reset() {
 	*x = DockerRunToComposeResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[129]
+	mi := &file_proto_privutil_proto_msgTypes[131]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8277,7 +8429,7 @@ func (x *DockerRunToComposeResponse) String() string {
 func (*DockerRunToComposeResponse) ProtoMessage() {}
 
 func (x *DockerRunToComposeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[129]
+	mi := &file_proto_privutil_proto_msgTypes[131]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8290,7 +8442,7 @@ func (x *DockerRunToComposeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DockerRunToComposeResponse.ProtoReflect.Descriptor instead.
 func (*DockerRunToComposeResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{129}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{131}
 }
 
 func (x *DockerRunToComposeResponse) GetComposeYaml() string {
@@ -8338,7 +8490,7 @@ type GitCheatSheetRequest struct {
 
 func (x *GitCheatSheetRequest) Reset() {
 	*x = GitCheatSheetRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[130]
+	mi := &file_proto_privutil_proto_msgTypes[132]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8350,7 +8502,7 @@ func (x *GitCheatSheetRequest) String() string {
 func (*GitCheatSheetRequest) ProtoMessage() {}
 
 func (x *GitCheatSheetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[130]
+	mi := &file_proto_privutil_proto_msgTypes[132]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8363,7 +8515,7 @@ func (x *GitCheatSheetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GitCheatSheetRequest.ProtoReflect.Descriptor instead.
 func (*GitCheatSheetRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{130}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{132}
 }
 
 func (x *GitCheatSheetRequest) GetQuery() string {
@@ -8391,7 +8543,7 @@ type GitCmd struct {
 
 func (x *GitCmd) Reset() {
 	*x = GitCmd{}
-	mi := &file_proto_privutil_proto_msgTypes[131]
+	mi := &file_proto_privutil_proto_msgTypes[133]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8403,7 +8555,7 @@ func (x *GitCmd) String() string {
 func (*GitCmd) ProtoMessage() {}
 
 func (x *GitCmd) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[131]
+	mi := &file_proto_privutil_proto_msgTypes[133]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8416,7 +8568,7 @@ func (x *GitCmd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GitCmd.ProtoReflect.Descriptor instead.
 func (*GitCmd) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{131}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{133}
 }
 
 func (x *GitCmd) GetCommand() string {
@@ -8450,7 +8602,7 @@ type GitCmdCategory struct {
 
 func (x *GitCmdCategory) Reset() {
 	*x = GitCmdCategory{}
-	mi := &file_proto_privutil_proto_msgTypes[132]
+	mi := &file_proto_privutil_proto_msgTypes[134]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8462,7 +8614,7 @@ func (x *GitCmdCategory) String() string {
 func (*GitCmdCategory) ProtoMessage() {}
 
 func (x *GitCmdCategory) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[132]
+	mi := &file_proto_privutil_proto_msgTypes[134]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8475,7 +8627,7 @@ func (x *GitCmdCategory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GitCmdCategory.ProtoReflect.Descriptor instead.
 func (*GitCmdCategory) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{132}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{134}
 }
 
 func (x *GitCmdCategory) GetName() string {
@@ -8501,7 +8653,7 @@ type GitCheatSheetResponse struct {
 
 func (x *GitCheatSheetResponse) Reset() {
 	*x = GitCheatSheetResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[133]
+	mi := &file_proto_privutil_proto_msgTypes[135]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8513,7 +8665,7 @@ func (x *GitCheatSheetResponse) String() string {
 func (*GitCheatSheetResponse) ProtoMessage() {}
 
 func (x *GitCheatSheetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[133]
+	mi := &file_proto_privutil_proto_msgTypes[135]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8526,7 +8678,7 @@ func (x *GitCheatSheetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GitCheatSheetResponse.ProtoReflect.Descriptor instead.
 func (*GitCheatSheetResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{133}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{135}
 }
 
 func (x *GitCheatSheetResponse) GetCategories() []*GitCmdCategory {
@@ -8556,7 +8708,7 @@ type SvgOptimizeRequest struct {
 
 func (x *SvgOptimizeRequest) Reset() {
 	*x = SvgOptimizeRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[134]
+	mi := &file_proto_privutil_proto_msgTypes[136]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8568,7 +8720,7 @@ func (x *SvgOptimizeRequest) String() string {
 func (*SvgOptimizeRequest) ProtoMessage() {}
 
 func (x *SvgOptimizeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[134]
+	mi := &file_proto_privutil_proto_msgTypes[136]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8581,7 +8733,7 @@ func (x *SvgOptimizeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SvgOptimizeRequest.ProtoReflect.Descriptor instead.
 func (*SvgOptimizeRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{134}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{136}
 }
 
 func (x *SvgOptimizeRequest) GetSvg() string {
@@ -8675,7 +8827,7 @@ type SvgOptimizeResponse struct {
 
 func (x *SvgOptimizeResponse) Reset() {
 	*x = SvgOptimizeResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[135]
+	mi := &file_proto_privutil_proto_msgTypes[137]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8687,7 +8839,7 @@ func (x *SvgOptimizeResponse) String() string {
 func (*SvgOptimizeResponse) ProtoMessage() {}
 
 func (x *SvgOptimizeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[135]
+	mi := &file_proto_privutil_proto_msgTypes[137]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8700,7 +8852,7 @@ func (x *SvgOptimizeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SvgOptimizeResponse.ProtoReflect.Descriptor instead.
 func (*SvgOptimizeResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{135}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{137}
 }
 
 func (x *SvgOptimizeResponse) GetResult() string {
@@ -8755,7 +8907,7 @@ type ExifReadRequest struct {
 
 func (x *ExifReadRequest) Reset() {
 	*x = ExifReadRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[136]
+	mi := &file_proto_privutil_proto_msgTypes[138]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8767,7 +8919,7 @@ func (x *ExifReadRequest) String() string {
 func (*ExifReadRequest) ProtoMessage() {}
 
 func (x *ExifReadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[136]
+	mi := &file_proto_privutil_proto_msgTypes[138]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8780,7 +8932,7 @@ func (x *ExifReadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExifReadRequest.ProtoReflect.Descriptor instead.
 func (*ExifReadRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{136}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{138}
 }
 
 func (x *ExifReadRequest) GetData() []byte {
@@ -8808,7 +8960,7 @@ type ExifField struct {
 
 func (x *ExifField) Reset() {
 	*x = ExifField{}
-	mi := &file_proto_privutil_proto_msgTypes[137]
+	mi := &file_proto_privutil_proto_msgTypes[139]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8820,7 +8972,7 @@ func (x *ExifField) String() string {
 func (*ExifField) ProtoMessage() {}
 
 func (x *ExifField) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[137]
+	mi := &file_proto_privutil_proto_msgTypes[139]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8833,7 +8985,7 @@ func (x *ExifField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExifField.ProtoReflect.Descriptor instead.
 func (*ExifField) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{137}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{139}
 }
 
 func (x *ExifField) GetLabel() string {
@@ -8873,7 +9025,7 @@ type ExifReadResponse struct {
 
 func (x *ExifReadResponse) Reset() {
 	*x = ExifReadResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[138]
+	mi := &file_proto_privutil_proto_msgTypes[140]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8885,7 +9037,7 @@ func (x *ExifReadResponse) String() string {
 func (*ExifReadResponse) ProtoMessage() {}
 
 func (x *ExifReadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[138]
+	mi := &file_proto_privutil_proto_msgTypes[140]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8898,7 +9050,7 @@ func (x *ExifReadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExifReadResponse.ProtoReflect.Descriptor instead.
 func (*ExifReadResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{138}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{140}
 }
 
 func (x *ExifReadResponse) GetFormat() string {
@@ -8968,7 +9120,7 @@ type FileToBase64Request struct {
 
 func (x *FileToBase64Request) Reset() {
 	*x = FileToBase64Request{}
-	mi := &file_proto_privutil_proto_msgTypes[139]
+	mi := &file_proto_privutil_proto_msgTypes[141]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8980,7 +9132,7 @@ func (x *FileToBase64Request) String() string {
 func (*FileToBase64Request) ProtoMessage() {}
 
 func (x *FileToBase64Request) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[139]
+	mi := &file_proto_privutil_proto_msgTypes[141]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8993,7 +9145,7 @@ func (x *FileToBase64Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FileToBase64Request.ProtoReflect.Descriptor instead.
 func (*FileToBase64Request) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{139}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{141}
 }
 
 func (x *FileToBase64Request) GetData() []byte {
@@ -9030,7 +9182,7 @@ type FileToBase64Response struct {
 
 func (x *FileToBase64Response) Reset() {
 	*x = FileToBase64Response{}
-	mi := &file_proto_privutil_proto_msgTypes[140]
+	mi := &file_proto_privutil_proto_msgTypes[142]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9042,7 +9194,7 @@ func (x *FileToBase64Response) String() string {
 func (*FileToBase64Response) ProtoMessage() {}
 
 func (x *FileToBase64Response) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[140]
+	mi := &file_proto_privutil_proto_msgTypes[142]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9055,7 +9207,7 @@ func (x *FileToBase64Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FileToBase64Response.ProtoReflect.Descriptor instead.
 func (*FileToBase64Response) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{140}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{142}
 }
 
 func (x *FileToBase64Response) GetEncoded() string {
@@ -9103,7 +9255,7 @@ type Base64ToFileRequest struct {
 
 func (x *Base64ToFileRequest) Reset() {
 	*x = Base64ToFileRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[141]
+	mi := &file_proto_privutil_proto_msgTypes[143]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9115,7 +9267,7 @@ func (x *Base64ToFileRequest) String() string {
 func (*Base64ToFileRequest) ProtoMessage() {}
 
 func (x *Base64ToFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[141]
+	mi := &file_proto_privutil_proto_msgTypes[143]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9128,7 +9280,7 @@ func (x *Base64ToFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Base64ToFileRequest.ProtoReflect.Descriptor instead.
 func (*Base64ToFileRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{141}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{143}
 }
 
 func (x *Base64ToFileRequest) GetEncoded() string {
@@ -9158,7 +9310,7 @@ type Base64ToFileResponse struct {
 
 func (x *Base64ToFileResponse) Reset() {
 	*x = Base64ToFileResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[142]
+	mi := &file_proto_privutil_proto_msgTypes[144]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9170,7 +9322,7 @@ func (x *Base64ToFileResponse) String() string {
 func (*Base64ToFileResponse) ProtoMessage() {}
 
 func (x *Base64ToFileResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[142]
+	mi := &file_proto_privutil_proto_msgTypes[144]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9183,7 +9335,7 @@ func (x *Base64ToFileResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Base64ToFileResponse.ProtoReflect.Descriptor instead.
 func (*Base64ToFileResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{142}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{144}
 }
 
 func (x *Base64ToFileResponse) GetData() []byte {
@@ -9231,7 +9383,7 @@ type TokenCountRequest struct {
 
 func (x *TokenCountRequest) Reset() {
 	*x = TokenCountRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[143]
+	mi := &file_proto_privutil_proto_msgTypes[145]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9243,7 +9395,7 @@ func (x *TokenCountRequest) String() string {
 func (*TokenCountRequest) ProtoMessage() {}
 
 func (x *TokenCountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[143]
+	mi := &file_proto_privutil_proto_msgTypes[145]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9256,7 +9408,7 @@ func (x *TokenCountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenCountRequest.ProtoReflect.Descriptor instead.
 func (*TokenCountRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{143}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{145}
 }
 
 func (x *TokenCountRequest) GetText() string {
@@ -9288,7 +9440,7 @@ type TokenStrategy struct {
 
 func (x *TokenStrategy) Reset() {
 	*x = TokenStrategy{}
-	mi := &file_proto_privutil_proto_msgTypes[144]
+	mi := &file_proto_privutil_proto_msgTypes[146]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9300,7 +9452,7 @@ func (x *TokenStrategy) String() string {
 func (*TokenStrategy) ProtoMessage() {}
 
 func (x *TokenStrategy) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[144]
+	mi := &file_proto_privutil_proto_msgTypes[146]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9313,7 +9465,7 @@ func (x *TokenStrategy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenStrategy.ProtoReflect.Descriptor instead.
 func (*TokenStrategy) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{144}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{146}
 }
 
 func (x *TokenStrategy) GetName() string {
@@ -9377,7 +9529,7 @@ type TokenCountResponse struct {
 
 func (x *TokenCountResponse) Reset() {
 	*x = TokenCountResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[145]
+	mi := &file_proto_privutil_proto_msgTypes[147]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9389,7 +9541,7 @@ func (x *TokenCountResponse) String() string {
 func (*TokenCountResponse) ProtoMessage() {}
 
 func (x *TokenCountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[145]
+	mi := &file_proto_privutil_proto_msgTypes[147]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9402,7 +9554,7 @@ func (x *TokenCountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenCountResponse.ProtoReflect.Descriptor instead.
 func (*TokenCountResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{145}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{147}
 }
 
 func (x *TokenCountResponse) GetStrategies() []*TokenStrategy {
@@ -9443,7 +9595,7 @@ type SpellCheckRequest struct {
 
 func (x *SpellCheckRequest) Reset() {
 	*x = SpellCheckRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[146]
+	mi := &file_proto_privutil_proto_msgTypes[148]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9455,7 +9607,7 @@ func (x *SpellCheckRequest) String() string {
 func (*SpellCheckRequest) ProtoMessage() {}
 
 func (x *SpellCheckRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[146]
+	mi := &file_proto_privutil_proto_msgTypes[148]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9468,7 +9620,7 @@ func (x *SpellCheckRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpellCheckRequest.ProtoReflect.Descriptor instead.
 func (*SpellCheckRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{146}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{148}
 }
 
 func (x *SpellCheckRequest) GetText() string {
@@ -9503,7 +9655,7 @@ type SpellIssue struct {
 
 func (x *SpellIssue) Reset() {
 	*x = SpellIssue{}
-	mi := &file_proto_privutil_proto_msgTypes[147]
+	mi := &file_proto_privutil_proto_msgTypes[149]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9515,7 +9667,7 @@ func (x *SpellIssue) String() string {
 func (*SpellIssue) ProtoMessage() {}
 
 func (x *SpellIssue) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[147]
+	mi := &file_proto_privutil_proto_msgTypes[149]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9528,7 +9680,7 @@ func (x *SpellIssue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpellIssue.ProtoReflect.Descriptor instead.
 func (*SpellIssue) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{147}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{149}
 }
 
 func (x *SpellIssue) GetId() string {
@@ -9613,7 +9765,7 @@ type SpellCheckResponse struct {
 
 func (x *SpellCheckResponse) Reset() {
 	*x = SpellCheckResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[148]
+	mi := &file_proto_privutil_proto_msgTypes[150]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9625,7 +9777,7 @@ func (x *SpellCheckResponse) String() string {
 func (*SpellCheckResponse) ProtoMessage() {}
 
 func (x *SpellCheckResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[148]
+	mi := &file_proto_privutil_proto_msgTypes[150]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9638,7 +9790,7 @@ func (x *SpellCheckResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpellCheckResponse.ProtoReflect.Descriptor instead.
 func (*SpellCheckResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{148}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{150}
 }
 
 func (x *SpellCheckResponse) GetIssues() []*SpellIssue {
@@ -9677,7 +9829,7 @@ type SpellLanguagesRequest struct {
 
 func (x *SpellLanguagesRequest) Reset() {
 	*x = SpellLanguagesRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[149]
+	mi := &file_proto_privutil_proto_msgTypes[151]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9689,7 +9841,7 @@ func (x *SpellLanguagesRequest) String() string {
 func (*SpellLanguagesRequest) ProtoMessage() {}
 
 func (x *SpellLanguagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[149]
+	mi := &file_proto_privutil_proto_msgTypes[151]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9702,7 +9854,7 @@ func (x *SpellLanguagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpellLanguagesRequest.ProtoReflect.Descriptor instead.
 func (*SpellLanguagesRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{149}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{151}
 }
 
 type SpellLanguage struct {
@@ -9715,7 +9867,7 @@ type SpellLanguage struct {
 
 func (x *SpellLanguage) Reset() {
 	*x = SpellLanguage{}
-	mi := &file_proto_privutil_proto_msgTypes[150]
+	mi := &file_proto_privutil_proto_msgTypes[152]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9727,7 +9879,7 @@ func (x *SpellLanguage) String() string {
 func (*SpellLanguage) ProtoMessage() {}
 
 func (x *SpellLanguage) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[150]
+	mi := &file_proto_privutil_proto_msgTypes[152]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9740,7 +9892,7 @@ func (x *SpellLanguage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpellLanguage.ProtoReflect.Descriptor instead.
 func (*SpellLanguage) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{150}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{152}
 }
 
 func (x *SpellLanguage) GetCode() string {
@@ -9766,7 +9918,7 @@ type SpellLanguagesResponse struct {
 
 func (x *SpellLanguagesResponse) Reset() {
 	*x = SpellLanguagesResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[151]
+	mi := &file_proto_privutil_proto_msgTypes[153]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9778,7 +9930,7 @@ func (x *SpellLanguagesResponse) String() string {
 func (*SpellLanguagesResponse) ProtoMessage() {}
 
 func (x *SpellLanguagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[151]
+	mi := &file_proto_privutil_proto_msgTypes[153]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9791,7 +9943,7 @@ func (x *SpellLanguagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpellLanguagesResponse.ProtoReflect.Descriptor instead.
 func (*SpellLanguagesResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{151}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{153}
 }
 
 func (x *SpellLanguagesResponse) GetLanguages() []*SpellLanguage {
@@ -9811,7 +9963,7 @@ type GetCustomWordsRequest struct {
 
 func (x *GetCustomWordsRequest) Reset() {
 	*x = GetCustomWordsRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[152]
+	mi := &file_proto_privutil_proto_msgTypes[154]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9823,7 +9975,7 @@ func (x *GetCustomWordsRequest) String() string {
 func (*GetCustomWordsRequest) ProtoMessage() {}
 
 func (x *GetCustomWordsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[152]
+	mi := &file_proto_privutil_proto_msgTypes[154]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9836,7 +9988,7 @@ func (x *GetCustomWordsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCustomWordsRequest.ProtoReflect.Descriptor instead.
 func (*GetCustomWordsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{152}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{154}
 }
 
 type AddCustomWordsRequest struct {
@@ -9848,7 +10000,7 @@ type AddCustomWordsRequest struct {
 
 func (x *AddCustomWordsRequest) Reset() {
 	*x = AddCustomWordsRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[153]
+	mi := &file_proto_privutil_proto_msgTypes[155]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9860,7 +10012,7 @@ func (x *AddCustomWordsRequest) String() string {
 func (*AddCustomWordsRequest) ProtoMessage() {}
 
 func (x *AddCustomWordsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[153]
+	mi := &file_proto_privutil_proto_msgTypes[155]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9873,7 +10025,7 @@ func (x *AddCustomWordsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddCustomWordsRequest.ProtoReflect.Descriptor instead.
 func (*AddCustomWordsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{153}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{155}
 }
 
 func (x *AddCustomWordsRequest) GetWords() []string {
@@ -9892,7 +10044,7 @@ type RemoveCustomWordRequest struct {
 
 func (x *RemoveCustomWordRequest) Reset() {
 	*x = RemoveCustomWordRequest{}
-	mi := &file_proto_privutil_proto_msgTypes[154]
+	mi := &file_proto_privutil_proto_msgTypes[156]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9904,7 +10056,7 @@ func (x *RemoveCustomWordRequest) String() string {
 func (*RemoveCustomWordRequest) ProtoMessage() {}
 
 func (x *RemoveCustomWordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[154]
+	mi := &file_proto_privutil_proto_msgTypes[156]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9917,7 +10069,7 @@ func (x *RemoveCustomWordRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveCustomWordRequest.ProtoReflect.Descriptor instead.
 func (*RemoveCustomWordRequest) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{154}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{156}
 }
 
 func (x *RemoveCustomWordRequest) GetWord() string {
@@ -9937,7 +10089,7 @@ type CustomWordsResponse struct {
 
 func (x *CustomWordsResponse) Reset() {
 	*x = CustomWordsResponse{}
-	mi := &file_proto_privutil_proto_msgTypes[155]
+	mi := &file_proto_privutil_proto_msgTypes[157]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9949,7 +10101,7 @@ func (x *CustomWordsResponse) String() string {
 func (*CustomWordsResponse) ProtoMessage() {}
 
 func (x *CustomWordsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_privutil_proto_msgTypes[155]
+	mi := &file_proto_privutil_proto_msgTypes[157]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9962,7 +10114,7 @@ func (x *CustomWordsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomWordsResponse.ProtoReflect.Descriptor instead.
 func (*CustomWordsResponse) Descriptor() ([]byte, []int) {
-	return file_proto_privutil_proto_rawDescGZIP(), []int{155}
+	return file_proto_privutil_proto_rawDescGZIP(), []int{157}
 }
 
 func (x *CustomWordsResponse) GetWords() []string {
@@ -9988,7 +10140,19 @@ const file_proto_privutil_proto_rawDesc = "" +
 	"\x05text1\x18\x01 \x01(\tR\x05text1\x12\x14\n" +
 	"\x05text2\x18\x02 \x01(\tR\x05text2\"+\n" +
 	"\fDiffResponse\x12\x1b\n" +
-	"\tdiff_html\x18\x01 \x01(\tR\bdiffHtml\"5\n" +
+	"\tdiff_html\x18\x01 \x01(\tR\bdiffHtml\">\n" +
+	"\x10DiffFilesRequest\x12\x14\n" +
+	"\x05file1\x18\x01 \x01(\fR\x05file1\x12\x14\n" +
+	"\x05file2\x18\x02 \x01(\fR\x05file2\"\x83\x02\n" +
+	"\x11DiffFilesResponse\x12\x17\n" +
+	"\ais_text\x18\x01 \x01(\bR\x06isText\x12\x1b\n" +
+	"\tdiff_html\x18\x02 \x01(\tR\bdiffHtml\x12\x1c\n" +
+	"\tchecksum1\x18\x03 \x01(\tR\tchecksum1\x12\x1c\n" +
+	"\tchecksum2\x18\x04 \x01(\tR\tchecksum2\x12'\n" +
+	"\x0fchecksums_match\x18\x05 \x01(\bR\x0echecksumsMatch\x12#\n" +
+	"\rchecksum_algo\x18\x06 \x01(\tR\fchecksumAlgo\x12\x18\n" +
+	"\amessage\x18\a \x01(\tR\amessage\x12\x14\n" +
+	"\x05error\x18\b \x01(\tR\x05error\"5\n" +
 	"\rBase64Request\x12\x12\n" +
 	"\x04text\x18\x01 \x01(\tR\x04text\x12\x10\n" +
 	"\x03raw\x18\x03 \x01(\fR\x03raw\"k\n" +
@@ -10757,9 +10921,10 @@ const file_proto_privutil_proto_rawDesc = "" +
 	"\tUNIT_AREA\x10\x03\x12\x0f\n" +
 	"\vUNIT_VOLUME\x10\x04\x12\x0e\n" +
 	"\n" +
-	"UNIT_SPEED\x10\x052\xc0+\n" +
+	"UNIT_SPEED\x10\x052\x88,\n" +
 	"\x0fPrivUtilService\x127\n" +
-	"\x04Diff\x12\x15.privutil.DiffRequest\x1a\x16.privutil.DiffResponse\"\x00\x12C\n" +
+	"\x04Diff\x12\x15.privutil.DiffRequest\x1a\x16.privutil.DiffResponse\"\x00\x12F\n" +
+	"\tDiffFiles\x12\x1a.privutil.DiffFilesRequest\x1a\x1b.privutil.DiffFilesResponse\"\x00\x12C\n" +
 	"\fBase64Encode\x12\x17.privutil.Base64Request\x1a\x18.privutil.Base64Response\"\x00\x12C\n" +
 	"\fBase64Decode\x12\x17.privutil.Base64Request\x1a\x18.privutil.Base64Response\"\x00\x12I\n" +
 	"\n" +
@@ -10858,7 +11023,7 @@ func file_proto_privutil_proto_rawDescGZIP() []byte {
 }
 
 var file_proto_privutil_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_proto_privutil_proto_msgTypes = make([]protoimpl.MessageInfo, 156)
+var file_proto_privutil_proto_msgTypes = make([]protoimpl.MessageInfo, 158)
 var file_proto_privutil_proto_goTypes = []any{
 	(DataFormat)(0),                    // 0: privutil.DataFormat
 	(TextAction)(0),                    // 1: privutil.TextAction
@@ -10867,341 +11032,345 @@ var file_proto_privutil_proto_goTypes = []any{
 	(UnitCategory)(0),                  // 4: privutil.UnitCategory
 	(*DiffRequest)(nil),                // 5: privutil.DiffRequest
 	(*DiffResponse)(nil),               // 6: privutil.DiffResponse
-	(*Base64Request)(nil),              // 7: privutil.Base64Request
-	(*Base64Response)(nil),             // 8: privutil.Base64Response
-	(*JsonFormatRequest)(nil),          // 9: privutil.JsonFormatRequest
-	(*JsonFormatResponse)(nil),         // 10: privutil.JsonFormatResponse
-	(*ConvertRequest)(nil),             // 11: privutil.ConvertRequest
-	(*ConvertResponse)(nil),            // 12: privutil.ConvertResponse
-	(*ValidateRequest)(nil),            // 13: privutil.ValidateRequest
-	(*ValidateResponse)(nil),           // 14: privutil.ValidateResponse
-	(*UuidRequest)(nil),                // 15: privutil.UuidRequest
-	(*UuidResponse)(nil),               // 16: privutil.UuidResponse
-	(*LoremRequest)(nil),               // 17: privutil.LoremRequest
-	(*LoremResponse)(nil),              // 18: privutil.LoremResponse
-	(*HashRequest)(nil),                // 19: privutil.HashRequest
-	(*HashResponse)(nil),               // 20: privutil.HashResponse
-	(*TextRequest)(nil),                // 21: privutil.TextRequest
-	(*TextResponse)(nil),               // 22: privutil.TextResponse
-	(*TimeRequest)(nil),                // 23: privutil.TimeRequest
-	(*TimeResponse)(nil),               // 24: privutil.TimeResponse
-	(*JwtRequest)(nil),                 // 25: privutil.JwtRequest
-	(*JwtResponse)(nil),                // 26: privutil.JwtResponse
-	(*RegexRequest)(nil),               // 27: privutil.RegexRequest
-	(*RegexResponse)(nil),              // 28: privutil.RegexResponse
-	(*JsonToGoRequest)(nil),            // 29: privutil.JsonToGoRequest
-	(*JsonToGoResponse)(nil),           // 30: privutil.JsonToGoResponse
-	(*CronRequest)(nil),                // 31: privutil.CronRequest
-	(*CronResponse)(nil),               // 32: privutil.CronResponse
-	(*CertRequest)(nil),                // 33: privutil.CertRequest
-	(*CertResponse)(nil),               // 34: privutil.CertResponse
-	(*ColorRequest)(nil),               // 35: privutil.ColorRequest
-	(*ColorResponse)(nil),              // 36: privutil.ColorResponse
-	(*CaseRequest)(nil),                // 37: privutil.CaseRequest
-	(*CaseResponse)(nil),               // 38: privutil.CaseResponse
-	(*EscapeRequest)(nil),              // 39: privutil.EscapeRequest
-	(*EscapeResponse)(nil),             // 40: privutil.EscapeResponse
-	(*SimilarityRequest)(nil),          // 41: privutil.SimilarityRequest
-	(*SimilarityResponse)(nil),         // 42: privutil.SimilarityResponse
-	(*SqlRequest)(nil),                 // 43: privutil.SqlRequest
-	(*SqlResponse)(nil),                // 44: privutil.SqlResponse
-	(*IpRequest)(nil),                  // 45: privutil.IpRequest
-	(*IpResponse)(nil),                 // 46: privutil.IpResponse
-	(*TextInspectRequest)(nil),         // 47: privutil.TextInspectRequest
-	(*TextInspectResponse)(nil),        // 48: privutil.TextInspectResponse
-	(*TextManipulateRequest)(nil),      // 49: privutil.TextManipulateRequest
-	(*TextManipulateResponse)(nil),     // 50: privutil.TextManipulateResponse
-	(*PasswordRequest)(nil),            // 51: privutil.PasswordRequest
-	(*PasswordResponse)(nil),           // 52: privutil.PasswordResponse
-	(*RsaKeyRequest)(nil),              // 53: privutil.RsaKeyRequest
-	(*RsaKeyResponse)(nil),             // 54: privutil.RsaKeyResponse
-	(*BaseConvertRequest)(nil),         // 55: privutil.BaseConvertRequest
-	(*BaseConvertResponse)(nil),        // 56: privutil.BaseConvertResponse
-	(*ChmodRequest)(nil),               // 57: privutil.ChmodRequest
-	(*ChmodResponse)(nil),              // 58: privutil.ChmodResponse
-	(*Ipv4ConvertRequest)(nil),         // 59: privutil.Ipv4ConvertRequest
-	(*Ipv4ConvertResponse)(nil),        // 60: privutil.Ipv4ConvertResponse
-	(*Ipv4RangeRequest)(nil),           // 61: privutil.Ipv4RangeRequest
-	(*Ipv4RangeResponse)(nil),          // 62: privutil.Ipv4RangeResponse
-	(*PortRequest)(nil),                // 63: privutil.PortRequest
-	(*PortResponse)(nil),               // 64: privutil.PortResponse
-	(*MacRequest)(nil),                 // 65: privutil.MacRequest
-	(*MacResponse)(nil),                // 66: privutil.MacResponse
-	(*HmacRequest)(nil),                // 67: privutil.HmacRequest
-	(*HmacResponse)(nil),               // 68: privutil.HmacResponse
-	(*OtpRequest)(nil),                 // 69: privutil.OtpRequest
-	(*OtpResponse)(nil),                // 70: privutil.OtpResponse
-	(*OtpValidateRequest)(nil),         // 71: privutil.OtpValidateRequest
-	(*OtpValidateResponse)(nil),        // 72: privutil.OtpValidateResponse
-	(*UlidRequest)(nil),                // 73: privutil.UlidRequest
-	(*UlidResponse)(nil),               // 74: privutil.UlidResponse
-	(*CaesarRequest)(nil),              // 75: privutil.CaesarRequest
-	(*CaesarResponse)(nil),             // 76: privutil.CaesarResponse
-	(*TextEncodeRequest)(nil),          // 77: privutil.TextEncodeRequest
-	(*TextEncodeResponse)(nil),         // 78: privutil.TextEncodeResponse
-	(*MorseRequest)(nil),               // 79: privutil.MorseRequest
-	(*MorseResponse)(nil),              // 80: privutil.MorseResponse
-	(*BasicAuthRequest)(nil),           // 81: privutil.BasicAuthRequest
-	(*BasicAuthResponse)(nil),          // 82: privutil.BasicAuthResponse
-	(*SlugifyRequest)(nil),             // 83: privutil.SlugifyRequest
-	(*SlugifyResponse)(nil),            // 84: privutil.SlugifyResponse
-	(*HiddenCharsRequest)(nil),         // 85: privutil.HiddenCharsRequest
-	(*HiddenCharInfo)(nil),             // 86: privutil.HiddenCharInfo
-	(*HiddenCharsResponse)(nil),        // 87: privutil.HiddenCharsResponse
-	(*TextReplaceRequest)(nil),         // 88: privutil.TextReplaceRequest
-	(*TextReplaceResponse)(nil),        // 89: privutil.TextReplaceResponse
-	(*StringObfuscateRequest)(nil),     // 90: privutil.StringObfuscateRequest
-	(*StringObfuscateResponse)(nil),    // 91: privutil.StringObfuscateResponse
-	(*NumeronymRequest)(nil),           // 92: privutil.NumeronymRequest
-	(*NumeronymResponse)(nil),          // 93: privutil.NumeronymResponse
-	(*NatoRequest)(nil),                // 94: privutil.NatoRequest
-	(*NatoResponse)(nil),               // 95: privutil.NatoResponse
-	(*ListRequest)(nil),                // 96: privutil.ListRequest
-	(*ListFreqItem)(nil),               // 97: privutil.ListFreqItem
-	(*ListResponse)(nil),               // 98: privutil.ListResponse
-	(*MathVariable)(nil),               // 99: privutil.MathVariable
-	(*MathEvalRequest)(nil),            // 100: privutil.MathEvalRequest
-	(*MathEvalResponse)(nil),           // 101: privutil.MathEvalResponse
-	(*PercentageRequest)(nil),          // 102: privutil.PercentageRequest
-	(*PercentageResponse)(nil),         // 103: privutil.PercentageResponse
-	(*TempConvertRequest)(nil),         // 104: privutil.TempConvertRequest
-	(*TempConvertResponse)(nil),        // 105: privutil.TempConvertResponse
-	(*UnitConvertRequest)(nil),         // 106: privutil.UnitConvertRequest
-	(*UnitResult)(nil),                 // 107: privutil.UnitResult
-	(*UnitConvertResponse)(nil),        // 108: privutil.UnitConvertResponse
-	(*DateDiffRequest)(nil),            // 109: privutil.DateDiffRequest
-	(*DateDiffResponse)(nil),           // 110: privutil.DateDiffResponse
-	(*LeapYearRequest)(nil),            // 111: privutil.LeapYearRequest
-	(*LeapYearEntry)(nil),              // 112: privutil.LeapYearEntry
-	(*LeapYearResponse)(nil),           // 113: privutil.LeapYearResponse
-	(*DateAddRequest)(nil),             // 114: privutil.DateAddRequest
-	(*DateAddResponse)(nil),            // 115: privutil.DateAddResponse
-	(*DateFormatRequest)(nil),          // 116: privutil.DateFormatRequest
-	(*DateFormatEntry)(nil),            // 117: privutil.DateFormatEntry
-	(*DateFormatResponse)(nil),         // 118: privutil.DateFormatResponse
-	(*DateInfoRequest)(nil),            // 119: privutil.DateInfoRequest
-	(*DateInfoResponse)(nil),           // 120: privutil.DateInfoResponse
-	(*QueryParam)(nil),                 // 121: privutil.QueryParam
-	(*UrlParseRequest)(nil),            // 122: privutil.UrlParseRequest
-	(*UrlParseResponse)(nil),           // 123: privutil.UrlParseResponse
-	(*UserAgentParseRequest)(nil),      // 124: privutil.UserAgentParseRequest
-	(*UAParsedField)(nil),              // 125: privutil.UAParsedField
-	(*UserAgentParseResponse)(nil),     // 126: privutil.UserAgentParseResponse
-	(*HttpStatusSearchRequest)(nil),    // 127: privutil.HttpStatusSearchRequest
-	(*HttpStatusEntry)(nil),            // 128: privutil.HttpStatusEntry
-	(*HttpStatusSearchResponse)(nil),   // 129: privutil.HttpStatusSearchResponse
-	(*MimeLookupRequest)(nil),          // 130: privutil.MimeLookupRequest
-	(*MimeEntry)(nil),                  // 131: privutil.MimeEntry
-	(*MimeLookupResponse)(nil),         // 132: privutil.MimeLookupResponse
-	(*DockerRunToComposeRequest)(nil),  // 133: privutil.DockerRunToComposeRequest
-	(*DockerRunToComposeResponse)(nil), // 134: privutil.DockerRunToComposeResponse
-	(*GitCheatSheetRequest)(nil),       // 135: privutil.GitCheatSheetRequest
-	(*GitCmd)(nil),                     // 136: privutil.GitCmd
-	(*GitCmdCategory)(nil),             // 137: privutil.GitCmdCategory
-	(*GitCheatSheetResponse)(nil),      // 138: privutil.GitCheatSheetResponse
-	(*SvgOptimizeRequest)(nil),         // 139: privutil.SvgOptimizeRequest
-	(*SvgOptimizeResponse)(nil),        // 140: privutil.SvgOptimizeResponse
-	(*ExifReadRequest)(nil),            // 141: privutil.ExifReadRequest
-	(*ExifField)(nil),                  // 142: privutil.ExifField
-	(*ExifReadResponse)(nil),           // 143: privutil.ExifReadResponse
-	(*FileToBase64Request)(nil),        // 144: privutil.FileToBase64Request
-	(*FileToBase64Response)(nil),       // 145: privutil.FileToBase64Response
-	(*Base64ToFileRequest)(nil),        // 146: privutil.Base64ToFileRequest
-	(*Base64ToFileResponse)(nil),       // 147: privutil.Base64ToFileResponse
-	(*TokenCountRequest)(nil),          // 148: privutil.TokenCountRequest
-	(*TokenStrategy)(nil),              // 149: privutil.TokenStrategy
-	(*TokenCountResponse)(nil),         // 150: privutil.TokenCountResponse
-	(*SpellCheckRequest)(nil),          // 151: privutil.SpellCheckRequest
-	(*SpellIssue)(nil),                 // 152: privutil.SpellIssue
-	(*SpellCheckResponse)(nil),         // 153: privutil.SpellCheckResponse
-	(*SpellLanguagesRequest)(nil),      // 154: privutil.SpellLanguagesRequest
-	(*SpellLanguage)(nil),              // 155: privutil.SpellLanguage
-	(*SpellLanguagesResponse)(nil),     // 156: privutil.SpellLanguagesResponse
-	(*GetCustomWordsRequest)(nil),      // 157: privutil.GetCustomWordsRequest
-	(*AddCustomWordsRequest)(nil),      // 158: privutil.AddCustomWordsRequest
-	(*RemoveCustomWordRequest)(nil),    // 159: privutil.RemoveCustomWordRequest
-	(*CustomWordsResponse)(nil),        // 160: privutil.CustomWordsResponse
+	(*DiffFilesRequest)(nil),           // 7: privutil.DiffFilesRequest
+	(*DiffFilesResponse)(nil),          // 8: privutil.DiffFilesResponse
+	(*Base64Request)(nil),              // 9: privutil.Base64Request
+	(*Base64Response)(nil),             // 10: privutil.Base64Response
+	(*JsonFormatRequest)(nil),          // 11: privutil.JsonFormatRequest
+	(*JsonFormatResponse)(nil),         // 12: privutil.JsonFormatResponse
+	(*ConvertRequest)(nil),             // 13: privutil.ConvertRequest
+	(*ConvertResponse)(nil),            // 14: privutil.ConvertResponse
+	(*ValidateRequest)(nil),            // 15: privutil.ValidateRequest
+	(*ValidateResponse)(nil),           // 16: privutil.ValidateResponse
+	(*UuidRequest)(nil),                // 17: privutil.UuidRequest
+	(*UuidResponse)(nil),               // 18: privutil.UuidResponse
+	(*LoremRequest)(nil),               // 19: privutil.LoremRequest
+	(*LoremResponse)(nil),              // 20: privutil.LoremResponse
+	(*HashRequest)(nil),                // 21: privutil.HashRequest
+	(*HashResponse)(nil),               // 22: privutil.HashResponse
+	(*TextRequest)(nil),                // 23: privutil.TextRequest
+	(*TextResponse)(nil),               // 24: privutil.TextResponse
+	(*TimeRequest)(nil),                // 25: privutil.TimeRequest
+	(*TimeResponse)(nil),               // 26: privutil.TimeResponse
+	(*JwtRequest)(nil),                 // 27: privutil.JwtRequest
+	(*JwtResponse)(nil),                // 28: privutil.JwtResponse
+	(*RegexRequest)(nil),               // 29: privutil.RegexRequest
+	(*RegexResponse)(nil),              // 30: privutil.RegexResponse
+	(*JsonToGoRequest)(nil),            // 31: privutil.JsonToGoRequest
+	(*JsonToGoResponse)(nil),           // 32: privutil.JsonToGoResponse
+	(*CronRequest)(nil),                // 33: privutil.CronRequest
+	(*CronResponse)(nil),               // 34: privutil.CronResponse
+	(*CertRequest)(nil),                // 35: privutil.CertRequest
+	(*CertResponse)(nil),               // 36: privutil.CertResponse
+	(*ColorRequest)(nil),               // 37: privutil.ColorRequest
+	(*ColorResponse)(nil),              // 38: privutil.ColorResponse
+	(*CaseRequest)(nil),                // 39: privutil.CaseRequest
+	(*CaseResponse)(nil),               // 40: privutil.CaseResponse
+	(*EscapeRequest)(nil),              // 41: privutil.EscapeRequest
+	(*EscapeResponse)(nil),             // 42: privutil.EscapeResponse
+	(*SimilarityRequest)(nil),          // 43: privutil.SimilarityRequest
+	(*SimilarityResponse)(nil),         // 44: privutil.SimilarityResponse
+	(*SqlRequest)(nil),                 // 45: privutil.SqlRequest
+	(*SqlResponse)(nil),                // 46: privutil.SqlResponse
+	(*IpRequest)(nil),                  // 47: privutil.IpRequest
+	(*IpResponse)(nil),                 // 48: privutil.IpResponse
+	(*TextInspectRequest)(nil),         // 49: privutil.TextInspectRequest
+	(*TextInspectResponse)(nil),        // 50: privutil.TextInspectResponse
+	(*TextManipulateRequest)(nil),      // 51: privutil.TextManipulateRequest
+	(*TextManipulateResponse)(nil),     // 52: privutil.TextManipulateResponse
+	(*PasswordRequest)(nil),            // 53: privutil.PasswordRequest
+	(*PasswordResponse)(nil),           // 54: privutil.PasswordResponse
+	(*RsaKeyRequest)(nil),              // 55: privutil.RsaKeyRequest
+	(*RsaKeyResponse)(nil),             // 56: privutil.RsaKeyResponse
+	(*BaseConvertRequest)(nil),         // 57: privutil.BaseConvertRequest
+	(*BaseConvertResponse)(nil),        // 58: privutil.BaseConvertResponse
+	(*ChmodRequest)(nil),               // 59: privutil.ChmodRequest
+	(*ChmodResponse)(nil),              // 60: privutil.ChmodResponse
+	(*Ipv4ConvertRequest)(nil),         // 61: privutil.Ipv4ConvertRequest
+	(*Ipv4ConvertResponse)(nil),        // 62: privutil.Ipv4ConvertResponse
+	(*Ipv4RangeRequest)(nil),           // 63: privutil.Ipv4RangeRequest
+	(*Ipv4RangeResponse)(nil),          // 64: privutil.Ipv4RangeResponse
+	(*PortRequest)(nil),                // 65: privutil.PortRequest
+	(*PortResponse)(nil),               // 66: privutil.PortResponse
+	(*MacRequest)(nil),                 // 67: privutil.MacRequest
+	(*MacResponse)(nil),                // 68: privutil.MacResponse
+	(*HmacRequest)(nil),                // 69: privutil.HmacRequest
+	(*HmacResponse)(nil),               // 70: privutil.HmacResponse
+	(*OtpRequest)(nil),                 // 71: privutil.OtpRequest
+	(*OtpResponse)(nil),                // 72: privutil.OtpResponse
+	(*OtpValidateRequest)(nil),         // 73: privutil.OtpValidateRequest
+	(*OtpValidateResponse)(nil),        // 74: privutil.OtpValidateResponse
+	(*UlidRequest)(nil),                // 75: privutil.UlidRequest
+	(*UlidResponse)(nil),               // 76: privutil.UlidResponse
+	(*CaesarRequest)(nil),              // 77: privutil.CaesarRequest
+	(*CaesarResponse)(nil),             // 78: privutil.CaesarResponse
+	(*TextEncodeRequest)(nil),          // 79: privutil.TextEncodeRequest
+	(*TextEncodeResponse)(nil),         // 80: privutil.TextEncodeResponse
+	(*MorseRequest)(nil),               // 81: privutil.MorseRequest
+	(*MorseResponse)(nil),              // 82: privutil.MorseResponse
+	(*BasicAuthRequest)(nil),           // 83: privutil.BasicAuthRequest
+	(*BasicAuthResponse)(nil),          // 84: privutil.BasicAuthResponse
+	(*SlugifyRequest)(nil),             // 85: privutil.SlugifyRequest
+	(*SlugifyResponse)(nil),            // 86: privutil.SlugifyResponse
+	(*HiddenCharsRequest)(nil),         // 87: privutil.HiddenCharsRequest
+	(*HiddenCharInfo)(nil),             // 88: privutil.HiddenCharInfo
+	(*HiddenCharsResponse)(nil),        // 89: privutil.HiddenCharsResponse
+	(*TextReplaceRequest)(nil),         // 90: privutil.TextReplaceRequest
+	(*TextReplaceResponse)(nil),        // 91: privutil.TextReplaceResponse
+	(*StringObfuscateRequest)(nil),     // 92: privutil.StringObfuscateRequest
+	(*StringObfuscateResponse)(nil),    // 93: privutil.StringObfuscateResponse
+	(*NumeronymRequest)(nil),           // 94: privutil.NumeronymRequest
+	(*NumeronymResponse)(nil),          // 95: privutil.NumeronymResponse
+	(*NatoRequest)(nil),                // 96: privutil.NatoRequest
+	(*NatoResponse)(nil),               // 97: privutil.NatoResponse
+	(*ListRequest)(nil),                // 98: privutil.ListRequest
+	(*ListFreqItem)(nil),               // 99: privutil.ListFreqItem
+	(*ListResponse)(nil),               // 100: privutil.ListResponse
+	(*MathVariable)(nil),               // 101: privutil.MathVariable
+	(*MathEvalRequest)(nil),            // 102: privutil.MathEvalRequest
+	(*MathEvalResponse)(nil),           // 103: privutil.MathEvalResponse
+	(*PercentageRequest)(nil),          // 104: privutil.PercentageRequest
+	(*PercentageResponse)(nil),         // 105: privutil.PercentageResponse
+	(*TempConvertRequest)(nil),         // 106: privutil.TempConvertRequest
+	(*TempConvertResponse)(nil),        // 107: privutil.TempConvertResponse
+	(*UnitConvertRequest)(nil),         // 108: privutil.UnitConvertRequest
+	(*UnitResult)(nil),                 // 109: privutil.UnitResult
+	(*UnitConvertResponse)(nil),        // 110: privutil.UnitConvertResponse
+	(*DateDiffRequest)(nil),            // 111: privutil.DateDiffRequest
+	(*DateDiffResponse)(nil),           // 112: privutil.DateDiffResponse
+	(*LeapYearRequest)(nil),            // 113: privutil.LeapYearRequest
+	(*LeapYearEntry)(nil),              // 114: privutil.LeapYearEntry
+	(*LeapYearResponse)(nil),           // 115: privutil.LeapYearResponse
+	(*DateAddRequest)(nil),             // 116: privutil.DateAddRequest
+	(*DateAddResponse)(nil),            // 117: privutil.DateAddResponse
+	(*DateFormatRequest)(nil),          // 118: privutil.DateFormatRequest
+	(*DateFormatEntry)(nil),            // 119: privutil.DateFormatEntry
+	(*DateFormatResponse)(nil),         // 120: privutil.DateFormatResponse
+	(*DateInfoRequest)(nil),            // 121: privutil.DateInfoRequest
+	(*DateInfoResponse)(nil),           // 122: privutil.DateInfoResponse
+	(*QueryParam)(nil),                 // 123: privutil.QueryParam
+	(*UrlParseRequest)(nil),            // 124: privutil.UrlParseRequest
+	(*UrlParseResponse)(nil),           // 125: privutil.UrlParseResponse
+	(*UserAgentParseRequest)(nil),      // 126: privutil.UserAgentParseRequest
+	(*UAParsedField)(nil),              // 127: privutil.UAParsedField
+	(*UserAgentParseResponse)(nil),     // 128: privutil.UserAgentParseResponse
+	(*HttpStatusSearchRequest)(nil),    // 129: privutil.HttpStatusSearchRequest
+	(*HttpStatusEntry)(nil),            // 130: privutil.HttpStatusEntry
+	(*HttpStatusSearchResponse)(nil),   // 131: privutil.HttpStatusSearchResponse
+	(*MimeLookupRequest)(nil),          // 132: privutil.MimeLookupRequest
+	(*MimeEntry)(nil),                  // 133: privutil.MimeEntry
+	(*MimeLookupResponse)(nil),         // 134: privutil.MimeLookupResponse
+	(*DockerRunToComposeRequest)(nil),  // 135: privutil.DockerRunToComposeRequest
+	(*DockerRunToComposeResponse)(nil), // 136: privutil.DockerRunToComposeResponse
+	(*GitCheatSheetRequest)(nil),       // 137: privutil.GitCheatSheetRequest
+	(*GitCmd)(nil),                     // 138: privutil.GitCmd
+	(*GitCmdCategory)(nil),             // 139: privutil.GitCmdCategory
+	(*GitCheatSheetResponse)(nil),      // 140: privutil.GitCheatSheetResponse
+	(*SvgOptimizeRequest)(nil),         // 141: privutil.SvgOptimizeRequest
+	(*SvgOptimizeResponse)(nil),        // 142: privutil.SvgOptimizeResponse
+	(*ExifReadRequest)(nil),            // 143: privutil.ExifReadRequest
+	(*ExifField)(nil),                  // 144: privutil.ExifField
+	(*ExifReadResponse)(nil),           // 145: privutil.ExifReadResponse
+	(*FileToBase64Request)(nil),        // 146: privutil.FileToBase64Request
+	(*FileToBase64Response)(nil),       // 147: privutil.FileToBase64Response
+	(*Base64ToFileRequest)(nil),        // 148: privutil.Base64ToFileRequest
+	(*Base64ToFileResponse)(nil),       // 149: privutil.Base64ToFileResponse
+	(*TokenCountRequest)(nil),          // 150: privutil.TokenCountRequest
+	(*TokenStrategy)(nil),              // 151: privutil.TokenStrategy
+	(*TokenCountResponse)(nil),         // 152: privutil.TokenCountResponse
+	(*SpellCheckRequest)(nil),          // 153: privutil.SpellCheckRequest
+	(*SpellIssue)(nil),                 // 154: privutil.SpellIssue
+	(*SpellCheckResponse)(nil),         // 155: privutil.SpellCheckResponse
+	(*SpellLanguagesRequest)(nil),      // 156: privutil.SpellLanguagesRequest
+	(*SpellLanguage)(nil),              // 157: privutil.SpellLanguage
+	(*SpellLanguagesResponse)(nil),     // 158: privutil.SpellLanguagesResponse
+	(*GetCustomWordsRequest)(nil),      // 159: privutil.GetCustomWordsRequest
+	(*AddCustomWordsRequest)(nil),      // 160: privutil.AddCustomWordsRequest
+	(*RemoveCustomWordRequest)(nil),    // 161: privutil.RemoveCustomWordRequest
+	(*CustomWordsResponse)(nil),        // 162: privutil.CustomWordsResponse
 }
 var file_proto_privutil_proto_depIdxs = []int32{
 	0,   // 0: privutil.ConvertRequest.source_format:type_name -> privutil.DataFormat
 	0,   // 1: privutil.ConvertRequest.target_format:type_name -> privutil.DataFormat
 	0,   // 2: privutil.ValidateRequest.format:type_name -> privutil.DataFormat
 	1,   // 3: privutil.TextManipulateRequest.action:type_name -> privutil.TextAction
-	86,  // 4: privutil.HiddenCharsResponse.chars:type_name -> privutil.HiddenCharInfo
+	88,  // 4: privutil.HiddenCharsResponse.chars:type_name -> privutil.HiddenCharInfo
 	2,   // 5: privutil.ListRequest.action:type_name -> privutil.ListAction
-	97,  // 6: privutil.ListResponse.frequency:type_name -> privutil.ListFreqItem
-	99,  // 7: privutil.MathEvalRequest.variables:type_name -> privutil.MathVariable
+	99,  // 6: privutil.ListResponse.frequency:type_name -> privutil.ListFreqItem
+	101, // 7: privutil.MathEvalRequest.variables:type_name -> privutil.MathVariable
 	3,   // 8: privutil.PercentageRequest.mode:type_name -> privutil.PercentMode
 	4,   // 9: privutil.UnitConvertRequest.category:type_name -> privutil.UnitCategory
-	107, // 10: privutil.UnitConvertResponse.results:type_name -> privutil.UnitResult
-	112, // 11: privutil.LeapYearResponse.results:type_name -> privutil.LeapYearEntry
-	117, // 12: privutil.DateFormatResponse.formats:type_name -> privutil.DateFormatEntry
-	121, // 13: privutil.UrlParseResponse.query_params:type_name -> privutil.QueryParam
-	125, // 14: privutil.UserAgentParseResponse.fields:type_name -> privutil.UAParsedField
-	128, // 15: privutil.HttpStatusSearchResponse.entries:type_name -> privutil.HttpStatusEntry
-	131, // 16: privutil.MimeLookupResponse.entries:type_name -> privutil.MimeEntry
-	136, // 17: privutil.GitCmdCategory.commands:type_name -> privutil.GitCmd
-	137, // 18: privutil.GitCheatSheetResponse.categories:type_name -> privutil.GitCmdCategory
-	142, // 19: privutil.ExifReadResponse.fields:type_name -> privutil.ExifField
-	149, // 20: privutil.TokenCountResponse.strategies:type_name -> privutil.TokenStrategy
-	152, // 21: privutil.SpellCheckResponse.issues:type_name -> privutil.SpellIssue
-	155, // 22: privutil.SpellLanguagesResponse.languages:type_name -> privutil.SpellLanguage
+	109, // 10: privutil.UnitConvertResponse.results:type_name -> privutil.UnitResult
+	114, // 11: privutil.LeapYearResponse.results:type_name -> privutil.LeapYearEntry
+	119, // 12: privutil.DateFormatResponse.formats:type_name -> privutil.DateFormatEntry
+	123, // 13: privutil.UrlParseResponse.query_params:type_name -> privutil.QueryParam
+	127, // 14: privutil.UserAgentParseResponse.fields:type_name -> privutil.UAParsedField
+	130, // 15: privutil.HttpStatusSearchResponse.entries:type_name -> privutil.HttpStatusEntry
+	133, // 16: privutil.MimeLookupResponse.entries:type_name -> privutil.MimeEntry
+	138, // 17: privutil.GitCmdCategory.commands:type_name -> privutil.GitCmd
+	139, // 18: privutil.GitCheatSheetResponse.categories:type_name -> privutil.GitCmdCategory
+	144, // 19: privutil.ExifReadResponse.fields:type_name -> privutil.ExifField
+	151, // 20: privutil.TokenCountResponse.strategies:type_name -> privutil.TokenStrategy
+	154, // 21: privutil.SpellCheckResponse.issues:type_name -> privutil.SpellIssue
+	157, // 22: privutil.SpellLanguagesResponse.languages:type_name -> privutil.SpellLanguage
 	5,   // 23: privutil.PrivUtilService.Diff:input_type -> privutil.DiffRequest
-	7,   // 24: privutil.PrivUtilService.Base64Encode:input_type -> privutil.Base64Request
-	7,   // 25: privutil.PrivUtilService.Base64Decode:input_type -> privutil.Base64Request
-	9,   // 26: privutil.PrivUtilService.JsonFormat:input_type -> privutil.JsonFormatRequest
-	11,  // 27: privutil.PrivUtilService.Convert:input_type -> privutil.ConvertRequest
-	13,  // 28: privutil.PrivUtilService.ValidateData:input_type -> privutil.ValidateRequest
-	15,  // 29: privutil.PrivUtilService.GenerateUuid:input_type -> privutil.UuidRequest
-	17,  // 30: privutil.PrivUtilService.GenerateLorem:input_type -> privutil.LoremRequest
-	19,  // 31: privutil.PrivUtilService.CalculateHash:input_type -> privutil.HashRequest
-	47,  // 32: privutil.PrivUtilService.TextInspect:input_type -> privutil.TextInspectRequest
-	49,  // 33: privutil.PrivUtilService.TextManipulate:input_type -> privutil.TextManipulateRequest
-	21,  // 34: privutil.PrivUtilService.UrlEncode:input_type -> privutil.TextRequest
-	21,  // 35: privutil.PrivUtilService.UrlDecode:input_type -> privutil.TextRequest
-	21,  // 36: privutil.PrivUtilService.HtmlEncode:input_type -> privutil.TextRequest
-	21,  // 37: privutil.PrivUtilService.HtmlDecode:input_type -> privutil.TextRequest
-	23,  // 38: privutil.PrivUtilService.TimeConvert:input_type -> privutil.TimeRequest
-	25,  // 39: privutil.PrivUtilService.JwtDecode:input_type -> privutil.JwtRequest
-	27,  // 40: privutil.PrivUtilService.RegexTest:input_type -> privutil.RegexRequest
-	29,  // 41: privutil.PrivUtilService.JsonToGo:input_type -> privutil.JsonToGoRequest
-	31,  // 42: privutil.PrivUtilService.CronExplain:input_type -> privutil.CronRequest
-	33,  // 43: privutil.PrivUtilService.CertParse:input_type -> privutil.CertRequest
-	35,  // 44: privutil.PrivUtilService.ColorConvert:input_type -> privutil.ColorRequest
-	37,  // 45: privutil.PrivUtilService.CaseConvert:input_type -> privutil.CaseRequest
-	39,  // 46: privutil.PrivUtilService.StringEscape:input_type -> privutil.EscapeRequest
-	41,  // 47: privutil.PrivUtilService.TextSimilarity:input_type -> privutil.SimilarityRequest
-	43,  // 48: privutil.PrivUtilService.SqlFormat:input_type -> privutil.SqlRequest
-	45,  // 49: privutil.PrivUtilService.IpCalc:input_type -> privutil.IpRequest
-	51,  // 50: privutil.PrivUtilService.GeneratePassword:input_type -> privutil.PasswordRequest
-	53,  // 51: privutil.PrivUtilService.GenerateRsaKeyPair:input_type -> privutil.RsaKeyRequest
-	55,  // 52: privutil.PrivUtilService.BaseConvert:input_type -> privutil.BaseConvertRequest
-	21,  // 53: privutil.PrivUtilService.MarkdownToHtml:input_type -> privutil.TextRequest
-	21,  // 54: privutil.PrivUtilService.HtmlToMarkdown:input_type -> privutil.TextRequest
-	67,  // 55: privutil.PrivUtilService.HmacGenerate:input_type -> privutil.HmacRequest
-	69,  // 56: privutil.PrivUtilService.OtpGenerate:input_type -> privutil.OtpRequest
-	71,  // 57: privutil.PrivUtilService.OtpValidate:input_type -> privutil.OtpValidateRequest
-	73,  // 58: privutil.PrivUtilService.UlidGenerate:input_type -> privutil.UlidRequest
-	75,  // 59: privutil.PrivUtilService.CaesarCipher:input_type -> privutil.CaesarRequest
-	77,  // 60: privutil.PrivUtilService.TextEncode:input_type -> privutil.TextEncodeRequest
-	79,  // 61: privutil.PrivUtilService.MorseCode:input_type -> privutil.MorseRequest
-	81,  // 62: privutil.PrivUtilService.BasicAuthGenerate:input_type -> privutil.BasicAuthRequest
-	57,  // 63: privutil.PrivUtilService.ChmodCalc:input_type -> privutil.ChmodRequest
-	59,  // 64: privutil.PrivUtilService.Ipv4Convert:input_type -> privutil.Ipv4ConvertRequest
-	61,  // 65: privutil.PrivUtilService.Ipv4RangeExpand:input_type -> privutil.Ipv4RangeRequest
-	63,  // 66: privutil.PrivUtilService.GeneratePort:input_type -> privutil.PortRequest
-	65,  // 67: privutil.PrivUtilService.GenerateMac:input_type -> privutil.MacRequest
-	83,  // 68: privutil.PrivUtilService.Slugify:input_type -> privutil.SlugifyRequest
-	85,  // 69: privutil.PrivUtilService.HiddenChars:input_type -> privutil.HiddenCharsRequest
-	88,  // 70: privutil.PrivUtilService.TextReplace:input_type -> privutil.TextReplaceRequest
-	90,  // 71: privutil.PrivUtilService.StringObfuscate:input_type -> privutil.StringObfuscateRequest
-	92,  // 72: privutil.PrivUtilService.NumeronymGenerate:input_type -> privutil.NumeronymRequest
-	94,  // 73: privutil.PrivUtilService.NatoAlphabet:input_type -> privutil.NatoRequest
-	96,  // 74: privutil.PrivUtilService.ListProcess:input_type -> privutil.ListRequest
-	100, // 75: privutil.PrivUtilService.MathEval:input_type -> privutil.MathEvalRequest
-	102, // 76: privutil.PrivUtilService.PercentageCalc:input_type -> privutil.PercentageRequest
-	104, // 77: privutil.PrivUtilService.TempConvert:input_type -> privutil.TempConvertRequest
-	106, // 78: privutil.PrivUtilService.UnitConvert:input_type -> privutil.UnitConvertRequest
-	109, // 79: privutil.PrivUtilService.DateDiff:input_type -> privutil.DateDiffRequest
-	111, // 80: privutil.PrivUtilService.LeapYear:input_type -> privutil.LeapYearRequest
-	114, // 81: privutil.PrivUtilService.DateAdd:input_type -> privutil.DateAddRequest
-	116, // 82: privutil.PrivUtilService.DateFormat:input_type -> privutil.DateFormatRequest
-	119, // 83: privutil.PrivUtilService.DateInfo:input_type -> privutil.DateInfoRequest
-	122, // 84: privutil.PrivUtilService.UrlParse:input_type -> privutil.UrlParseRequest
-	124, // 85: privutil.PrivUtilService.UserAgentParse:input_type -> privutil.UserAgentParseRequest
-	127, // 86: privutil.PrivUtilService.HttpStatusSearch:input_type -> privutil.HttpStatusSearchRequest
-	130, // 87: privutil.PrivUtilService.MimeLookup:input_type -> privutil.MimeLookupRequest
-	133, // 88: privutil.PrivUtilService.DockerRunToCompose:input_type -> privutil.DockerRunToComposeRequest
-	135, // 89: privutil.PrivUtilService.GitCheatSheet:input_type -> privutil.GitCheatSheetRequest
-	139, // 90: privutil.PrivUtilService.SvgOptimize:input_type -> privutil.SvgOptimizeRequest
-	141, // 91: privutil.PrivUtilService.ExifRead:input_type -> privutil.ExifReadRequest
-	144, // 92: privutil.PrivUtilService.FileToBase64:input_type -> privutil.FileToBase64Request
-	146, // 93: privutil.PrivUtilService.Base64ToFile:input_type -> privutil.Base64ToFileRequest
-	148, // 94: privutil.PrivUtilService.TokenCount:input_type -> privutil.TokenCountRequest
-	151, // 95: privutil.PrivUtilService.SpellCheck:input_type -> privutil.SpellCheckRequest
-	154, // 96: privutil.PrivUtilService.SpellLanguages:input_type -> privutil.SpellLanguagesRequest
-	157, // 97: privutil.PrivUtilService.GetCustomWords:input_type -> privutil.GetCustomWordsRequest
-	158, // 98: privutil.PrivUtilService.AddCustomWords:input_type -> privutil.AddCustomWordsRequest
-	159, // 99: privutil.PrivUtilService.RemoveCustomWord:input_type -> privutil.RemoveCustomWordRequest
-	6,   // 100: privutil.PrivUtilService.Diff:output_type -> privutil.DiffResponse
-	8,   // 101: privutil.PrivUtilService.Base64Encode:output_type -> privutil.Base64Response
-	8,   // 102: privutil.PrivUtilService.Base64Decode:output_type -> privutil.Base64Response
-	10,  // 103: privutil.PrivUtilService.JsonFormat:output_type -> privutil.JsonFormatResponse
-	12,  // 104: privutil.PrivUtilService.Convert:output_type -> privutil.ConvertResponse
-	14,  // 105: privutil.PrivUtilService.ValidateData:output_type -> privutil.ValidateResponse
-	16,  // 106: privutil.PrivUtilService.GenerateUuid:output_type -> privutil.UuidResponse
-	18,  // 107: privutil.PrivUtilService.GenerateLorem:output_type -> privutil.LoremResponse
-	20,  // 108: privutil.PrivUtilService.CalculateHash:output_type -> privutil.HashResponse
-	48,  // 109: privutil.PrivUtilService.TextInspect:output_type -> privutil.TextInspectResponse
-	50,  // 110: privutil.PrivUtilService.TextManipulate:output_type -> privutil.TextManipulateResponse
-	22,  // 111: privutil.PrivUtilService.UrlEncode:output_type -> privutil.TextResponse
-	22,  // 112: privutil.PrivUtilService.UrlDecode:output_type -> privutil.TextResponse
-	22,  // 113: privutil.PrivUtilService.HtmlEncode:output_type -> privutil.TextResponse
-	22,  // 114: privutil.PrivUtilService.HtmlDecode:output_type -> privutil.TextResponse
-	24,  // 115: privutil.PrivUtilService.TimeConvert:output_type -> privutil.TimeResponse
-	26,  // 116: privutil.PrivUtilService.JwtDecode:output_type -> privutil.JwtResponse
-	28,  // 117: privutil.PrivUtilService.RegexTest:output_type -> privutil.RegexResponse
-	30,  // 118: privutil.PrivUtilService.JsonToGo:output_type -> privutil.JsonToGoResponse
-	32,  // 119: privutil.PrivUtilService.CronExplain:output_type -> privutil.CronResponse
-	34,  // 120: privutil.PrivUtilService.CertParse:output_type -> privutil.CertResponse
-	36,  // 121: privutil.PrivUtilService.ColorConvert:output_type -> privutil.ColorResponse
-	38,  // 122: privutil.PrivUtilService.CaseConvert:output_type -> privutil.CaseResponse
-	40,  // 123: privutil.PrivUtilService.StringEscape:output_type -> privutil.EscapeResponse
-	42,  // 124: privutil.PrivUtilService.TextSimilarity:output_type -> privutil.SimilarityResponse
-	44,  // 125: privutil.PrivUtilService.SqlFormat:output_type -> privutil.SqlResponse
-	46,  // 126: privutil.PrivUtilService.IpCalc:output_type -> privutil.IpResponse
-	52,  // 127: privutil.PrivUtilService.GeneratePassword:output_type -> privutil.PasswordResponse
-	54,  // 128: privutil.PrivUtilService.GenerateRsaKeyPair:output_type -> privutil.RsaKeyResponse
-	56,  // 129: privutil.PrivUtilService.BaseConvert:output_type -> privutil.BaseConvertResponse
-	22,  // 130: privutil.PrivUtilService.MarkdownToHtml:output_type -> privutil.TextResponse
-	22,  // 131: privutil.PrivUtilService.HtmlToMarkdown:output_type -> privutil.TextResponse
-	68,  // 132: privutil.PrivUtilService.HmacGenerate:output_type -> privutil.HmacResponse
-	70,  // 133: privutil.PrivUtilService.OtpGenerate:output_type -> privutil.OtpResponse
-	72,  // 134: privutil.PrivUtilService.OtpValidate:output_type -> privutil.OtpValidateResponse
-	74,  // 135: privutil.PrivUtilService.UlidGenerate:output_type -> privutil.UlidResponse
-	76,  // 136: privutil.PrivUtilService.CaesarCipher:output_type -> privutil.CaesarResponse
-	78,  // 137: privutil.PrivUtilService.TextEncode:output_type -> privutil.TextEncodeResponse
-	80,  // 138: privutil.PrivUtilService.MorseCode:output_type -> privutil.MorseResponse
-	82,  // 139: privutil.PrivUtilService.BasicAuthGenerate:output_type -> privutil.BasicAuthResponse
-	58,  // 140: privutil.PrivUtilService.ChmodCalc:output_type -> privutil.ChmodResponse
-	60,  // 141: privutil.PrivUtilService.Ipv4Convert:output_type -> privutil.Ipv4ConvertResponse
-	62,  // 142: privutil.PrivUtilService.Ipv4RangeExpand:output_type -> privutil.Ipv4RangeResponse
-	64,  // 143: privutil.PrivUtilService.GeneratePort:output_type -> privutil.PortResponse
-	66,  // 144: privutil.PrivUtilService.GenerateMac:output_type -> privutil.MacResponse
-	84,  // 145: privutil.PrivUtilService.Slugify:output_type -> privutil.SlugifyResponse
-	87,  // 146: privutil.PrivUtilService.HiddenChars:output_type -> privutil.HiddenCharsResponse
-	89,  // 147: privutil.PrivUtilService.TextReplace:output_type -> privutil.TextReplaceResponse
-	91,  // 148: privutil.PrivUtilService.StringObfuscate:output_type -> privutil.StringObfuscateResponse
-	93,  // 149: privutil.PrivUtilService.NumeronymGenerate:output_type -> privutil.NumeronymResponse
-	95,  // 150: privutil.PrivUtilService.NatoAlphabet:output_type -> privutil.NatoResponse
-	98,  // 151: privutil.PrivUtilService.ListProcess:output_type -> privutil.ListResponse
-	101, // 152: privutil.PrivUtilService.MathEval:output_type -> privutil.MathEvalResponse
-	103, // 153: privutil.PrivUtilService.PercentageCalc:output_type -> privutil.PercentageResponse
-	105, // 154: privutil.PrivUtilService.TempConvert:output_type -> privutil.TempConvertResponse
-	108, // 155: privutil.PrivUtilService.UnitConvert:output_type -> privutil.UnitConvertResponse
-	110, // 156: privutil.PrivUtilService.DateDiff:output_type -> privutil.DateDiffResponse
-	113, // 157: privutil.PrivUtilService.LeapYear:output_type -> privutil.LeapYearResponse
-	115, // 158: privutil.PrivUtilService.DateAdd:output_type -> privutil.DateAddResponse
-	118, // 159: privutil.PrivUtilService.DateFormat:output_type -> privutil.DateFormatResponse
-	120, // 160: privutil.PrivUtilService.DateInfo:output_type -> privutil.DateInfoResponse
-	123, // 161: privutil.PrivUtilService.UrlParse:output_type -> privutil.UrlParseResponse
-	126, // 162: privutil.PrivUtilService.UserAgentParse:output_type -> privutil.UserAgentParseResponse
-	129, // 163: privutil.PrivUtilService.HttpStatusSearch:output_type -> privutil.HttpStatusSearchResponse
-	132, // 164: privutil.PrivUtilService.MimeLookup:output_type -> privutil.MimeLookupResponse
-	134, // 165: privutil.PrivUtilService.DockerRunToCompose:output_type -> privutil.DockerRunToComposeResponse
-	138, // 166: privutil.PrivUtilService.GitCheatSheet:output_type -> privutil.GitCheatSheetResponse
-	140, // 167: privutil.PrivUtilService.SvgOptimize:output_type -> privutil.SvgOptimizeResponse
-	143, // 168: privutil.PrivUtilService.ExifRead:output_type -> privutil.ExifReadResponse
-	145, // 169: privutil.PrivUtilService.FileToBase64:output_type -> privutil.FileToBase64Response
-	147, // 170: privutil.PrivUtilService.Base64ToFile:output_type -> privutil.Base64ToFileResponse
-	150, // 171: privutil.PrivUtilService.TokenCount:output_type -> privutil.TokenCountResponse
-	153, // 172: privutil.PrivUtilService.SpellCheck:output_type -> privutil.SpellCheckResponse
-	156, // 173: privutil.PrivUtilService.SpellLanguages:output_type -> privutil.SpellLanguagesResponse
-	160, // 174: privutil.PrivUtilService.GetCustomWords:output_type -> privutil.CustomWordsResponse
-	160, // 175: privutil.PrivUtilService.AddCustomWords:output_type -> privutil.CustomWordsResponse
-	160, // 176: privutil.PrivUtilService.RemoveCustomWord:output_type -> privutil.CustomWordsResponse
-	100, // [100:177] is the sub-list for method output_type
-	23,  // [23:100] is the sub-list for method input_type
+	7,   // 24: privutil.PrivUtilService.DiffFiles:input_type -> privutil.DiffFilesRequest
+	9,   // 25: privutil.PrivUtilService.Base64Encode:input_type -> privutil.Base64Request
+	9,   // 26: privutil.PrivUtilService.Base64Decode:input_type -> privutil.Base64Request
+	11,  // 27: privutil.PrivUtilService.JsonFormat:input_type -> privutil.JsonFormatRequest
+	13,  // 28: privutil.PrivUtilService.Convert:input_type -> privutil.ConvertRequest
+	15,  // 29: privutil.PrivUtilService.ValidateData:input_type -> privutil.ValidateRequest
+	17,  // 30: privutil.PrivUtilService.GenerateUuid:input_type -> privutil.UuidRequest
+	19,  // 31: privutil.PrivUtilService.GenerateLorem:input_type -> privutil.LoremRequest
+	21,  // 32: privutil.PrivUtilService.CalculateHash:input_type -> privutil.HashRequest
+	49,  // 33: privutil.PrivUtilService.TextInspect:input_type -> privutil.TextInspectRequest
+	51,  // 34: privutil.PrivUtilService.TextManipulate:input_type -> privutil.TextManipulateRequest
+	23,  // 35: privutil.PrivUtilService.UrlEncode:input_type -> privutil.TextRequest
+	23,  // 36: privutil.PrivUtilService.UrlDecode:input_type -> privutil.TextRequest
+	23,  // 37: privutil.PrivUtilService.HtmlEncode:input_type -> privutil.TextRequest
+	23,  // 38: privutil.PrivUtilService.HtmlDecode:input_type -> privutil.TextRequest
+	25,  // 39: privutil.PrivUtilService.TimeConvert:input_type -> privutil.TimeRequest
+	27,  // 40: privutil.PrivUtilService.JwtDecode:input_type -> privutil.JwtRequest
+	29,  // 41: privutil.PrivUtilService.RegexTest:input_type -> privutil.RegexRequest
+	31,  // 42: privutil.PrivUtilService.JsonToGo:input_type -> privutil.JsonToGoRequest
+	33,  // 43: privutil.PrivUtilService.CronExplain:input_type -> privutil.CronRequest
+	35,  // 44: privutil.PrivUtilService.CertParse:input_type -> privutil.CertRequest
+	37,  // 45: privutil.PrivUtilService.ColorConvert:input_type -> privutil.ColorRequest
+	39,  // 46: privutil.PrivUtilService.CaseConvert:input_type -> privutil.CaseRequest
+	41,  // 47: privutil.PrivUtilService.StringEscape:input_type -> privutil.EscapeRequest
+	43,  // 48: privutil.PrivUtilService.TextSimilarity:input_type -> privutil.SimilarityRequest
+	45,  // 49: privutil.PrivUtilService.SqlFormat:input_type -> privutil.SqlRequest
+	47,  // 50: privutil.PrivUtilService.IpCalc:input_type -> privutil.IpRequest
+	53,  // 51: privutil.PrivUtilService.GeneratePassword:input_type -> privutil.PasswordRequest
+	55,  // 52: privutil.PrivUtilService.GenerateRsaKeyPair:input_type -> privutil.RsaKeyRequest
+	57,  // 53: privutil.PrivUtilService.BaseConvert:input_type -> privutil.BaseConvertRequest
+	23,  // 54: privutil.PrivUtilService.MarkdownToHtml:input_type -> privutil.TextRequest
+	23,  // 55: privutil.PrivUtilService.HtmlToMarkdown:input_type -> privutil.TextRequest
+	69,  // 56: privutil.PrivUtilService.HmacGenerate:input_type -> privutil.HmacRequest
+	71,  // 57: privutil.PrivUtilService.OtpGenerate:input_type -> privutil.OtpRequest
+	73,  // 58: privutil.PrivUtilService.OtpValidate:input_type -> privutil.OtpValidateRequest
+	75,  // 59: privutil.PrivUtilService.UlidGenerate:input_type -> privutil.UlidRequest
+	77,  // 60: privutil.PrivUtilService.CaesarCipher:input_type -> privutil.CaesarRequest
+	79,  // 61: privutil.PrivUtilService.TextEncode:input_type -> privutil.TextEncodeRequest
+	81,  // 62: privutil.PrivUtilService.MorseCode:input_type -> privutil.MorseRequest
+	83,  // 63: privutil.PrivUtilService.BasicAuthGenerate:input_type -> privutil.BasicAuthRequest
+	59,  // 64: privutil.PrivUtilService.ChmodCalc:input_type -> privutil.ChmodRequest
+	61,  // 65: privutil.PrivUtilService.Ipv4Convert:input_type -> privutil.Ipv4ConvertRequest
+	63,  // 66: privutil.PrivUtilService.Ipv4RangeExpand:input_type -> privutil.Ipv4RangeRequest
+	65,  // 67: privutil.PrivUtilService.GeneratePort:input_type -> privutil.PortRequest
+	67,  // 68: privutil.PrivUtilService.GenerateMac:input_type -> privutil.MacRequest
+	85,  // 69: privutil.PrivUtilService.Slugify:input_type -> privutil.SlugifyRequest
+	87,  // 70: privutil.PrivUtilService.HiddenChars:input_type -> privutil.HiddenCharsRequest
+	90,  // 71: privutil.PrivUtilService.TextReplace:input_type -> privutil.TextReplaceRequest
+	92,  // 72: privutil.PrivUtilService.StringObfuscate:input_type -> privutil.StringObfuscateRequest
+	94,  // 73: privutil.PrivUtilService.NumeronymGenerate:input_type -> privutil.NumeronymRequest
+	96,  // 74: privutil.PrivUtilService.NatoAlphabet:input_type -> privutil.NatoRequest
+	98,  // 75: privutil.PrivUtilService.ListProcess:input_type -> privutil.ListRequest
+	102, // 76: privutil.PrivUtilService.MathEval:input_type -> privutil.MathEvalRequest
+	104, // 77: privutil.PrivUtilService.PercentageCalc:input_type -> privutil.PercentageRequest
+	106, // 78: privutil.PrivUtilService.TempConvert:input_type -> privutil.TempConvertRequest
+	108, // 79: privutil.PrivUtilService.UnitConvert:input_type -> privutil.UnitConvertRequest
+	111, // 80: privutil.PrivUtilService.DateDiff:input_type -> privutil.DateDiffRequest
+	113, // 81: privutil.PrivUtilService.LeapYear:input_type -> privutil.LeapYearRequest
+	116, // 82: privutil.PrivUtilService.DateAdd:input_type -> privutil.DateAddRequest
+	118, // 83: privutil.PrivUtilService.DateFormat:input_type -> privutil.DateFormatRequest
+	121, // 84: privutil.PrivUtilService.DateInfo:input_type -> privutil.DateInfoRequest
+	124, // 85: privutil.PrivUtilService.UrlParse:input_type -> privutil.UrlParseRequest
+	126, // 86: privutil.PrivUtilService.UserAgentParse:input_type -> privutil.UserAgentParseRequest
+	129, // 87: privutil.PrivUtilService.HttpStatusSearch:input_type -> privutil.HttpStatusSearchRequest
+	132, // 88: privutil.PrivUtilService.MimeLookup:input_type -> privutil.MimeLookupRequest
+	135, // 89: privutil.PrivUtilService.DockerRunToCompose:input_type -> privutil.DockerRunToComposeRequest
+	137, // 90: privutil.PrivUtilService.GitCheatSheet:input_type -> privutil.GitCheatSheetRequest
+	141, // 91: privutil.PrivUtilService.SvgOptimize:input_type -> privutil.SvgOptimizeRequest
+	143, // 92: privutil.PrivUtilService.ExifRead:input_type -> privutil.ExifReadRequest
+	146, // 93: privutil.PrivUtilService.FileToBase64:input_type -> privutil.FileToBase64Request
+	148, // 94: privutil.PrivUtilService.Base64ToFile:input_type -> privutil.Base64ToFileRequest
+	150, // 95: privutil.PrivUtilService.TokenCount:input_type -> privutil.TokenCountRequest
+	153, // 96: privutil.PrivUtilService.SpellCheck:input_type -> privutil.SpellCheckRequest
+	156, // 97: privutil.PrivUtilService.SpellLanguages:input_type -> privutil.SpellLanguagesRequest
+	159, // 98: privutil.PrivUtilService.GetCustomWords:input_type -> privutil.GetCustomWordsRequest
+	160, // 99: privutil.PrivUtilService.AddCustomWords:input_type -> privutil.AddCustomWordsRequest
+	161, // 100: privutil.PrivUtilService.RemoveCustomWord:input_type -> privutil.RemoveCustomWordRequest
+	6,   // 101: privutil.PrivUtilService.Diff:output_type -> privutil.DiffResponse
+	8,   // 102: privutil.PrivUtilService.DiffFiles:output_type -> privutil.DiffFilesResponse
+	10,  // 103: privutil.PrivUtilService.Base64Encode:output_type -> privutil.Base64Response
+	10,  // 104: privutil.PrivUtilService.Base64Decode:output_type -> privutil.Base64Response
+	12,  // 105: privutil.PrivUtilService.JsonFormat:output_type -> privutil.JsonFormatResponse
+	14,  // 106: privutil.PrivUtilService.Convert:output_type -> privutil.ConvertResponse
+	16,  // 107: privutil.PrivUtilService.ValidateData:output_type -> privutil.ValidateResponse
+	18,  // 108: privutil.PrivUtilService.GenerateUuid:output_type -> privutil.UuidResponse
+	20,  // 109: privutil.PrivUtilService.GenerateLorem:output_type -> privutil.LoremResponse
+	22,  // 110: privutil.PrivUtilService.CalculateHash:output_type -> privutil.HashResponse
+	50,  // 111: privutil.PrivUtilService.TextInspect:output_type -> privutil.TextInspectResponse
+	52,  // 112: privutil.PrivUtilService.TextManipulate:output_type -> privutil.TextManipulateResponse
+	24,  // 113: privutil.PrivUtilService.UrlEncode:output_type -> privutil.TextResponse
+	24,  // 114: privutil.PrivUtilService.UrlDecode:output_type -> privutil.TextResponse
+	24,  // 115: privutil.PrivUtilService.HtmlEncode:output_type -> privutil.TextResponse
+	24,  // 116: privutil.PrivUtilService.HtmlDecode:output_type -> privutil.TextResponse
+	26,  // 117: privutil.PrivUtilService.TimeConvert:output_type -> privutil.TimeResponse
+	28,  // 118: privutil.PrivUtilService.JwtDecode:output_type -> privutil.JwtResponse
+	30,  // 119: privutil.PrivUtilService.RegexTest:output_type -> privutil.RegexResponse
+	32,  // 120: privutil.PrivUtilService.JsonToGo:output_type -> privutil.JsonToGoResponse
+	34,  // 121: privutil.PrivUtilService.CronExplain:output_type -> privutil.CronResponse
+	36,  // 122: privutil.PrivUtilService.CertParse:output_type -> privutil.CertResponse
+	38,  // 123: privutil.PrivUtilService.ColorConvert:output_type -> privutil.ColorResponse
+	40,  // 124: privutil.PrivUtilService.CaseConvert:output_type -> privutil.CaseResponse
+	42,  // 125: privutil.PrivUtilService.StringEscape:output_type -> privutil.EscapeResponse
+	44,  // 126: privutil.PrivUtilService.TextSimilarity:output_type -> privutil.SimilarityResponse
+	46,  // 127: privutil.PrivUtilService.SqlFormat:output_type -> privutil.SqlResponse
+	48,  // 128: privutil.PrivUtilService.IpCalc:output_type -> privutil.IpResponse
+	54,  // 129: privutil.PrivUtilService.GeneratePassword:output_type -> privutil.PasswordResponse
+	56,  // 130: privutil.PrivUtilService.GenerateRsaKeyPair:output_type -> privutil.RsaKeyResponse
+	58,  // 131: privutil.PrivUtilService.BaseConvert:output_type -> privutil.BaseConvertResponse
+	24,  // 132: privutil.PrivUtilService.MarkdownToHtml:output_type -> privutil.TextResponse
+	24,  // 133: privutil.PrivUtilService.HtmlToMarkdown:output_type -> privutil.TextResponse
+	70,  // 134: privutil.PrivUtilService.HmacGenerate:output_type -> privutil.HmacResponse
+	72,  // 135: privutil.PrivUtilService.OtpGenerate:output_type -> privutil.OtpResponse
+	74,  // 136: privutil.PrivUtilService.OtpValidate:output_type -> privutil.OtpValidateResponse
+	76,  // 137: privutil.PrivUtilService.UlidGenerate:output_type -> privutil.UlidResponse
+	78,  // 138: privutil.PrivUtilService.CaesarCipher:output_type -> privutil.CaesarResponse
+	80,  // 139: privutil.PrivUtilService.TextEncode:output_type -> privutil.TextEncodeResponse
+	82,  // 140: privutil.PrivUtilService.MorseCode:output_type -> privutil.MorseResponse
+	84,  // 141: privutil.PrivUtilService.BasicAuthGenerate:output_type -> privutil.BasicAuthResponse
+	60,  // 142: privutil.PrivUtilService.ChmodCalc:output_type -> privutil.ChmodResponse
+	62,  // 143: privutil.PrivUtilService.Ipv4Convert:output_type -> privutil.Ipv4ConvertResponse
+	64,  // 144: privutil.PrivUtilService.Ipv4RangeExpand:output_type -> privutil.Ipv4RangeResponse
+	66,  // 145: privutil.PrivUtilService.GeneratePort:output_type -> privutil.PortResponse
+	68,  // 146: privutil.PrivUtilService.GenerateMac:output_type -> privutil.MacResponse
+	86,  // 147: privutil.PrivUtilService.Slugify:output_type -> privutil.SlugifyResponse
+	89,  // 148: privutil.PrivUtilService.HiddenChars:output_type -> privutil.HiddenCharsResponse
+	91,  // 149: privutil.PrivUtilService.TextReplace:output_type -> privutil.TextReplaceResponse
+	93,  // 150: privutil.PrivUtilService.StringObfuscate:output_type -> privutil.StringObfuscateResponse
+	95,  // 151: privutil.PrivUtilService.NumeronymGenerate:output_type -> privutil.NumeronymResponse
+	97,  // 152: privutil.PrivUtilService.NatoAlphabet:output_type -> privutil.NatoResponse
+	100, // 153: privutil.PrivUtilService.ListProcess:output_type -> privutil.ListResponse
+	103, // 154: privutil.PrivUtilService.MathEval:output_type -> privutil.MathEvalResponse
+	105, // 155: privutil.PrivUtilService.PercentageCalc:output_type -> privutil.PercentageResponse
+	107, // 156: privutil.PrivUtilService.TempConvert:output_type -> privutil.TempConvertResponse
+	110, // 157: privutil.PrivUtilService.UnitConvert:output_type -> privutil.UnitConvertResponse
+	112, // 158: privutil.PrivUtilService.DateDiff:output_type -> privutil.DateDiffResponse
+	115, // 159: privutil.PrivUtilService.LeapYear:output_type -> privutil.LeapYearResponse
+	117, // 160: privutil.PrivUtilService.DateAdd:output_type -> privutil.DateAddResponse
+	120, // 161: privutil.PrivUtilService.DateFormat:output_type -> privutil.DateFormatResponse
+	122, // 162: privutil.PrivUtilService.DateInfo:output_type -> privutil.DateInfoResponse
+	125, // 163: privutil.PrivUtilService.UrlParse:output_type -> privutil.UrlParseResponse
+	128, // 164: privutil.PrivUtilService.UserAgentParse:output_type -> privutil.UserAgentParseResponse
+	131, // 165: privutil.PrivUtilService.HttpStatusSearch:output_type -> privutil.HttpStatusSearchResponse
+	134, // 166: privutil.PrivUtilService.MimeLookup:output_type -> privutil.MimeLookupResponse
+	136, // 167: privutil.PrivUtilService.DockerRunToCompose:output_type -> privutil.DockerRunToComposeResponse
+	140, // 168: privutil.PrivUtilService.GitCheatSheet:output_type -> privutil.GitCheatSheetResponse
+	142, // 169: privutil.PrivUtilService.SvgOptimize:output_type -> privutil.SvgOptimizeResponse
+	145, // 170: privutil.PrivUtilService.ExifRead:output_type -> privutil.ExifReadResponse
+	147, // 171: privutil.PrivUtilService.FileToBase64:output_type -> privutil.FileToBase64Response
+	149, // 172: privutil.PrivUtilService.Base64ToFile:output_type -> privutil.Base64ToFileResponse
+	152, // 173: privutil.PrivUtilService.TokenCount:output_type -> privutil.TokenCountResponse
+	155, // 174: privutil.PrivUtilService.SpellCheck:output_type -> privutil.SpellCheckResponse
+	158, // 175: privutil.PrivUtilService.SpellLanguages:output_type -> privutil.SpellLanguagesResponse
+	162, // 176: privutil.PrivUtilService.GetCustomWords:output_type -> privutil.CustomWordsResponse
+	162, // 177: privutil.PrivUtilService.AddCustomWords:output_type -> privutil.CustomWordsResponse
+	162, // 178: privutil.PrivUtilService.RemoveCustomWord:output_type -> privutil.CustomWordsResponse
+	101, // [101:179] is the sub-list for method output_type
+	23,  // [23:101] is the sub-list for method input_type
 	23,  // [23:23] is the sub-list for extension type_name
 	23,  // [23:23] is the sub-list for extension extendee
 	0,   // [0:23] is the sub-list for field type_name
@@ -11212,14 +11381,14 @@ func file_proto_privutil_proto_init() {
 	if File_proto_privutil_proto != nil {
 		return
 	}
-	file_proto_privutil_proto_msgTypes[14].OneofWrappers = []any{}
+	file_proto_privutil_proto_msgTypes[16].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_privutil_proto_rawDesc), len(file_proto_privutil_proto_rawDesc)),
 			NumEnums:      5,
-			NumMessages:   156,
+			NumMessages:   158,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

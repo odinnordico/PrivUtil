@@ -1,22 +1,37 @@
 package api
 
 import (
+	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"html"
 	"regexp"
 	"sort"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 
 	"github.com/sergi/go-diff/diffmatchpatch"
 
 	pb "github.com/odinnordico/privutil/proto"
 )
 
+// maxDiffFileBytes caps each uploaded file for the file-diff comparison. Text
+// files are diffed (diffmatchpatch has its own 1s timeout); binary files are
+// only checksummed, so this bounds the work either way.
+const maxDiffFileBytes = 10 << 20 // 10 MiB
+
 func (s *Server) Diff(ctx context.Context, req *pb.DiffRequest) (*pb.DiffResponse, error) {
+	return &pb.DiffResponse{DiffHtml: buildDiffHTML(req.Text1, req.Text2)}, nil
+}
+
+// buildDiffHTML renders an inline (unified) diff of two texts as HTML. Every
+// segment is HTML-escaped, so user content can never inject markup.
+func buildDiffHTML(text1, text2 string) string {
 	dmp := diffmatchpatch.New()
-	diffs := dmp.DiffMain(req.Text1, req.Text2, false)
+	diffs := dmp.DiffMain(text1, text2, false)
 
 	var buffer strings.Builder
 	for _, diff := range diffs {
@@ -38,9 +53,45 @@ func (s *Server) Diff(ctx context.Context, req *pb.DiffRequest) (*pb.DiffRespons
 		}
 	}
 
-	return &pb.DiffResponse{
-		DiffHtml: fmt.Sprintf("<div class='diff-output' style='white-space: pre-wrap; font-family: monospace;'>%s</div>", buffer.String()),
-	}, nil
+	return fmt.Sprintf("<div class='diff-output' style='white-space: pre-wrap; font-family: monospace;'>%s</div>", buffer.String())
+}
+
+// isReadableText reports whether data is safe to treat as text: valid UTF-8 with
+// no NUL byte (the standard binary-vs-text heuristic).
+func isReadableText(data []byte) bool {
+	return utf8.Valid(data) && !bytes.Contains(data, []byte{0})
+}
+
+// DiffFiles compares two uploaded files. When both are readable text it returns
+// an inline diff; otherwise it reports that a file is not readable and compares
+// the files by SHA-256 checksum.
+func (s *Server) DiffFiles(_ context.Context, req *pb.DiffFilesRequest) (*pb.DiffFilesResponse, error) {
+	f1, f2 := req.File1, req.File2
+	if len(f1) > maxDiffFileBytes || len(f2) > maxDiffFileBytes {
+		return &pb.DiffFilesResponse{
+			Error: fmt.Sprintf("file too large: limit %d bytes (%d MiB) per file", maxDiffFileBytes, maxDiffFileBytes>>20),
+		}, nil
+	}
+
+	sum1 := sha256.Sum256(f1)
+	sum2 := sha256.Sum256(f2)
+	cs1 := hex.EncodeToString(sum1[:])
+	cs2 := hex.EncodeToString(sum2[:])
+
+	resp := &pb.DiffFilesResponse{
+		Checksum1:      cs1,
+		Checksum2:      cs2,
+		ChecksumsMatch: cs1 == cs2,
+		ChecksumAlgo:   "SHA-256",
+	}
+
+	if isReadableText(f1) && isReadableText(f2) {
+		resp.IsText = true
+		resp.DiffHtml = buildDiffHTML(string(f1), string(f2))
+	} else {
+		resp.Message = "One or both files are not readable as text (binary). Compared by SHA-256 checksum instead."
+	}
+	return resp, nil
 }
 
 func (s *Server) TextInspect(ctx context.Context, req *pb.TextInspectRequest) (*pb.TextInspectResponse, error) {

@@ -6,6 +6,7 @@ option go_package = "github.com/odinnordico/privutil/proto";
 
 service PrivUtilService {
   rpc Diff(DiffRequest) returns (DiffResponse) {}
+  rpc DiffFiles(DiffFilesRequest) returns (DiffFilesResponse) {}
   rpc Base64Encode(Base64Request) returns (Base64Response) {}
   rpc Base64Decode(Base64Request) returns (Base64Response) {}
   rpc JsonFormat(JsonFormatRequest) returns (JsonFormatResponse) {}
@@ -91,6 +92,22 @@ message DiffRequest {
 
 message DiffResponse {
   string diff_html = 1;
+}
+
+message DiffFilesRequest {
+  bytes file1 = 1;
+  bytes file2 = 2;
+}
+
+message DiffFilesResponse {
+  bool   is_text         = 1;  // both files are readable text → diff_html is populated
+  string diff_html       = 2;  // inline diff HTML (only when is_text)
+  string checksum1       = 3;  // SHA-256 hex of file1
+  string checksum2       = 4;  // SHA-256 hex of file2
+  bool   checksums_match = 5;
+  string checksum_algo   = 6;  // e.g. "SHA-256"
+  string message         = 7;  // note shown for the binary/checksum path
+  string error           = 8;
 }
 
 message Base64Request {

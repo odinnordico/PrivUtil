@@ -39,6 +39,75 @@ func TestDiff(t *testing.T) {
 	}
 }
 
+func TestDiffFiles(t *testing.T) {
+	s := NewServer()
+	ctx := context.Background()
+	bin := []byte{0x00, 0x01, 0x02, 0xff} // contains a NUL → not readable text
+
+	t.Run("both text: inline diff, checksums differ", func(t *testing.T) {
+		resp, err := s.DiffFiles(ctx, &pb.DiffFilesRequest{File1: []byte("hello"), File2: []byte("world")})
+		if err != nil {
+			t.Fatalf("DiffFiles() error = %v", err)
+		}
+		if !resp.IsText || resp.DiffHtml == "" {
+			t.Error("expected a text diff for two readable files")
+		}
+		if resp.ChecksumsMatch {
+			t.Error("different files should not have matching checksums")
+		}
+		if resp.ChecksumAlgo != "SHA-256" || len(resp.Checksum1) != 64 {
+			t.Errorf("unexpected checksum metadata: algo=%q len=%d", resp.ChecksumAlgo, len(resp.Checksum1))
+		}
+	})
+
+	t.Run("identical text: checksums match", func(t *testing.T) {
+		resp, err := s.DiffFiles(ctx, &pb.DiffFilesRequest{File1: []byte("same"), File2: []byte("same")})
+		if err != nil {
+			t.Fatalf("DiffFiles() error = %v", err)
+		}
+		if !resp.IsText || !resp.ChecksumsMatch {
+			t.Errorf("identical text files: isText=%v match=%v", resp.IsText, resp.ChecksumsMatch)
+		}
+	})
+
+	t.Run("binary side: not text, checksum compared", func(t *testing.T) {
+		resp, err := s.DiffFiles(ctx, &pb.DiffFilesRequest{File1: []byte("hello"), File2: bin})
+		if err != nil {
+			t.Fatalf("DiffFiles() error = %v", err)
+		}
+		if resp.IsText {
+			t.Error("a binary file must not be treated as text")
+		}
+		if resp.DiffHtml != "" {
+			t.Error("binary comparison must not produce diff HTML")
+		}
+		if resp.Message == "" {
+			t.Error("expected a not-readable message for the binary path")
+		}
+	})
+
+	t.Run("identical binary: checksums match", func(t *testing.T) {
+		resp, err := s.DiffFiles(ctx, &pb.DiffFilesRequest{File1: bin, File2: bin})
+		if err != nil {
+			t.Fatalf("DiffFiles() error = %v", err)
+		}
+		if resp.IsText || !resp.ChecksumsMatch {
+			t.Errorf("identical binary files: isText=%v match=%v", resp.IsText, resp.ChecksumsMatch)
+		}
+	})
+
+	t.Run("oversized file rejected", func(t *testing.T) {
+		big := make([]byte, maxDiffFileBytes+1)
+		resp, err := s.DiffFiles(ctx, &pb.DiffFilesRequest{File1: big, File2: []byte("x")})
+		if err != nil {
+			t.Fatalf("DiffFiles() error = %v", err)
+		}
+		if resp.Error == "" {
+			t.Error("expected an error for an oversized file")
+		}
+	})
+}
+
 func TestTextInspect(t *testing.T) {
 	s := NewServer()
 	ctx := context.Background()
