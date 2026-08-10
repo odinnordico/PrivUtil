@@ -20,7 +20,7 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 
 | Tool | Description |
 | ---- | ----------- |
-| **Diff Utility** | Visual text comparison with syntax highlighting |
+| **Diff Utility** | Compare pasted text or uploaded files; readable text is diffed inline, binary files are compared by SHA-256 checksum |
 | **Text Tools** | Sort, dedupe, reverse, trim, inspect line count/word count/bytes |
 | **Text Similarity** | Levenshtein distance and similarity percentage |
 | **Spell & Grammar Checker** | Fully offline spelling and grammar/punctuation checking; English and Latin American Spanish; embedded ~50k-word dictionaries; inline wavy underlines with one-click fixes; add words to a persistent custom dictionary (never flagged again) |

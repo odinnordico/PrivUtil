@@ -46,7 +46,7 @@ Browser (React + nice-grpc-web) → HTTP server (connect-go handler over h2c) �
 - `internal/server/server.go` — HTTP server serving the connect handler over h2c, with a Host-header allowlist, allowlist-scoped CORS, and CSP/security-header middleware; serves embedded React assets with SPA fallback
 - `internal/api/server.go` — the `Server` type and `NewServer` (functional options); `internal/api/connect_adapter.go` — adapts `*Server` to the generated connect handler interface (`NewConnectServer`)
 - `internal/api/*_handlers.go` — domain-grouped handler files: `data_handlers.go`, `text_handlers.go`, `encoding_handlers.go`, `gen_handlers.go`, `security_handlers.go`, `crypto_handlers.go`, `datetime_handlers.go`, `math_handlers.go`, `media_handlers.go`, `network_handlers.go`, `spell_handlers.go`, `text_tools_handlers.go`, `token_handlers.go`, `webdevops_handlers.go`, `system_handlers.go`
-- `proto/privutil.proto` — single proto file defining all 77 RPC methods; generated Go code (`proto/privutil.pb.go`, `proto/protoconnect/privutil.connect.go`) is committed
+- `proto/privutil.proto` — single proto file defining all 78 RPC methods; generated Go code (`proto/privutil.pb.go`, `proto/protoconnect/privutil.connect.go`) is committed
 - `web/src/` — React frontend; `web/src/proto/` contains generated TypeScript proto bindings (also committed)
 
 ## Adding a New Tool
