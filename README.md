@@ -250,8 +250,8 @@ Or in a client config that takes MCP server definitions:
 }
 ```
 
-- **No login** — access is gated by the same loopback bind + Host-header allowlist as the rest of the server; cross-origin browsers are refused (no CORS, Origin check), and the endpoint is body-size- and rate-limited.
-- **Tools exposed** (pure, offline, no side effects): `calculate_hash`, `hmac_generate`, `generate_uuid`, `base64_encode`, `base64_decode`, `url_encode`, `url_decode`, `base_convert`, `json_format`, `jwt_decode`, `slugify`, `text_diff`.
+- **No login** — access is gated by the same loopback bind + Host-header allowlist as the rest of the server; cross-origin browsers are refused (no CORS, Origin check), and the endpoint is body-size- and rate-limited. Every tool handler is panic-recovered.
+- **~70 tools exposed** (pure, offline, no side effects) spanning hashing/crypto, encoding, data & formats (JSON/YAML/XML/TOML/CSV, JSON→Go, SQL), text (diff, regex, case, tokens, spell-check, hidden chars), network (IP/subnet, URL, MIME, HTTP status), math/units/dates, generators (UUID/ULID/password/RSA/OTP), and dev utilities (cron, docker→compose, cert parse). Call `tools/list` for the full catalog.
 - Disable it with `-mcp=false` / `MCP=false`.
 
 ---
