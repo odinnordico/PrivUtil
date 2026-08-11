@@ -4,6 +4,7 @@ import (
 	"io/fs"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -88,6 +89,41 @@ func TestServerHandlerStaticFiles(t *testing.T) {
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		t.Errorf("GET / status = %d, want %d", resp.StatusCode, http.StatusOK)
+	}
+}
+
+func TestServerHandlerAppIcons(t *testing.T) {
+	ts := httptest.NewServer(testHandler(t))
+	defer ts.Close()
+
+	cases := []struct {
+		path            string
+		wantContentType string
+	}{
+		{"/favicon.ico", "image/vnd.microsoft.icon"},
+		{"/favicon-32x32.png", "image/png"},
+		{"/favicon-96x96.png", "image/png"},
+		{"/favicon-192x192.png", "image/png"},
+		{"/favicon-512x512.png", "image/png"},
+		{"/apple-touch-icon.png", "image/png"},
+		{"/site.webmanifest", "application/manifest+json"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.path, func(t *testing.T) {
+			resp, err := http.Get(ts.URL + tc.path)
+			if err != nil {
+				t.Fatalf("GET %s: %v", tc.path, err)
+			}
+			defer resp.Body.Close()
+			if resp.StatusCode != http.StatusOK {
+				t.Fatalf("GET %s status = %d, want %d", tc.path, resp.StatusCode, http.StatusOK)
+			}
+			// The asset must exist on disk, not be the SPA fallback: index.html
+			// would come back as text/html.
+			if ct := resp.Header.Get("Content-Type"); !strings.HasPrefix(ct, tc.wantContentType) {
+				t.Errorf("GET %s Content-Type = %q, want prefix %q", tc.path, ct, tc.wantContentType)
+			}
+		})
 	}
 }
 

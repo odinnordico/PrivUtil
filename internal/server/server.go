@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"mime"
 	"net"
 	"net/http"
 	"net/url"
@@ -23,6 +24,12 @@ import (
 
 //go:embed dist/*
 var staticFiles embed.FS
+
+func init() {
+	// Go's MIME table has no .webmanifest entry, so http.FileServer would serve
+	// site.webmanifest as text/plain and browsers would reject the manifest.
+	_ = mime.AddExtensionType(".webmanifest", "application/manifest+json")
+}
 
 type Server struct {
 	addr         string
