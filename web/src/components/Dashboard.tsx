@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { navItems } from '../lib/nav';
+import mascot from '../assets/mascot.webp';
 
 export function Dashboard() {
   const [searchParams] = useSearchParams();
@@ -14,13 +15,22 @@ export function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col gap-4 max-w-2xl mx-auto text-center py-12">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-kawa-400 to-kawa-600 bg-clip-text text-transparent">
-          PrivUtil
-        </h1>
-        <p className="text-slate-500 dark:text-slate-400 text-lg">
-          Offline-capable developer utility suite. Privacy-first, no server tracking.
-        </p>
+      <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-3xl mx-auto py-12">
+        <img
+          src={mascot}
+          alt="PrivUtil mascot"
+          width={160}
+          height={166}
+          className="w-32 md:w-40 shrink-0"
+        />
+        <div className="flex flex-col gap-4 text-center md:text-left">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-kawa-400 to-kawa-600 bg-clip-text text-transparent">
+            PrivUtil
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-lg">
+            Offline-capable developer utility suite. Privacy-first, no server tracking.
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-12">
@@ -49,8 +59,10 @@ export function Dashboard() {
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center text-slate-500 dark:text-slate-400 py-12">
-          No tools found matching "{term}"
+        <div className="flex flex-col items-center gap-4 text-center text-slate-500 dark:text-slate-400 py-12">
+          {/* Decorative: the message right below carries the meaning. */}
+          <img src={mascot} alt="" width={96} height={100} className="w-24 opacity-60" />
+          <p>No tools found matching "{term}"</p>
         </div>
       )}
     </div>

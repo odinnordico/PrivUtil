@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="doc/privutil.webp" alt="PrivUtil logo" width="160" />
+</p>
+
 # PrivUtil
 
 ![Build Status](https://github.com/odinnordico/privutil/actions/workflows/build.yml/badge.svg)
@@ -5,10 +9,11 @@
 ![License](https://img.shields.io/github/license/odinnordico/privutil)
 ![Go Version](https://img.shields.io/github/go-mod/go-version/odinnordico/privutil)
 
-[!NOTE]
-This project was "developed" with Antigravity AI. I am the owner of the project and I am using it to help me with my development tasks and to learn more about AI development while vive coding. This project was started from scratch and it took the length of TROLL and TROLL2 movies to build.
+<img src="doc/mascot.webp" alt="PrivUtil mascot" width="180" align="right" />
 
 **PrivUtil** is a privacy-first, offline-capable developer utility suite. Built with **Go** and **React**, it provides 65+ tools across 11 categories for data manipulation, formatting, conversion, generation, and more — all running locally with zero server tracking.
+
+<br clear="right" />
 
 ![PrivUtil Screenshot](screenshot.png)
 
@@ -18,126 +23,126 @@ This project was "developed" with Antigravity AI. I am the owner of the project 
 
 ### Data & Diff
 
-| Tool | Description |
-| ---- | ----------- |
-| **Diff Utility** | Compare pasted text or uploaded files; readable text is diffed inline, binary files are compared by SHA-256 checksum |
-| **Text Tools** | Sort, dedupe, reverse, trim, inspect line count/word count/bytes |
-| **Text Similarity** | Levenshtein distance and similarity percentage |
+| Tool                        | Description                                                                                                                                                                                                                                  |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Diff Utility**            | Compare pasted text or uploaded files; readable text is diffed inline, binary files are compared by SHA-256 checksum                                                                                                                         |
+| **Text Tools**              | Sort, dedupe, reverse, trim, inspect line count/word count/bytes                                                                                                                                                                             |
+| **Text Similarity**         | Levenshtein distance and similarity percentage                                                                                                                                                                                               |
 | **Spell & Grammar Checker** | Fully offline spelling and grammar/punctuation checking; English and Latin American Spanish; embedded ~50k-word dictionaries; inline wavy underlines with one-click fixes; add words to a persistent custom dictionary (never flagged again) |
-| **Token Counter** | Offline LLM token counter; exact BPE for OpenAI (o200k_base/cl100k_base), heuristic estimates for Claude/Llama 3/Gemini/Mistral, plus classic tokenizers; char/byte counts, token preview, side-by-side comparison |
+| **Token Counter**           | Offline LLM token counter; exact BPE for OpenAI (o200k_base/cl100k_base), heuristic estimates for Claude/Llama 3/Gemini/Mistral, plus classic tokenizers; char/byte counts, token preview, side-by-side comparison                           |
 
 ### Formatters & Converters
 
-| Tool | Description |
-| ---- | ----------- |
-| **JSON Formatter** | Format, minify, sort keys, validate |
-| **Universal Converter** | JSON ↔ YAML ↔ XML ↔ TOML ↔ CSV (bidirectional, configurable delimiter) |
-| **Data Validator** | Validate JSON, YAML, XML, TOML with line/column error reporting |
-| **SQL Formatter** | Beautify and format SQL queries |
-| **Color Converter** | HEX ↔ RGB ↔ HSL with live preview |
-| **Case Converter** | camelCase, snake_case, PascalCase, kebab-case, CONSTANT_CASE, Title Case |
-| **Time Converter** | Unix timestamps, timezone conversion, ISO 8601 |
-| **Number Base Converter** | Decimal ↔ Hex ↔ Binary ↔ Octal ↔ Base64 |
-| **IP Calculator** | IPv4/IPv6 subnet, network/broadcast/hosts |
-| **Markdown ↔ HTML** | Bidirectional conversion |
-| **HTML/MD Viewer** | Render HTML or Markdown in a sandboxed iframe with strict CSP, file upload (.html/.md), opt-in images |
+| Tool                      | Description                                                                                           |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **JSON Formatter**        | Format, minify, sort keys, validate                                                                   |
+| **Universal Converter**   | JSON ↔ YAML ↔ XML ↔ TOML ↔ CSV (bidirectional, configurable delimiter)                                |
+| **Data Validator**        | Validate JSON, YAML, XML, TOML with line/column error reporting                                       |
+| **SQL Formatter**         | Beautify and format SQL queries                                                                       |
+| **Color Converter**       | HEX ↔ RGB ↔ HSL with live preview                                                                     |
+| **Case Converter**        | camelCase, snake_case, PascalCase, kebab-case, CONSTANT_CASE, Title Case                              |
+| **Time Converter**        | Unix timestamps, timezone conversion, ISO 8601                                                        |
+| **Number Base Converter** | Decimal ↔ Hex ↔ Binary ↔ Octal ↔ Base64                                                               |
+| **IP Calculator**         | IPv4/IPv6 subnet, network/broadcast/hosts                                                             |
+| **Markdown ↔ HTML**       | Bidirectional conversion                                                                              |
+| **HTML/MD Viewer**        | Render HTML or Markdown in a sandboxed iframe with strict CSP, file upload (.html/.md), opt-in images |
 
 ### Generators
 
-| Tool | Description |
-| ---- | ----------- |
-| **UUID Generator** | v1, v2, v3, v4, v5, v6, v7, v8; configurable hyphens, uppercase, count |
-| **Hash Calculator** | MD5, SHA-1, SHA-256, SHA-512, bcrypt (configurable cost) |
-| **Lorem Ipsum** | Words, sentences, paragraphs, configurable count |
+| Tool                   | Description                                                                 |
+| ---------------------- | --------------------------------------------------------------------------- |
+| **UUID Generator**     | v1, v2, v3, v4, v5, v6, v7, v8; configurable hyphens, uppercase, count      |
+| **Hash Calculator**    | MD5, SHA-1, SHA-256, SHA-512, bcrypt (configurable cost)                    |
+| **Lorem Ipsum**        | Words, sentences, paragraphs, configurable count                            |
 | **Password Generator** | Custom charset, length, uppercase/lowercase/digits/symbols, bulk generation |
-| **RSA Key Pair** | 1024/2048/4096-bit key generation |
+| **RSA Key Pair**       | 1024/2048/4096-bit key generation                                           |
 
 ### Encoding & Crypto
 
-| Tool | Description |
-| ---- | ----------- |
-| **Base64** | Encode text or uploaded files; decode raw or data-URI input with MIME-aware inline preview (text, images, PDF, audio, video, and binary/gRPC payloads as text up to 5 MB) |
-| **URL Encoder/Decoder** | Percent-encoding |
-| **HTML Entity Encoder/Decoder** | Named and numeric entities |
-| **HMAC Generator** | SHA-256/SHA-512/SHA-1/MD5 with hex and base64 output |
-| **OTP/TOTP** | Generate and validate RFC 6238 codes; generate secrets; configurable period/digits/algo |
-| **ULID Generator** | Monotonic option, bulk generation |
-| **Caesar Cipher / ROT13** | Arbitrary shift, encode/decode |
-| **Text Encode** | Text ↔ binary, hex, octal, decimal codepoints |
-| **Morse Code** | Encode/decode with standard alphabet |
-| **Basic Auth Generator** | Encode/decode `user:password` as Authorization header |
+| Tool                            | Description                                                                                                                                                               |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Base64**                      | Encode text or uploaded files; decode raw or data-URI input with MIME-aware inline preview (text, images, PDF, audio, video, and binary/gRPC payloads as text up to 5 MB) |
+| **URL Encoder/Decoder**         | Percent-encoding                                                                                                                                                          |
+| **HTML Entity Encoder/Decoder** | Named and numeric entities                                                                                                                                                |
+| **HMAC Generator**              | SHA-256/SHA-512/SHA-1/MD5 with hex and base64 output                                                                                                                      |
+| **OTP/TOTP**                    | Generate and validate RFC 6238 codes; generate secrets; configurable period/digits/algo                                                                                   |
+| **ULID Generator**              | Monotonic option, bulk generation                                                                                                                                         |
+| **Caesar Cipher / ROT13**       | Arbitrary shift, encode/decode                                                                                                                                            |
+| **Text Encode**                 | Text ↔ binary, hex, octal, decimal codepoints                                                                                                                             |
+| **Morse Code**                  | Encode/decode with standard alphabet                                                                                                                                      |
+| **Basic Auth Generator**        | Encode/decode `user:password` as Authorization header                                                                                                                     |
 
 ### Developer Tools
 
-| Tool | Description |
-| ---- | ----------- |
-| **JWT Debugger** | Decode header and payload; highlights expiration |
-| **Regex Tester** | Go-compatible regex, match highlighting, captured groups |
-| **JSON to Go** | Generate Go structs with json tags from any JSON |
-| **Cron Tools** | Explain cron expressions, next 5 run times |
-| **Certificate Parser** | Parse X.509 PEM certificates (subject, issuer, SANs, validity) |
-| **String Escape/Unescape** | JSON, Java, SQL, HTML entity modes |
+| Tool                       | Description                                                    |
+| -------------------------- | -------------------------------------------------------------- |
+| **JWT Debugger**           | Decode header and payload; highlights expiration               |
+| **Regex Tester**           | Go-compatible regex, match highlighting, captured groups       |
+| **JSON to Go**             | Generate Go structs with json tags from any JSON               |
+| **Cron Tools**             | Explain cron expressions, next 5 run times                     |
+| **Certificate Parser**     | Parse X.509 PEM certificates (subject, issuer, SANs, validity) |
+| **String Escape/Unescape** | JSON, Java, SQL, HTML entity modes                             |
 
 ### Network Tools
 
-| Tool | Description |
-| ---- | ----------- |
-| **Subnet Calculator** | IPv4/IPv6 CIDR: network, broadcast, netmask, host range, count |
-| **chmod Calculator** | Interactive Unix permission calculator; octal ↔ symbolic ↔ checkboxes; setuid/setgid/sticky |
-| **IPv4 Converter** | Decimal ↔ dotted ↔ hex ↔ binary representations |
-| **IPv4 Range Expander** | Start+end → individual IPs + CIDR summary |
-| **Port Generator** | Random port(s), configurable range, exclude well-known |
-| **MAC Address Generator** | Random or OUI-specific, configurable separator, unicast/local bits |
+| Tool                      | Description                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------- |
+| **Subnet Calculator**     | IPv4/IPv6 CIDR: network, broadcast, netmask, host range, count                              |
+| **chmod Calculator**      | Interactive Unix permission calculator; octal ↔ symbolic ↔ checkboxes; setuid/setgid/sticky |
+| **IPv4 Converter**        | Decimal ↔ dotted ↔ hex ↔ binary representations                                             |
+| **IPv4 Range Expander**   | Start+end → individual IPs + CIDR summary                                                   |
+| **Port Generator**        | Random port(s), configurable range, exclude well-known                                      |
+| **MAC Address Generator** | Random or OUI-specific, configurable separator, unicast/local bits                          |
 
 ### Text & String
 
-| Tool | Description |
-| ---- | ----------- |
-| **Slugify** | URL-safe slug with separator, uppercase, max-length options |
-| **Hidden Character Detector** | Reveals zero-width spaces, BOM, non-breaking spaces; annotated/cleaned output |
-| **Find & Replace** | Plain text or regex, case-insensitive option, replacement count |
-| **String Obfuscator** | Partial masking, configurable keep-start/keep-end/mask-char |
-| **Numeronym Generator** | i18n, k8s, a11y style |
-| **NATO Alphabet** | Encode/decode text to/from NATO phonetic alphabet |
-| **List Tools** | Sort A-Z/Z-A/numeric, dedupe, shuffle, unique-only, duplicates, frequency, reverse, trim, remove-empty |
+| Tool                          | Description                                                                                            |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Slugify**                   | URL-safe slug with separator, uppercase, max-length options                                            |
+| **Hidden Character Detector** | Reveals zero-width spaces, BOM, non-breaking spaces; annotated/cleaned output                          |
+| **Find & Replace**            | Plain text or regex, case-insensitive option, replacement count                                        |
+| **String Obfuscator**         | Partial masking, configurable keep-start/keep-end/mask-char                                            |
+| **Numeronym Generator**       | i18n, k8s, a11y style                                                                                  |
+| **NATO Alphabet**             | Encode/decode text to/from NATO phonetic alphabet                                                      |
+| **List Tools**                | Sort A-Z/Z-A/numeric, dedupe, shuffle, unique-only, duplicates, frequency, reverse, trim, remove-empty |
 
 ### Math & Units
 
-| Tool | Description |
-| ---- | ----------- |
+| Tool                          | Description                                                                                                                             |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | **Math Expression Evaluator** | Recursive-descent parser, 30+ functions (trig, log, factorial, gcd, lcm, clamp, lerp…), variables, degrees mode, configurable precision |
-| **Percentage Calculator** | 4 modes: X% of Y, X is what % of Y, % change, reverse percentage |
-| **Temperature Converter** | Celsius ↔ Fahrenheit ↔ Kelvin with formulas |
-| **Unit Converter** | 6 categories: bytes (SI+binary), length, mass, area, volume, speed |
+| **Percentage Calculator**     | 4 modes: X% of Y, X is what % of Y, % change, reverse percentage                                                                        |
+| **Temperature Converter**     | Celsius ↔ Fahrenheit ↔ Kelvin with formulas                                                                                             |
+| **Unit Converter**            | 6 categories: bytes (SI+binary), length, mass, area, volume, speed                                                                      |
 
 ### Date & Time
 
-| Tool | Description |
-| ---- | ----------- |
-| **Date Difference** | Calendar-aware diff (years/months/days/hours/minutes/seconds + totals + human summary) |
-| **Leap Year Checker** | Single year, comma list, or YYYY-YYYY range |
-| **Date Add/Subtract** | Add/subtract years, months, weeks, days, hours, minutes, seconds |
-| **Date Formatter** | 20+ output formats: ISO 8601, RFC 2822/850, Unix (s/ms/µs/ns), ordinal, SQL, ISO week date… |
-| **Date Info** | Week number, quarter, zodiac sign, season, day-of-year, days-left, days-since-epoch |
+| Tool                  | Description                                                                                 |
+| --------------------- | ------------------------------------------------------------------------------------------- |
+| **Date Difference**   | Calendar-aware diff (years/months/days/hours/minutes/seconds + totals + human summary)      |
+| **Leap Year Checker** | Single year, comma list, or YYYY-YYYY range                                                 |
+| **Date Add/Subtract** | Add/subtract years, months, weeks, days, hours, minutes, seconds                            |
+| **Date Formatter**    | 20+ output formats: ISO 8601, RFC 2822/850, Unix (s/ms/µs/ns), ordinal, SQL, ISO week date… |
+| **Date Info**         | Week number, quarter, zodiac sign, season, day-of-year, days-left, days-since-epoch         |
 
 ### Web & DevOps
 
-| Tool | Description |
-| ---- | ----------- |
-| **URL Parser** | Scheme, credentials, host, port, path, query params (table), fragment, normalized URL |
-| **User-Agent Parser** | Browser, version, OS, engine, device type (desktop/mobile/tablet/bot) |
-| **HTTP Status Codes** | Searchable reference of all 63 codes (1xx–5xx) with descriptions, filterable by category |
-| **MIME Type Lookup** | Bidirectional: extension → MIME or MIME → extensions; 75+ types; category filter |
+| Tool                     | Description                                                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| **URL Parser**           | Scheme, credentials, host, port, path, query params (table), fragment, normalized URL                               |
+| **User-Agent Parser**    | Browser, version, OS, engine, device type (desktop/mobile/tablet/bot)                                               |
+| **HTTP Status Codes**    | Searchable reference of all 63 codes (1xx–5xx) with descriptions, filterable by category                            |
+| **MIME Type Lookup**     | Bidirectional: extension → MIME or MIME → extensions; 75+ types; category filter                                    |
 | **Docker run → Compose** | Full flag parser (30+ flags), quoted-string aware, generates docker-compose.yml with warnings for unsupported flags |
-| **Git Cheat Sheet** | 11 categories, 120+ commands, searchable, copy-on-click |
+| **Git Cheat Sheet**      | 11 categories, 120+ commands, searchable, copy-on-click                                                             |
 
 ### Media Tools
 
-| Tool | Description |
-| ---- | ----------- |
-| **SVG Optimizer** | 4 presets (safe/aggressive/minimal/custom), 9 configurable transforms, size stats, inline preview |
+| Tool                      | Description                                                                                                      |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **SVG Optimizer**         | 4 presets (safe/aggressive/minimal/custom), 9 configurable transforms, size stats, inline preview                |
 | **Image Metadata (EXIF)** | JPEG full EXIF (camera/GPS/settings), PNG chunks (IHDR/tEXt/iTXt/pHYs), WebP RIFF; GPS decimal + DMS + Maps link |
-| **Base64 ↔ File** | Encode any file to base64/data URI; decode base64/data URI to downloadable file; image preview |
+| **Base64 ↔ File**         | Encode any file to base64/data URI; decode base64/data URI to downloadable file; image preview                   |
 
 ---
 
@@ -299,6 +304,7 @@ privutil/
 ```
 
 **Request flow:**
+
 ```
 Browser (React + nice-grpc-web) → HTTP server (gRPC-Web wrapper) → gRPC handlers → Go business logic
 ```
