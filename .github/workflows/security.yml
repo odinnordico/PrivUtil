@@ -35,7 +35,7 @@ jobs:
         # untrusted upstream code cannot run in a job with security-events: write.
         # -no-fail so the SARIF upload below always runs; enforcement happens via
         # the code-scanning alert gate rather than a hard job failure.
-        uses: securego/gosec@9e75c0576c9878035d4221392108d458abe10fc3 # v2.28.0
+        uses: securego/gosec@deb54465fea23d19a77f037e11e6589021f8501d # v2.29.0
         with:
           args: -no-fail -fmt sarif -out results.sarif -exclude-generated ./...
 
