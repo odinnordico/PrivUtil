@@ -19,7 +19,7 @@ require (
 require (
 	connectrpc.com/connect v1.20.0
 	connectrpc.com/cors v0.1.0
-	github.com/modelcontextprotocol/go-sdk v1.7.0
+	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/pkoukk/tiktoken-go v0.1.8
 	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
 	go.abhg.dev/goldmark/mermaid v0.6.0
